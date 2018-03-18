@@ -1,0 +1,26 @@
+{
+  "name": "givka",
+  "dependencies": {
+    "electron": "^1.8.2",
+    "electron-json-storage": "^4.0.2",
+    "google": "^2.1.0",
+    "handlebars": "^4.0.11",
+    "jshint": "^2.9.5",
+    "loaders.css": "^0.1.2",
+    "npm": "^5.7.1",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "torrent-search-api": "^1.0.27"
+  },
+  "version": "1.0.0",
+  "main": "main.js",
+  "devDependencies": {
+    "jquery": "^3.3.1"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Ketshi",
+  "license": "MIT",
+  "description": "Givka"
+}
