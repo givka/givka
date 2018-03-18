@@ -12,13 +12,13 @@ window.$ = window.jQuery = require("jquery")
 var movieDataBase = require('/Users/artich/Desktop/Givka/scripts/tmdb.js')
 const mdb = new movieDataBase()
 
-var id = 422837
+movieSeen()
 
-mdb.getRequests('popular', 5)
-    .then((response) => {
-        console.log(response);
+// mdb.getRequests('popular', 5)
+//     .then((response) => {
+//         console.log(response);
 
-    })
+//     })
 
 function movie() {
     var h1 = document.createElement("h1");
@@ -165,61 +165,59 @@ function addMovieListenerGetMovieDetails() {
         var element = event.path[1]
         //element.classList.toggle("viewed")
         document.getElementById('content').style.display = 'none'
-        getMovie(element.className, function (movie) {
-            var movieContent = document.createElement("div");
-            movieContent.id = "movieContent"
-            document.body.appendChild(movieContent);
-            var MovieBar = document.createElement("div")
-            MovieBar.id = "MovieBar"
-            var movieImg = document.createElement("div")
-            movieImg.id = "movieImg"
-            var movieDesc = document.createElement("div")
-            movieDesc.id = "movieDesc"
-            //divArtist.style.background="url("+data[number].image+")"
-            var bg = "url(" + "https://image.tmdb.org/t/p/w500" + movie.backdrop_path + ")"
-            var str = "content: \'\';  top: 0; bottom:0; left: 0; right: 0; z-index: -1; padding: 0;";
-            //str+='filter: blur(10px); '+"background: " + bg + " fixed 0 0;background-size: cover;background-position: 50% 50%; position: absolute; ";
-            document.styleSheets[0].addRule('#MovieBar:before', str);
-            var h1 = document.createElement("h1");
-            h1.innerHTML = movie.title + ' (' + parseInt(movie.release_date) + ')';
-            h1.id = "title";
-            var h2 = document.createElement("h2");
-            if (movie.title !== movie.original_title) {
-                h2.innerHTML = '(' + movie.original_title + ')';
-            }
-            h2.id = "original_title";
-            var img = document.createElement("img");
-            img.src = "https://image.tmdb.org/t/p/w500" + movie.poster_path
-            var runtime = document.createElement("p");
-            runtime.innerHTML = convertRuntime(movie.runtime);
-            var overview = document.createElement("p");
-            overview.innerHTML = movie.overview;
-            movieDesc.appendChild(h1);
-            movieDesc.appendChild(h2);
-            movieDesc.appendChild(runtime);
-            movieDesc.appendChild(overview);
-            movieImg.appendChild(img);
-            MovieBar.appendChild(movieImg)
-            MovieBar.appendChild(movieDesc)
-            document.getElementById("movieContent").appendChild(MovieBar);
-            var els = ['imdb_id', 'belongs_to_collection', 'budget', 'revenue',
-                'release_date', 'vote_average', 'vote_count']
-            for (const el of els) {
-                var p = document.createElement('p');
-                p.id = el;
-                if (el === 'budget' || el === 'revenue') {
-                    movie[el] = convertMoney(parseInt(movie[el]), 0)
+        mdb.getMovie(element.className)
+            .then((movie) => {
+                var movieContent = document.createElement("div");
+                movieContent.id = "movieContent"
+                document.body.appendChild(movieContent);
+                var MovieBar = document.createElement("div")
+                MovieBar.id = "MovieBar"
+                var movieImg = document.createElement("div")
+                movieImg.id = "movieImg"
+                var movieDesc = document.createElement("div")
+                movieDesc.id = "movieDesc"
+                //divArtist.style.background="url("+data[number].image+")"
+                var bg = "url(" + "https://image.tmdb.org/t/p/w500" + movie.backdrop_path + ")"
+                var str = "content: \'\';  top: 0; bottom:0; left: 0; right: 0; z-index: -1; padding: 0;";
+                //str+='filter: blur(10px); '+"background: " + bg + " fixed 0 0;background-size: cover;background-position: 50% 50%; position: absolute; ";
+                document.styleSheets[0].addRule('#MovieBar:before', str);
+                var h1 = document.createElement("h1");
+                h1.innerHTML = movie.title + ' (' + parseInt(movie.release_date) + ')';
+                h1.id = "title";
+                var h2 = document.createElement("h2");
+                if (movie.title !== movie.original_title) {
+                    h2.innerHTML = '(' + movie.original_title + ')';
                 }
-                p.innerHTML = el + ': ' + movie[el]
-                movieDesc.appendChild(p)
-            }
-            console.log('collection', movie.belongs_to_collection);
+                h2.id = "original_title";
+                var img = document.createElement("img");
+                img.src = "https://image.tmdb.org/t/p/w500" + movie.poster_path
+                var runtime = document.createElement("p");
+                runtime.innerHTML = convertRuntime(movie.runtime);
+                var overview = document.createElement("p");
+                overview.innerHTML = movie.overview;
+                movieDesc.appendChild(h1);
+                movieDesc.appendChild(h2);
+                movieDesc.appendChild(runtime);
+                movieDesc.appendChild(overview);
+                movieImg.appendChild(img);
+                MovieBar.appendChild(movieImg)
+                MovieBar.appendChild(movieDesc)
+                document.getElementById("movieContent").appendChild(MovieBar);
+                var els = ['imdb_id', 'belongs_to_collection',
+                    'release_date', 'vote_average', 'vote_count']
+                for (const el of els) {
+                    var p = document.createElement('p');
+                    p.id = el;
+                    p.innerHTML = el + ': ' + movie[el]
+                    movieDesc.appendChild(p)
+                }
+                console.log('collection', movie.belongs_to_collection);
 
-            //createMovieImages(element.className)
-            //createMovieCastCrew(element.className)
-            //createMovieTorrents(element.className)
-            //createMovieTrailer(element.className)
-        })
+                //createMovieImages(element.className)
+                //createMovieCastCrew(element.className)
+                //createMovieTorrents(element.className)
+                //createMovieTrailer(element.className)
+            })
     });
 }
 
