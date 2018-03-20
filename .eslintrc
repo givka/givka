@@ -1,0 +1,38 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "extends": "airbnb",
+  "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 80
+      }
+    ],
+    "no-restricted-syntax": 0,
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [
+          "scripts/"
+        ]
+      }
+    ],
+    "class-methods-use-this": "off",
+    "no-plusplus": "off",
+    "no-param-reassign": "off",
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "func-names": "off"
+  }
+}
