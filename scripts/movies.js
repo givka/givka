@@ -7,14 +7,14 @@ const storage = require('electron-json-storage');
 const TorrentSearchApi = require('torrent-search-api');
 const $ = require('jquery');
 
-const MovieDataBase = require('./scripts/tmdb');
-const Creator = require('./scripts/creator');
-const DataBase = require('./scripts/database');
+const MovieDataBase = require('./tmdb');
+const Creator = require('./creator');
+const DataBase = require('./database');
 
 const mdb = new MovieDataBase();
 const c = new Creator();
 
-c.columns(7);
+c.columns(9);
 c.movie('top_rated');
 
 const db = new DataBase();
@@ -350,7 +350,7 @@ function createMovieCastCrew(id) {
       divC.id = 'cast';
       img = document.createElement('img');
       if (cast.profile_path === null) {
-        img.src = 'no_profile.png';
+        img.src = 'images/no-profile.png';
       } else {
         img.src = `https://image.tmdb.org/t/p/w185${cast.profile_path}`;
       }

@@ -1,6 +1,7 @@
 const Handlebars = require('handlebars');
 const MovieDataBase = require('./tmdb');
 const $ = require('jquery');
+const Jimp = require('jimp');
 
 const mdb = new MovieDataBase();
 
@@ -83,6 +84,18 @@ class Creator {
     const result = template(context);
     document.getElementById('content').insertAdjacentHTML('afterbegin', result);
     return result;
+  }
+
+  blurBase64URI(url, px) {
+    return new Promise((resolve) => {
+      Jimp.read(url).then((image) => {
+        image.blur(px)
+
+          .getBase64(Jimp.AUTO, (err, encoded) => {
+            resolve(encoded);
+          });
+      });
+    });
   }
 }
 
