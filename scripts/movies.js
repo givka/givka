@@ -9,12 +9,26 @@ const $ = require('jquery');
 
 const MovieDataBase = require('./scripts/tmdb');
 const Creator = require('./scripts/creator');
+const DataBase = require('./scripts/database');
 
 const mdb = new MovieDataBase();
 const c = new Creator();
 
 c.columns(7);
-c.movie('top_rated').then();
+c.movie('top_rated');
+
+const db = new DataBase();
+
+// dbb.readDB('993')
+//   .then(data => console.log(data));
+
+// db.readDB('movie').then((obj) => {
+//   obj.name = true;
+
+//   storage.set('movie', obj, (err) => {
+//     if (err) { throw err; }
+//   });
+// });
 
 // function test() {
 //   return new Promise((resolve, reject) => {
@@ -34,58 +48,6 @@ c.movie('top_rated').then();
 //         console.log(response);
 
 //     })
-
-function movie() {
-  const h1 = document.createElement('h1');
-  h1.innerHTML = 'Movies';
-  h1.id = 'title';
-  const divArtists = document.createElement('div');
-  divArtists.id = 'movies';
-  document.getElementById('content').appendChild(h1);
-  document.getElementById('content').appendChild(divArtists);
-  let div = document.createElement('div');
-  div.id = 'row';
-  let src = document.getElementById('movies');
-  src.appendChild(div);
-  src = document.getElementById('row');
-  const nbrColumns = 7;
-  for (let b = 1; b <= nbrColumns; b += 1) {
-    div = document.createElement('div');
-    div.id = 'column';
-    div.className = `columnId-${b.toString()}`;
-    src.appendChild(div);
-  }
-  const url = 'https://api.themoviedb.org/3/movie/top_rated';
-  getRequest(url, (results) => {
-    for (const result of results) {
-      storage.has(result.id.toString(), (error, hasKey) => {
-        if (error) throw error;
-        if (hasKey) {
-        } else {
-          // expected output: [object Promise]
-          const divLocal = document.createElement('div');
-          divLocal.id = 'container';
-          divLocal.className = result.id;
-          // var divName = document.createElement("div");
-          // divName.innerHTML = result.title;
-          // divName.className = "bottom"
-          const img = document.createElement('img');
-          img.src = `https://image.tmdb.org/t/p/w500${result.poster_path}`;
-          // img.id = index * a;
-          divLocal.appendChild(img);
-          // divLocal.appendChild(divName)
-          minColumn(nbrColumns, (minC) => {
-            const divColumn = document.getElementsByClassName(`columnId-${minC.toString()}`)[0];
-            divColumn.appendChild(divLocal);
-          });
-        }
-      });
-    }
-    // addMovieListenerViewed()
-    // addMovieListenerGetMovieDetails()
-  });
-  // MAYBE DO LOOP OF DOREQUEST AND PUSH EACH RESULT DUNNO TIRED
-}
 
 function movieSeen() {
   const h1 = document.createElement('h1');
