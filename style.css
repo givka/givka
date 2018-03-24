@@ -158,9 +158,8 @@ iframe{
 }
 .animate img
 {
-   
-    transition: width 1s ease;
-    width:0% !important;
+  width:0% !important;
+    
     
 }
 
@@ -189,14 +188,16 @@ iframe{
 #column {
     
     flex:auto;
-    max-width: 11.11%;
+    max-width: 11.111111%;
     
 } 
 
 #column div{
     transition: all .3s ease;
+    padding:4%;
     
 }
+
 
 #column div:hover {
     
@@ -207,10 +208,10 @@ iframe{
 
 #column img {
     
-    margin-top: 12px;
-    
+    transition: width 0.3s ease;
+    border-radius: 5px;
     vertical-align: middle;
-    width:95%;
+    width:100%;
     box-shadow: 0 0px 10px rgba(0, 0, 0, 1)
 
 }

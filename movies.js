@@ -10,14 +10,16 @@ const $ = require('jquery');
 const MovieDataBase = require('./scripts/movie-database');
 const Creator = require('./scripts/creator');
 const JsonDataBase = require('./scripts/json-database');
+const Event = require('./scripts/event');
 
 const mdb = new MovieDataBase();
 const c = new Creator();
 const jdb = new JsonDataBase();
+const ev = new Event();
 
-// c.columns(9)
-(mdb.getMovie('11').then(movie => console.log(movie)));
-c.createCollection('10');
+c.createColumns(9);
+c.createMovies('top_rated');
+ev.movieSeen();
 
 function movieSeen() {
   const h1 = document.createElement('h1');
@@ -89,7 +91,6 @@ function addMovieListenerViewed() {
     element.classList.toggle('viewed');
     setTimeout(() => {
       const divDelete = (`.${element.classList[0]}`);
-      // if class.length ===1 return
       if (element.classList.length === 1) { return; }
       element.classList.toggle('animate');
       setTimeout(() => {

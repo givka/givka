@@ -18,7 +18,6 @@ class Creator {
 
     this.moviePoster = `<div id="container" class="{{id}}">
     <img src="{{src}}">
-    <div class="bottom">{{title}}</div>
     </div>`;
 
     this.trailer = `<iframe width="560" height="315" 
@@ -29,11 +28,11 @@ class Creator {
     this.collection = `<div id="collection">
     <div id="description"></div>
     <h1>{{title}}</h1>
-    <img src="https://image.tmdb.org/t/p/w500{{image}}" alt="">
+    <img src="https://image.tmdb.org/t/p/w500{{image}}">
     <p>{{desc}}</p>
     <div id="parts">
     {{#each items}}
-    <img src="https://image.tmdb.org/t/p/w500{{imagePart}}" alt=""">
+    <img src="https://image.tmdb.org/t/p/w500{{imagePart}}">
     {{/ each}}
     </div>
     </div>`;
@@ -94,20 +93,16 @@ class Creator {
     return mdb.getMovies(list, 10).then((movies) => {
       for (const movie of movies) {
         const source = this.moviePoster;
-        // var divName = document.createElement("div");
-        // divName.innerHTML = result.title;
-        // divName.className = "bottom"
 
         const template = Handlebars.compile(source);
 
         const context = {
           id: movie.id,
           src: `https://image.tmdb.org/t/p/w342${movie.poster_path}`,
-          // title: movie.title,
         };
 
         const result = template(context);
-        const minC = this.getShortestColumn();
+        const [minC] = this.getShortestColumn();
         document.getElementsByClassName(`columnId-${minC}`)[0]
           .insertAdjacentHTML('beforeend', result);
       }
@@ -146,13 +141,48 @@ class Creator {
     const nbrColumns = $('#row').children().length;
 
     for (let c = 1; c <= nbrColumns; c += 1) {
-      const columnChildren = $(`.columnId-${c.toString()}`).children().length;
+      const columnChildren = $(`.columnId-${c}`).children().length;
       if (min > columnChildren) {
         min = columnChildren;
         minColumn = c;
       }
     }
-    return minColumn;
+    return [minColumn, min];
+  }
+
+  getLongestColumn() {
+    let max = 0;
+    let maxColumn;
+    const nbrColumns = $('#row').children().length;
+
+    for (let c = 1; c <= nbrColumns; c += 1) {
+      const columnChildren = $(`.columnId-${c}`).children().length;
+      if (max < columnChildren) {
+        max = columnChildren;
+        maxColumn = c;
+      }
+    }
+    return [maxColumn, max];
+  }
+
+  updateColumn() {
+    const [minColumn, minChildren] = this.getShortestColumn();
+    const [maxColumn, maxChildren] = this.getLongestColumn();
+    if (maxChildren - minChildren < 1) {
+      return;
+    }
+    const toMove = document.querySelector(`.columnId-${maxColumn}`).lastChild;
+    if (toMove.classList[1] === 'animate') {
+      return;
+    }
+    toMove.classList.toggle('animate');
+
+    setTimeout(() => {
+      document.querySelector(`.columnId-${minColumn}`).appendChild(toMove);
+      setTimeout(() => {
+        toMove.classList.toggle('animate');
+      }, 300);
+    }, 300);
   }
 
   blurBase64URI(url, px) {

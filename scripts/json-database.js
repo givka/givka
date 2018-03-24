@@ -6,7 +6,13 @@ class JsonDataBase {
       this.readDB(key)
         .then((data, err) => {
           if (err) { reject(err); }
-          data[obj.id] = obj;
+          data[obj.id] = {
+            id: obj.id,
+            poster: obj.poster_path,
+            title: obj.title,
+            date: obj.release_date,
+
+          };
           resolve(data);
           return this.writeDB(key, data);
         })
@@ -21,9 +27,9 @@ class JsonDataBase {
       this.readDB(key)
         .then((data, err) => {
           if (err) { reject(err); }
-          console.log('before', data);
-          delete data[id];
-          console.log('after', data);
+          if (data[id] !== undefined) {
+            delete data[id];
+          }
           return this.writeDB(key, data);
         })
         .then((err) => {

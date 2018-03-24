@@ -16,15 +16,16 @@ class MovieDataBase {
 
     return this.getRequest(url, addRequest);
   }
+
   getPeople(id) {
     const url = `https://api.themoviedb.org/3/people/${id}`;
     const addRequest = 'movie_credits,images';
 
     return this.getRequest(url, addRequest);
   }
-  getMovie(id) {
+
+  getMovie(id, addRequest = 'credits,images,videos,recommendations') {
     const url = `https://api.themoviedb.org/3/movie/${id}`;
-    const addRequest = 'credits,images,videos,recommendations';
 
     return this.getRequest(url, addRequest);
   }
