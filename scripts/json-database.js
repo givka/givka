@@ -1,6 +1,6 @@
 const storage = require('electron-json-storage');
 
-class DataBase {
+class JsonDataBase {
   addKeyDB(key, obj) {
     return new Promise((resolve, reject) => {
       this.readDB(key)
@@ -59,4 +59,4 @@ class DataBase {
   }
 }
 
-module.exports = DataBase;
+module.exports = JsonDataBase;

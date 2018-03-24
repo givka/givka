@@ -7,47 +7,15 @@ const storage = require('electron-json-storage');
 const TorrentSearchApi = require('torrent-search-api');
 const $ = require('jquery');
 
-const MovieDataBase = require('./tmdb');
-const Creator = require('./creator');
-const DataBase = require('./database');
+const MovieDataBase = require('./scripts/movie-database');
+const Creator = require('./scripts/creator');
+const JsonDataBase = require('./scripts/json-database');
 
 const mdb = new MovieDataBase();
 const c = new Creator();
+const jdb = new JsonDataBase();
 
 c.columns(9);
-c.movie('top_rated');
-
-const db = new DataBase();
-
-// dbb.readDB('993')
-//   .then(data => console.log(data));
-
-// db.readDB('movie').then((obj) => {
-//   obj.name = true;
-
-//   storage.set('movie', obj, (err) => {
-//     if (err) { throw err; }
-//   });
-// });
-
-// function test() {
-//   return new Promise((resolve, reject) => {
-//     resolve(13);
-//   });
-// }
-
-// test().then((lol) => {
-//   console.log(lol);
-//   mdb.getMovie(22).then((mive) => {
-//     console.log(mive);
-//   });
-// });
-
-// mdb.getRequests('popular', 5)
-//     .then((response) => {
-//         console.log(response);
-
-//     })
 
 function movieSeen() {
   const h1 = document.createElement('h1');
@@ -388,24 +356,5 @@ function createMovieCastCrew(id) {
     movieContent.appendChild(divCast);
     movieContent.appendChild(divCrew);
   });
-}
-
-function convertRuntime(mins) {
-  const m = mins % 60;
-  const h = (mins - m) / 60;
-  return `${h.toString()} h ${m < 10 ? '0' : ''}${m.toString()} min`;
-}
-
-function minColumn(nbrColumns, callback) {
-  let min = 1e9;
-  let minColumn;
-  for (let c = 1; c <= nbrColumns; c += 1) {
-    const columnChildren = $(`.columnId-${c.toString()}`).children().length;
-    if (min > columnChildren) {
-      min = columnChildren;
-      minColumn = c;
-    }
-  }
-  callback(minColumn);
 }
 

@@ -1,5 +1,5 @@
 const Handlebars = require('handlebars');
-const MovieDataBase = require('./tmdb');
+const MovieDataBase = require('./movie-database');
 const $ = require('jquery');
 const Jimp = require('jimp');
 
@@ -20,7 +20,36 @@ class Creator {
     <img src="{{src}}">
     <div class="bottom">{{title}}</div>
     </div>`;
+
+    this.trailer = `<iframe width="560" height="315" 
+    src = "https://www.youtube.com/embed/{{key}}?rel=0&amp;showinfo=0"
+    frameborder = "0" allow = "autoplay; encrypted-media"
+    allowfullscreen ></iframe >`;
   }
+
+  createTrailer(id) {
+    return mdb.getMovie(id)
+      .then((movie) => {
+        let trailer;
+        for (const video of movie.videos.results) {
+          if (video.type === 'Trailer') {
+            trailer = video;
+            break;
+          }
+        }
+
+        const source = this.trailer;
+        const template = Handlebars.compile(source);
+        const context = {
+          key: trailer.key,
+        };
+        const result = template(context);
+
+        document.getElementById('content')
+          .insertAdjacentHTML('beforeend', result);
+      });
+  }
+
   movie(list) {
     return mdb.getMovies(list, 10).then((movies) => {
       for (const movie of movies) {
@@ -33,7 +62,7 @@ class Creator {
 
         const context = {
           id: movie.id,
-          src: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          src: `https://image.tmdb.org/t/p/w342${movie.poster_path}`,
           // title: movie.title,
         };
 
@@ -96,6 +125,12 @@ class Creator {
           });
       });
     });
+  }
+
+  convertRuntime(mins) {
+    const m = mins % 60;
+    const h = (mins - m) / 60;
+    return `${h.toString()} h ${m < 10 ? '0' : ''}${m.toString()} min`;
   }
 }
 

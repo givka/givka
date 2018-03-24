@@ -7,29 +7,29 @@ class MovieDataBase {
     const url = `https://api.themoviedb.org/3/collection/${id}`;
     const addRequest = 'images';
 
-    return this.constructor.getRequest(url, addRequest);
+    return this.getRequest(url, addRequest);
   }
 
   getTV(id) {
     const url = `https://api.themoviedb.org/3/tv/${id}`;
     const addRequest = 'credits,images,videos,recommendations';
 
-    return this.constructor.getRequest(url, addRequest);
+    return this.getRequest(url, addRequest);
   }
   getPeople(id) {
     const url = `https://api.themoviedb.org/3/people/${id}`;
     const addRequest = 'movie_credits,images';
 
-    return this.constructor.getRequest(url, addRequest);
+    return this.getRequest(url, addRequest);
   }
   getMovie(id) {
     const url = `https://api.themoviedb.org/3/movie/${id}`;
     const addRequest = 'credits,images,videos,recommendations';
 
-    return this.constructor.getRequest(url, addRequest);
+    return this.getRequest(url, addRequest);
   }
 
-  static getRequest(url, addRequestAppend, nbrPage) {
+  getRequest(url, addRequestAppend, nbrPage) {
     const options = {
       method: 'GET',
       url,
@@ -55,7 +55,7 @@ class MovieDataBase {
     const PromiseArray = [];
 
     for (let i = 1; i <= number; i += 1) {
-      PromiseArray.push(this.constructor.getRequest(url, null, i));
+      PromiseArray.push(this.getRequest(url, null, i));
     }
     return Promise.all(PromiseArray)
       .then((allResponses) => {
