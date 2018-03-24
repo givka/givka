@@ -15,7 +15,9 @@ const mdb = new MovieDataBase();
 const c = new Creator();
 const jdb = new JsonDataBase();
 
-c.columns(9);
+// c.columns(9)
+(mdb.getMovie('11').then(movie => console.log(movie)));
+c.createCollection('10');
 
 function movieSeen() {
   const h1 = document.createElement('h1');
@@ -189,57 +191,6 @@ function getSC(movie) {
     sc.innerHTML = `${senscritique.note} ${senscritique.number}`;
 
     return senscritique;
-  });
-}
-function createCollection(id) {
-  getCollection(id, (collection) => {
-    const divCollection = document.createElement('div');
-    divCollection.id = 'divCollection';
-    const divDescription = document.createElement('div');
-    divDescription.id = 'divDescription';
-    const divParts = document.createElement('div');
-    divParts.id = 'divParts';
-    document.body.appendChild(divCollection);
-    divCollection.appendChild(divDescription);
-    divCollection.appendChild(divParts);
-    const h1 = document.createElement('h1');
-    h1.innerHTML = collection.name;
-    const p = document.createElement('p');
-    p.innerHTML = collection.overview;
-    const imgCollection = document.createElement('img');
-    imgCollection.src = `https://image.tmdb.org/t/p/w500${collection.poster_path}`;
-    divDescription.appendChild(h1);
-    divDescription.appendChild(imgCollection);
-    divDescription.appendChild(p);
-    const movies = collection.parts;
-    movies.sort((a, b) => {
-      a = parseInt(a.release_date);
-      b = parseInt(b.release_date);
-      return a < b ? -1 : a > b ? 1 : 0;
-    });
-    for (const movie of movies) {
-      const img = document.createElement('img');
-      img.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-      divParts.appendChild(img);
-      console.log(movies);
-    }
-  });
-}
-
-function createMovieTrailer(id) {
-  getMovieTrailer(id, (videos) => {
-    let trailer;
-    for (const video of videos) {
-      if (video.type === 'Trailer') {
-        trailer = video;
-      }
-    }
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${trailer.key}?rel=0&amp;showinfo=0&amp;hd=1&amp;iv_load_policy=3`;
-    iframe.frameBorder = 0;
-    iframe.allowFullscreen = true;
-    movieContent.appendChild(iframe);
-    // <iframe width="560" height="315" src="https://www.youtube.com/embed/Yp257b5APOg?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   });
 }
 

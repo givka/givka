@@ -25,6 +25,46 @@ class Creator {
     src = "https://www.youtube.com/embed/{{key}}?rel=0&amp;showinfo=0"
     frameborder = "0" allow = "autoplay; encrypted-media"
     allowfullscreen ></iframe >`;
+
+    this.collection = `<div id="collection">
+    <div id="description"></div>
+    <h1>{{title}}</h1>
+    <img src="https://image.tmdb.org/t/p/w500{{image}}" alt="">
+    <p>{{desc}}</p>
+    <div id="parts">
+    {{#each items}}
+    <img src="https://image.tmdb.org/t/p/w500{{imagePart}}" alt=""">
+    {{/ each}}
+    </div>
+    </div>`;
+  }
+
+  createCollection(id) {
+    return mdb.getCollection(id).then((collection) => {
+      const movies = collection.parts;
+      movies.sort((a, b) => {
+        a = parseInt(a.release_date, 10);
+        b = parseInt(b.release_date, 10);
+        return a < b ? -1 : a > b ? 1 : 0;
+      });
+      const source = this.collection;
+      const template = Handlebars.compile(source);
+      const context = {
+        title: collection.name,
+        image: collection.poster_path,
+        desc: collection.overview,
+        items: movies,
+      };
+      Handlebars.registerHelper('imagePart', function () {
+        const name = Handlebars.escapeExpression(this.poster_path);
+
+        return new Handlebars.SafeString(`${name}`);
+      });
+      const result = template(context);
+
+      document.getElementById('content')
+        .insertAdjacentHTML('beforeend', result);
+    });
   }
 
   createTrailer(id) {
@@ -50,7 +90,7 @@ class Creator {
       });
   }
 
-  movie(list) {
+  createMovies(list) {
     return mdb.getMovies(list, 10).then((movies) => {
       for (const movie of movies) {
         const source = this.moviePoster;
@@ -67,29 +107,14 @@ class Creator {
         };
 
         const result = template(context);
-        const minC = this.minColumn();
+        const minC = this.getShortestColumn();
         document.getElementsByClassName(`columnId-${minC}`)[0]
           .insertAdjacentHTML('beforeend', result);
       }
     });
   }
 
-  minColumn() {
-    let min = 1e9;
-    let minColumn;
-    const nbrColumns = $('#row').children().length;
-
-    for (let c = 1; c <= nbrColumns; c += 1) {
-      const columnChildren = $(`.columnId-${c.toString()}`).children().length;
-      if (min > columnChildren) {
-        min = columnChildren;
-        minColumn = c;
-      }
-    }
-    return minColumn;
-  }
-
-  columns(nbrColumns) {
+  createColumns(nbrColumns) {
     const source = this.column;
     const template = Handlebars.compile(source);
     const array = [...Array(nbrColumns).keys()];
@@ -113,6 +138,21 @@ class Creator {
     const result = template(context);
     document.getElementById('content').insertAdjacentHTML('afterbegin', result);
     return result;
+  }
+
+  getShortestColumn() {
+    let min = 1e9;
+    let minColumn;
+    const nbrColumns = $('#row').children().length;
+
+    for (let c = 1; c <= nbrColumns; c += 1) {
+      const columnChildren = $(`.columnId-${c.toString()}`).children().length;
+      if (min > columnChildren) {
+        min = columnChildren;
+        minColumn = c;
+      }
+    }
+    return minColumn;
   }
 
   blurBase64URI(url, px) {
