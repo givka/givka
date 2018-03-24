@@ -51,7 +51,7 @@ class MovieDataBase {
       });
   }
 
-  getMovies(list, number) {
+  getDiscover(list, number) {
     const url = `https://api.themoviedb.org/3/movie/${list}`;
     const PromiseArray = [];
 

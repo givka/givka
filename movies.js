@@ -10,16 +10,17 @@ const $ = require('jquery');
 const MovieDataBase = require('./scripts/movie-database');
 const Creator = require('./scripts/creator');
 const JsonDataBase = require('./scripts/json-database');
-const Event = require('./scripts/event');
 
 const mdb = new MovieDataBase();
 const c = new Creator();
 const jdb = new JsonDataBase();
-const ev = new Event();
 
 c.createColumns(9);
-c.createMovies('top_rated');
-ev.movieSeen();
+c.eventNav();
+c.createDiscover('popular');
+
+// c.createDiscover('popular');
+// ev.nav();
 
 function movieSeen() {
   const h1 = document.createElement('h1');

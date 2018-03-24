@@ -2,13 +2,15 @@ const Handlebars = require('handlebars');
 const MovieDataBase = require('./movie-database');
 const $ = require('jquery');
 const Jimp = require('jimp');
+const JsonDataBase = require('./json-database');
 
 const mdb = new MovieDataBase();
+const jdb = new JsonDataBase();
 
 class Creator {
   constructor() {
-    this.column = `<h1 id = "title" > Movies</h1>
-    <div id="movies">
+    this.column = `<div id="movies">
+    <h1 id = "title" >Movies</h1>
     <div id="row">
     {{#each items}}
     <div id="column" class="{{agree_button}}"></div>
@@ -88,28 +90,59 @@ class Creator {
           .insertAdjacentHTML('beforeend', result);
       });
   }
+  createSeen() {
+    jdb.readDB('movie')
+      .then((data) => {
+        for (const key in data) {
+          console.log(data[key]);
 
-  createMovies(list) {
-    return mdb.getMovies(list, 10).then((movies) => {
-      for (const movie of movies) {
-        const source = this.moviePoster;
+          const source = this.moviePoster;
 
-        const template = Handlebars.compile(source);
+          const template = Handlebars.compile(source);
 
-        const context = {
-          id: movie.id,
-          src: `https://image.tmdb.org/t/p/w342${movie.poster_path}`,
-        };
+          const context = {
+            id: data[key].id,
+            src: `https://image.tmdb.org/t/p/w342${data[key].poster}`,
+          };
 
-        const result = template(context);
-        const [minC] = this.getShortestColumn();
-        document.getElementsByClassName(`columnId-${minC}`)[0]
-          .insertAdjacentHTML('beforeend', result);
-      }
+          const result = template(context);
+          const [minC] = this.getShortestColumn();
+          document.getElementsByClassName(`columnId-${minC}`)[0]
+            .insertAdjacentHTML('beforeend', result);
+        }
+      });
+  }
+
+  createDiscover(list) {
+    return mdb.getDiscover(list, 10).then((movies) => {
+      jdb.readDB('movie')
+        .then((data) => {
+          for (const movie of movies) {
+            if (data[movie.id] !== undefined) {
+              continue;
+            }
+            const source = this.moviePoster;
+
+            const template = Handlebars.compile(source);
+
+            const context = {
+              id: movie.id,
+              src: `https://image.tmdb.org/t/p/w342${movie.poster_path}`,
+            };
+
+            const result = template(context);
+            const [minC] = this.getShortestColumn();
+            document.getElementsByClassName(`columnId-${minC}`)[0]
+              .insertAdjacentHTML('beforeend', result);
+          }
+        });
+      this.eventMovieSeen();
     });
   }
 
   createColumns(nbrColumns) {
+    console.log(('entry'));
+
     const source = this.column;
     const template = Handlebars.compile(source);
     const array = [...Array(nbrColumns).keys()];
@@ -132,7 +165,6 @@ class Creator {
 
     const result = template(context);
     document.getElementById('content').insertAdjacentHTML('afterbegin', result);
-    return result;
   }
 
   getShortestColumn() {
@@ -201,6 +233,41 @@ class Creator {
     const m = mins % 60;
     const h = (mins - m) / 60;
     return `${h.toString()} h ${m < 10 ? '0' : ''}${m.toString()} min`;
+  }
+  eventMovieSeen() {
+    document.getElementById('movies')
+      .addEventListener('click', (event) => {
+        if (event.target.tagName !== 'IMG') { return; }
+        const element = event.path[1];
+
+        const id = element.classList[0];
+        element.classList.toggle('viewed');
+        setTimeout(() => {
+          const divDelete = (`.${id}`);
+          if (element.classList.length === 1) { return; }
+          element.classList.toggle('animate');
+          setTimeout(() => {
+            $(divDelete).remove();
+            this.updateColumn();
+            mdb.getMovie(id, null)
+              .then(movie => jdb.addKeyDB('movie', movie));
+          }, 250);
+        }, 5000);
+      }, false);
+  }
+
+  eventNav() {
+    document.getElementById('navigation')
+      .addEventListener('click', (event) => {
+        if (event.target.tagName !== 'A') { return; }
+        const id = event.target.id;
+        const movies = document.getElementById('movies');
+        document.getElementById('content').removeChild(movies);
+        this.createColumns(9);
+        if (id === 'collection') { this.createSeen(); }
+
+        if (id === 'discover') { this.createDiscover('popular'); }
+      });
   }
 }
 

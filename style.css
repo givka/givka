@@ -15,66 +15,6 @@ h1{
   margin-top: 20px;
 }
 
-#divCollection{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#divCollection img:hover{
-    transform: scale(1.05);
-    transition: ease 0.3s;
-    
-}
-
-#divDescription{
-    width:30%;
-    text-align: center;
-}
-#divDescription img{
-    width:95%;
-    margin:1%;
-    
-}
-
-#divParts{
-    width:70%;
-    margin-top: 4%;
-}
-#divParts img{
-    width:20%;
-    margin:1%;
-}
-
-#divCast{
-
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-
-}
-#divCast #cast{
-
-    width: 10%;
-    
-    text-align: center;
-}
-
-#divCast #cast img{
-    width: 90%;
-
-}
-#divCrew{
-
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-}
-#divCrew #crew{
-
-    width: 10%;
-    text-align: center;
-
-}
 
 #divCrew #crew img{
 
@@ -98,56 +38,6 @@ td, th {
 
 tr:nth-child(even) {
     background-color: rgba(38,40, 32, 0.3);
-}
-
-h1{
-    font-size: 200%;
-   
-}
-h2{
-    font-size: 150%;
-    margin-bottom: 5%;
-   
-}
-iframe{
-    text-align: center
-}
-#MovieBar{
-    
-    display: flex;
-    
-}
-
-#movieImg{
-    margin: 2%;
-   width:30%;
-
-}
-
-#movieDesc{
-    margin: 2%;
-    width:70%;
-    text-align: justify;
- 
- }
-
- #movieDesc p{
-    margin-bottom: 2%;
-    width:100%;
-    text-align: justify;
- 
- }
-
-#movieImg img{
-    width: 100%;
-    box-shadow: 0 0px 20px rgba(0, 0, 0, 0.4);
-    
-}
-
-#artistBar{
-    
-    height: 50vh;
-    
 }
 
 .viewed{
@@ -190,14 +80,16 @@ iframe{
     flex:auto;
     max-width: 11.111111%;
     
+    
 } 
 
 #column div{
     transition: all .3s ease;
     padding:4%;
+    align-items: stretch;
+    
     
 }
-
 
 #column div:hover {
     
@@ -207,7 +99,7 @@ iframe{
   }
 
 #column img {
-    
+  
     transition: width 0.3s ease;
     border-radius: 5px;
     vertical-align: middle;
@@ -242,35 +134,8 @@ li a {
 
 li a:hover {
     background-color: rgba(38,40, 32, 0.5);
-    transform: scale(1.2);
+    transform: scale(1.05);
     transition: 0.3s ease;
     cursor: pointer;
 }
 
-@media only screen and (max-width: 800px) {
-    #column{ 
-        flex:auto;
-        max-width: 25%;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    #column{ 
-        flex:auto;
-        max-width: 33%;
-    }
-}
-
-@media only screen and (max-width: 400px) {
-    #column{ 
-        flex:auto;
-        max-width: 50%;
-    }
-}
-
-@media only screen and (max-width: 200px) {
-    #column{ 
-        flex:auto;
-        max-width: 100%;
-    }
-}

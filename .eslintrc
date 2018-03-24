@@ -34,6 +34,9 @@
       }
     ],
     "func-names": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "no-continue": "off",
+    "guard-for-in": "off",
+    "prefer-destructuring": "off"
   }
 }
