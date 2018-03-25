@@ -17,64 +17,10 @@ const jdb = new JsonDataBase();
 
 c.createColumns(9);
 c.eventNav();
-c.createDiscover('popular');
+c.createDiscover('top_rated');
 
 // c.createDiscover('popular');
 // ev.nav();
-
-function movieSeen() {
-  const h1 = document.createElement('h1');
-  h1.innerHTML = 'Movies Seen';
-  h1.id = 'title';
-  const divArtists = document.createElement('div');
-  divArtists.id = 'movies';
-  document.getElementById('content').appendChild(h1);
-  document.getElementById('content').appendChild(divArtists);
-  let div = document.createElement('div');
-  div.id = 'row';
-  let src = document.getElementById('movies');
-  src.appendChild(div);
-  src = document.getElementById('row');
-  const nbrColumns = 7;
-  for (let b = 1; b <= nbrColumns; b += 1) {
-    div = document.createElement('div');
-    div.id = 'column';
-    div.className = `columnId-${b.toString()}`;
-    src.appendChild(div);
-  }
-  dates = [];
-  storage.keys((error, keys) => {
-    if (error) throw error;
-    for (const key of keys) {
-      storage.get(key, (error, data) => {
-        if (error) throw error;
-        result = data;
-        // date = parseInt(data.release_date)
-        // dates.indexOf(date) === -1 ? dates.push(date) : console.log("This item already exists");
-        // dates.sort(function (a, b) {
-        //     return a < b ? -1 : a > b ? 1 : 0;
-        // });
-        // console.log(dates)
-        const divLocal = document.createElement('div');
-        divLocal.id = 'container';
-        divLocal.className = result.id;
-        // var divName = document.createElement("div");
-        // divName.innerHTML = result.title;
-        // divName.className = "bottom"
-        const img = document.createElement('img');
-        img.src = `https://image.tmdb.org/t/p/w500${result.poster_path}`;
-        // img.id = index * a;
-        divLocal.appendChild(img);
-        // divLocal.appendChild(divName)
-        minColumn(nbrColumns, (minC) => {
-          const divColumn = document.getElementsByClassName(`columnId-${minC.toString()}`)[0];
-          divColumn.appendChild(divLocal);
-        });
-      });
-    }
-  });
-  addMovieListenerGetMovieDetails();
-}
 
 function addMovieListenerGetCollection() {
   document.getElementById('movies').addEventListener('click', (event) => {
@@ -83,27 +29,6 @@ function addMovieListenerGetCollection() {
     getMovie(element.classList[0], (movie) => {
       createCollection(movie.belongs_to_collection.id);
     });
-  });
-}
-
-function addMovieListenerViewed() {
-  document.getElementById('movies').addEventListener('click', (event) => {
-    const element = event.path[1];
-    element.classList.toggle('viewed');
-    setTimeout(() => {
-      const divDelete = (`.${element.classList[0]}`);
-      if (element.classList.length === 1) { return; }
-      element.classList.toggle('animate');
-      setTimeout(() => {
-        $(divDelete).remove();
-        getMovie(element.classList[0], (movie) => {
-          storage.set(element.classList[0], movie, (error) => {
-            if (error) throw error;
-            console.log('done');
-          });
-        });
-      }, 800);
-    }, 5000);
   });
 }
 

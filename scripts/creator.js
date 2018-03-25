@@ -10,7 +10,7 @@ const jdb = new JsonDataBase();
 class Creator {
   constructor() {
     this.column = `<div id="movies">
-    <h1 id = "title" >Movies</h1>
+    <h1 id = "title" >Discover</h1>
     <div id="row">
     {{#each items}}
     <div id="column" class="{{agree_button}}"></div>
@@ -38,6 +38,44 @@ class Creator {
     {{/ each}}
     </div>
     </div>`;
+    this.details = `<div id="movie-details">
+    <div id="movie-bar">
+      <div id="movie-image">
+        <img src="https://image.tmdb.org/t/p/w500{{poster}}">
+      </div>
+      <div id="movie-description">
+        <h1 id="movie-title">{{title}}</h1>
+        <h2 id="movie-original-title">{{originalTitle}}</h2>
+        <p id="date">{{date}}</p>
+        <p id="runtime">{{runtime}}</p>
+        <p id="overview">{{overview}}</p>
+        <div id="movie-collection"></p>
+      </div>
+    </div>
+  </div>`;
+  }
+  createMovieDetails(id) {
+    const source = this.details;
+    mdb.getMovie(id).then((movie) => {
+      const template = Handlebars.compile(source);
+      const context = {
+        poster: movie.poster_path,
+        title: movie.title,
+        runtime: this.convertRuntime(movie.runtime),
+        overview: movie.overview,
+        date: parseInt(movie.release_date, 10),
+      };
+      if (movie.original_title !== movie.title) {
+        context.originalTitle = `(${movie.original_title})`;
+      }
+      if (movie.belongs_to_collection) {
+        this.createCollection(movie.belongs_to_collection.id);
+      }
+      const result = template(context);
+
+      document.getElementById('content')
+        .insertAdjacentHTML('beforeend', result);
+    });
   }
 
   createCollection(id) {
@@ -63,7 +101,7 @@ class Creator {
       });
       const result = template(context);
 
-      document.getElementById('content')
+      document.getElementById('movie-collection')
         .insertAdjacentHTML('beforeend', result);
     });
   }
@@ -93,16 +131,16 @@ class Creator {
   createSeen() {
     jdb.readDB('movie')
       .then((data) => {
-        for (const key in data) {
-          console.log(data[key]);
+        const movies = this.sortByDate(data);
 
+        for (const movie of movies) {
           const source = this.moviePoster;
 
           const template = Handlebars.compile(source);
 
           const context = {
-            id: data[key].id,
-            src: `https://image.tmdb.org/t/p/w342${data[key].poster}`,
+            id: movie.id,
+            src: `https://image.tmdb.org/t/p/w342${movie.poster}`,
           };
 
           const result = template(context);
@@ -110,6 +148,11 @@ class Creator {
           document.getElementsByClassName(`columnId-${minC}`)[0]
             .insertAdjacentHTML('beforeend', result);
         }
+        const count = `<h2 id="count">${$('div#container').length} movies</h2>`;
+        document.getElementById('title')
+          .innerHTML = 'Collection';
+        document.getElementById('title')
+          .insertAdjacentHTML('afterend', count);
       });
   }
 
@@ -136,13 +179,10 @@ class Creator {
               .insertAdjacentHTML('beforeend', result);
           }
         });
-      this.eventMovieSeen();
     });
   }
 
   createColumns(nbrColumns) {
-    console.log(('entry'));
-
     const source = this.column;
     const template = Handlebars.compile(source);
     const array = [...Array(nbrColumns).keys()];
@@ -165,6 +205,7 @@ class Creator {
 
     const result = template(context);
     document.getElementById('content').insertAdjacentHTML('afterbegin', result);
+    this.eventClickImage();
   }
 
   getShortestColumn() {
@@ -234,40 +275,122 @@ class Creator {
     const h = (mins - m) / 60;
     return `${h.toString()} h ${m < 10 ? '0' : ''}${m.toString()} min`;
   }
-  eventMovieSeen() {
+  eventClickImage() {
     document.getElementById('movies')
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'IMG') { return; }
-        const element = event.path[1];
-
-        const id = element.classList[0];
-        element.classList.toggle('viewed');
-        setTimeout(() => {
-          const divDelete = (`.${id}`);
-          if (element.classList.length === 1) { return; }
-          element.classList.toggle('animate');
-          setTimeout(() => {
-            $(divDelete).remove();
-            this.updateColumn();
-            mdb.getMovie(id, null)
-              .then(movie => jdb.addKeyDB('movie', movie));
-          }, 250);
-        }, 5000);
+        if (event.metaKey || event.ctrlKey) {
+          if ($('#title').html() === 'Discover') {
+            this.eventAddMovieSeen(event);
+          } else {
+            this.eventRemoveMovieSeen(event);
+          }
+        } else {
+          this.eventMovieDetails(event);
+        }
       }, false);
+  }
+  eventAddMovieSeen(event) {
+    const element = event.path[1];
+    const id = element.classList[0];
+    element.classList.toggle('viewed');
+    setTimeout(() => {
+      const divDelete = (`.${id}`);
+      if (element.classList.length === 1) { return; }
+      element.classList.toggle('animate');
+      setTimeout(() => {
+        $(divDelete).remove();
+        this.updateColumn();
+        mdb.getMovie(id, null)
+          .then(movie => jdb.addKeyDB('movie', movie));
+      }, 250);
+    }, 5000);
+  }
+
+  eventRemoveMovieSeen(event) {
+    const element = event.path[1];
+    const id = element.classList[0];
+    element.classList.toggle('viewed');
+    setTimeout(() => {
+      const divDelete = (`.${id}`);
+      if (element.classList.length === 1) { return; }
+      element.classList.toggle('animate');
+      setTimeout(() => {
+        $(divDelete).remove();
+        this.updateColumn();
+        jdb.deleteKeyDB('movie', id);
+        document.getElementById('count')
+          .innerHTML = `${$('div#container').length} movies`;
+      }, 250);
+    }, 5000);
+  }
+  eventMovieDetails(event) {
+    const element = event.path[1];
+    const id = element.classList[0];
+
+    document.getElementById('movies').style.display = 'none';
+    this.createMovieDetails(id);
   }
 
   eventNav() {
     document.getElementById('navigation')
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'A') { return; }
-        const id = event.target.id;
-        const movies = document.getElementById('movies');
-        document.getElementById('content').removeChild(movies);
-        this.createColumns(9);
-        if (id === 'collection') { this.createSeen(); }
 
-        if (id === 'discover') { this.createDiscover('popular'); }
+        const id = event.target.id;
+        console.log(id, $('#title').html());
+
+        if (id === $('#title').html().toLowerCase()) {
+          if ($('#movie-details').length > 0) {
+            const movieDetails = document.getElementById('movie-details');
+            document.getElementById('content').removeChild(movieDetails);
+            document.getElementById('movies').style.display = 'block';
+          }
+        } else {
+          if ($('#movie-details').length > 0) {
+            const movieDetails = document.getElementById('movie-details');
+            document.getElementById('content').removeChild(movieDetails);
+          }
+          const movies = document.getElementById('movies');
+          document.getElementById('content').removeChild(movies);
+
+          this.createColumns(9);
+
+          if (id === 'collection') { this.createSeen(); }
+
+          if (id === 'discover') { this.createDiscover('top_rated'); }
+        }
+
+        // if ($('#movie-details').length > 0) {
+        //   const movieDetails = document.getElementById('movie-details');
+        //   document.getElementById('content').removeChild(movieDetails);
+        //   if (id === $('#title').html().toLowerCase()) {
+        //     document.getElementById('movies').style.display = 'block';
+        //   }
+        // } else {
+        //   const movies = document.getElementById('movies');
+        //   document.getElementById('content').removeChild(movies);
+
+        //   this.createColumns(9);
+
+        //   if (id === 'collection') { this.createSeen(); }
+
+        //   if (id === 'discover') { this.createDiscover('top_rated'); }
+        // }
       });
+  }
+
+  sortByDate(obj) {
+    const sort = [];
+    for (const key in obj) {
+      sort.push(obj[key]);
+    }
+    sort.sort((a, b) => {
+      a = parseInt(a.date, 10);
+      b = parseInt(b.date, 10);
+      return a < b ? -1 : a > b ? 1 : 0;
+    });
+    return sort;
   }
 }
 

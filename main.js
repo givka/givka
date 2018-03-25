@@ -6,11 +6,27 @@ const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
 
+const mainMenuTemplate = [
+  {
+    label: 'File',
+    submenu: [
+      { role: 'undo' },
+      { role: 'redo' },
+      { type: 'separator' },
+      { role: 'cut' },
+      { role: 'copy' },
+      { role: 'paste' },
+      { role: 'quit' },
+      { role: 'reload' },
+    ],
+  },
+];
+
 // Listen for the app to be ready
 app.on('ready', () => {
   // Create new window
   mainWindow = new BrowserWindow({
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#262820',
     height: 800,
     width: 1280,
     webPreferences: { experimentalFeatures: true },
@@ -28,22 +44,6 @@ app.on('ready', () => {
 
   Menu.setApplicationMenu(mainMenu);
 });
-
-const mainMenuTemplate = [
-  {
-    label: 'File',
-    submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
-      { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' },
-      { role: 'quit' },
-      { role: 'reload' },
-    ],
-  },
-];
 
 if (process.platform === 'darwin') {
   mainMenuTemplate.unshift({});
