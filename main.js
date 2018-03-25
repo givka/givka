@@ -26,7 +26,7 @@ const mainMenuTemplate = [
 app.on('ready', () => {
   // Create new window
   mainWindow = new BrowserWindow({
-    backgroundColor: '#262820',
+    backgroundColor: '#14181C',
     height: 800,
     width: 1280,
     webPreferences: { experimentalFeatures: true },

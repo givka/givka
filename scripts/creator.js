@@ -39,6 +39,7 @@ class Creator {
     </div>
     </div>`;
     this.details = `<div id="movie-details">
+    <div id="movie-background" style="{{style}}"></div>
     <div id="movie-bar">
       <div id="movie-image">
         <img src="https://image.tmdb.org/t/p/w500{{poster}}">
@@ -49,8 +50,10 @@ class Creator {
         <p id="date">{{date}}</p>
         <p id="runtime">{{runtime}}</p>
         <p id="overview">{{overview}}</p>
-        <div id="movie-collection"></p>
       </div>
+    </div>
+    <div id="movie-others">
+      <div id="movie-collection"></div>
     </div>
   </div>`;
   }
@@ -66,13 +69,19 @@ class Creator {
         date: parseInt(movie.release_date, 10),
       };
       if (movie.original_title !== movie.title) {
-        context.originalTitle = `(${movie.original_title})`;
+        context.originalTitle = `(${movie.original_title}) `;
       }
       if (movie.belongs_to_collection) {
         this.createCollection(movie.belongs_to_collection.id);
       }
-      const result = template(context);
 
+      context.style = `background: url(images/fade.png), 
+url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
+        height: 68vh;
+        background-repeat: no-repeat;
+        background-size: 100% 150%, cover;
+        background-position: 0% 0%,center 0%;`;
+      const result = template(context);
       document.getElementById('content')
         .insertAdjacentHTML('beforeend', result);
     });
@@ -97,7 +106,7 @@ class Creator {
       Handlebars.registerHelper('imagePart', function () {
         const name = Handlebars.escapeExpression(this.poster_path);
 
-        return new Handlebars.SafeString(`${name}`);
+        return new Handlebars.SafeString(`${name} `);
       });
       const result = template(context);
 
@@ -338,7 +347,6 @@ class Creator {
         if (event.target.tagName !== 'A') { return; }
 
         const id = event.target.id;
-        console.log(id, $('#title').html());
 
         if (id === $('#title').html().toLowerCase()) {
           if ($('#movie-details').length > 0) {
@@ -358,25 +366,8 @@ class Creator {
 
           if (id === 'collection') { this.createSeen(); }
 
-          if (id === 'discover') { this.createDiscover('top_rated'); }
+          if (id === 'discover') { this.createDiscover('popular'); }
         }
-
-        // if ($('#movie-details').length > 0) {
-        //   const movieDetails = document.getElementById('movie-details');
-        //   document.getElementById('content').removeChild(movieDetails);
-        //   if (id === $('#title').html().toLowerCase()) {
-        //     document.getElementById('movies').style.display = 'block';
-        //   }
-        // } else {
-        //   const movies = document.getElementById('movies');
-        //   document.getElementById('content').removeChild(movies);
-
-        //   this.createColumns(9);
-
-        //   if (id === 'collection') { this.createSeen(); }
-
-        //   if (id === 'discover') { this.createDiscover('top_rated'); }
-        // }
       });
   }
 
@@ -386,8 +377,8 @@ class Creator {
       sort.push(obj[key]);
     }
     sort.sort((a, b) => {
-      a = parseInt(a.date, 10);
-      b = parseInt(b.date, 10);
+      a = a.date;
+      b = b.date;
       return a < b ? -1 : a > b ? 1 : 0;
     });
     return sort;

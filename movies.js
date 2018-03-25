@@ -3,95 +3,18 @@ API key      : K4g6YAAqn
 Private key  : HARbbnt5S
 */
 
-const storage = require('electron-json-storage');
 const TorrentSearchApi = require('torrent-search-api');
-const $ = require('jquery');
 
-const MovieDataBase = require('./scripts/movie-database');
 const Creator = require('./scripts/creator');
-const JsonDataBase = require('./scripts/json-database');
 
-const mdb = new MovieDataBase();
 const c = new Creator();
-const jdb = new JsonDataBase();
 
 c.createColumns(9);
 c.eventNav();
-c.createDiscover('top_rated');
+c.createDiscover('popular');
 
 // c.createDiscover('popular');
 // ev.nav();
-
-function addMovieListenerGetCollection() {
-  document.getElementById('movies').addEventListener('click', (event) => {
-    const element = event.path[1];
-    document.getElementById('content').style.display = 'none';
-    getMovie(element.classList[0], (movie) => {
-      createCollection(movie.belongs_to_collection.id);
-    });
-  });
-}
-
-function addMovieListenerGetMovieDetails() {
-  document.getElementById('movies').addEventListener('click', (event) => {
-    const element = event.path[1];
-    // element.classList.toggle("viewed")
-    document.getElementById('content').style.display = 'none';
-    mdb.getMovie(element.className)
-      .then((movie) => {
-        const movieContent = document.createElement('div');
-        movieContent.id = 'movieContent';
-        document.body.appendChild(movieContent);
-        const MovieBar = document.createElement('div');
-        MovieBar.id = 'MovieBar';
-        const movieImg = document.createElement('div');
-        movieImg.id = 'movieImg';
-        const movieDesc = document.createElement('div');
-        movieDesc.id = 'movieDesc';
-        // divArtist.style.background="url("+data[number].image+")"
-        const bg = `${'url(' + 'https://image.tmdb.org/t/p/w500'}${movie.backdrop_path})`;
-        const str = "content: \'\';  top: 0; bottom:0; left: 0; right: 0; z-index: -1; padding: 0;";
-        // str+='filter: blur(10px); '+"background: " + bg + " fixed 0 0;background-size: cover;background-position: 50% 50%; position: absolute; ";
-        document.styleSheets[0].addRule('#MovieBar:before', str);
-        const h1 = document.createElement('h1');
-        h1.innerHTML = `${movie.title} (${parseInt(movie.release_date, 10)})`;
-        h1.id = 'title';
-        const h2 = document.createElement('h2');
-        if (movie.title !== movie.original_title) {
-          h2.innerHTML = `(${movie.original_title})`;
-        }
-        h2.id = 'original_title';
-        const img = document.createElement('img');
-        img.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-        const runtime = document.createElement('p');
-        runtime.innerHTML = convertRuntime(movie.runtime);
-        const overview = document.createElement('p');
-        overview.innerHTML = movie.overview;
-        movieDesc.appendChild(h1);
-        movieDesc.appendChild(h2);
-        movieDesc.appendChild(runtime);
-        movieDesc.appendChild(overview);
-        movieImg.appendChild(img);
-        MovieBar.appendChild(movieImg);
-        MovieBar.appendChild(movieDesc);
-        document.getElementById('movieContent').appendChild(MovieBar);
-        const els = ['imdb_id', 'belongs_to_collection',
-          'release_date', 'vote_average', 'vote_count'];
-        for (const el of els) {
-          const p = document.createElement('p');
-          p.id = el;
-          p.innerHTML = `${el}: ${movie[el]}`;
-          movieDesc.appendChild(p);
-        }
-        console.log('collection', movie.belongs_to_collection);
-
-        // createMovieImages(element.className)
-        // createMovieCastCrew(element.className)
-        // createMovieTorrents(element.className)
-        // createMovieTrailer(element.className)
-      });
-  });
-}
 
 function getSC(movie) {
   const google = require('google');
