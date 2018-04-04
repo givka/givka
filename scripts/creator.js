@@ -52,14 +52,34 @@ class Creator {
         <p id="overview">{{overview}}</p>
       </div>
     </div>
+    <div id="movie-credits">
+      {{#each credits}}
+      <div id="{{this.id}}" class="movie-credit">
+        <img src="{{creditImage}}"> 
+        <div id="credit-info">
+          <p id="credit-job">{{creditJob}}</p>
+          <p id="credit-name">{{this.name}}</p>
+        </div>
+      </div>
+      {{/ each}}
+    </div>
     <div id="movie-others">
       <div id="movie-collection"></div>
     </div>
   </div>`;
   }
+
+  createCredits(credits) {
+    let directors = credits.crew;
+    let actors = credits.cast;
+    directors = directors.filter(crew => crew.job === 'Director');
+    actors = actors.filter((cast, index) => index < 10 - directors.length);
+    return directors.concat(actors);
+  }
   createMovieDetails(id) {
     const source = this.details;
     mdb.getMovie(id).then((movie) => {
+      const creditsFiltered = this.createCredits(movie.credits);
       const template = Handlebars.compile(source);
       const context = {
         poster: movie.poster_path,
@@ -67,7 +87,29 @@ class Creator {
         runtime: this.convertRuntime(movie.runtime),
         overview: movie.overview,
         date: parseInt(movie.release_date, 10),
+        credits: creditsFiltered,
       };
+
+      Handlebars.registerHelper('creditImage', function () {
+        let string = null;
+        if (this.profile_path === null) {
+          string = 'images/no-profile.png';
+        } else {
+          string = `https://image.tmdb.org/t/p/w185${this.profile_path}`;
+        }
+        return new Handlebars.SafeString(string);
+      });
+
+      Handlebars.registerHelper('creditJob', function () {
+        let string = null;
+        if (this.job !== undefined) {
+          string = this.job;
+        } else {
+          string = this.character;
+        }
+        return new Handlebars.SafeString(string);
+      });
+
       if (movie.original_title !== movie.title) {
         context.originalTitle = `(${movie.original_title}) `;
       }
@@ -106,7 +148,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       Handlebars.registerHelper('imagePart', function () {
         const name = Handlebars.escapeExpression(this.poster_path);
 
-        return new Handlebars.SafeString(`${name} `);
+        return new Handlebars.SafeString(`${name}`);
       });
       const result = template(context);
 
@@ -338,6 +380,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
     const id = element.classList[0];
 
     document.getElementById('movies').style.display = 'none';
+
     this.createMovieDetails(id);
   }
 
