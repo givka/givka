@@ -18,8 +18,8 @@ class Creator {
     </div>
     </div>`;
 
-    this.moviePoster = `<div id="container" class="{{id}}">
-    <img src="{{src}}">
+    this.moviePoster = `<div id={{id}} class="container">
+    <img src={{src}}>
     </div>`;
 
     this.trailer = `<iframe width="560" height="315" 
@@ -62,6 +62,7 @@ class Creator {
         <p id="overview">{{overview}}</p>
       </div>
     </div>
+    <h3>Credits</h3>
     <div id="movie-credits">
       {{#each credits}}
       <div id="{{this.id}}" class="movie-credit">
@@ -73,15 +74,21 @@ class Creator {
       </div>
       {{/ each}}
     </div>
+    <h3>Images</h3>
     <div id="movie-images">
     </div>
     {{#if hasCollection}}
       <div id="movie-collection">
       </div>
     {{/if}}
+    <h3>Similar movies not seen</h3>
     <div id="movie-recommendations">
     </div>
   </div>`;
+
+    this.recoPage = 1;
+
+    this.recoArray = [];
   }
 
   filterCreditsArray(credits) {
@@ -147,7 +154,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       //   this.createCollection(movie.belongs_to_collection.id);
       // }
       this.createImages(movie.images.backdrops);
-      this.createReco(movie.recommendations.results);
+      this.createReco(movie.id, movie.recommendations.results);
     });
   }
 
@@ -166,7 +173,25 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       .insertAdjacentHTML('beforeend', result);
   }
 
-  createReco(recos) {
+  filterReco(id, recos) {
+    return jdb.readDB('movie')
+      .then((data) => {
+        recos = recos.filter(reco => data[reco.id] === undefined);
+        if (recos.length < 6) {
+          return mdb.getRecommendations(id, this.recoPage++)
+            .then((newRecos) => {
+              newRecos = newRecos.filter(reco => data[reco.id] === undefined);
+              console.log(newRecos, this.recoPage);
+              return recos.concat(newRecos);
+            });
+        }
+        return recos;
+      });
+  }
+
+  async createReco(id, recos) {
+    this.recoPage = 1;
+    recos = await this.filterReco(id, recos);
     recos = recos.filter((movie, index) => index < 6);
     const source = this.reco;
     const template = Handlebars.compile(source);
@@ -177,6 +202,8 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
     const result = template(context);
     document.getElementById('movie-recommendations')
       .insertAdjacentHTML('beforeend', result);
+
+    this.eventReco();
   }
 
   createCollection(id) {
@@ -191,8 +218,6 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       const template = Handlebars.compile(source);
       const context = {
         title: collection.name,
-        image: collection.poster_path,
-        desc: collection.overview,
         items: movies,
       };
 
@@ -245,7 +270,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
           document.getElementsByClassName(`columnId-${minC}`)[0]
             .insertAdjacentHTML('beforeend', result);
         }
-        const count = `<h2 id="count">${$('div#container').length} movies</h2>`;
+        const count = `<h2 id="count">${$('div.container').length} movies</h2>`;
         document.getElementById('title')
           .innerHTML = 'Collection';
         document.getElementById('title')
@@ -290,9 +315,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       };
     }
 
-    const context = {
-      items: array,
-    };
+    const context = { items: array };
 
     Handlebars.registerHelper('columnNbr', function () {
       const name = Handlebars.escapeExpression(this.name);
@@ -372,6 +395,18 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
     const h = (mins - m) / 60;
     return `${h.toString()} h ${m < 10 ? '0' : ''}${m.toString()} min`;
   }
+
+  eventReco() {
+    document.getElementById('movie-recommendations')
+      .addEventListener('click', (event) => {
+        if (event.target.tagName !== 'IMG') { return; }
+        if (event.metaKey || event.ctrlKey) {
+          this.eventAddMovieSeen(event);
+        } else {
+          this.eventMovieDetails(event);
+        }
+      }, false);
+  }
   eventClickImage() {
     document.getElementById('movies')
       .addEventListener('click', (event) => {
@@ -389,10 +424,10 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
   }
   eventAddMovieSeen(event) {
     const element = event.path[1];
-    const id = element.classList[0];
+    const id = element.id;
     element.classList.toggle('viewed');
     setTimeout(() => {
-      const divDelete = (`.${id}`);
+      const divDelete = (`#${id}`);
       if (element.classList.length === 1) { return; }
       element.classList.toggle('animate');
       setTimeout(() => {
@@ -406,10 +441,10 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
 
   eventRemoveMovieSeen(event) {
     const element = event.path[1];
-    const id = element.classList[0];
+    const id = element.id;
     element.classList.toggle('viewed');
     setTimeout(() => {
-      const divDelete = (`.${id}`);
+      const divDelete = (`#${id}`);
       if (element.classList.length === 1) { return; }
       element.classList.toggle('animate');
       setTimeout(() => {
@@ -417,13 +452,16 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
         this.updateColumn();
         jdb.deleteKeyDB('movie', id);
         document.getElementById('count')
-          .innerHTML = `${$('div#container').length} movies`;
+          .innerHTML = `${$('div.container').length} movies`;
       }, 250);
     }, 5000);
   }
   eventMovieDetails(event) {
+    if (document.getElementById('movie-details')) {
+      $('#movie-details').remove();
+    }
     const element = event.path[1];
-    const id = element.classList[0];
+    const id = element.id;
 
     document.getElementById('movies').style.display = 'none';
 
