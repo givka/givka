@@ -13,7 +13,7 @@ class Creator {
     <h1 id = "title" >Discover</h1>
     <div id="row">
     {{#each items}}
-    <div id="column" class="{{agree_button}}"></div>
+    <div id="column" class="{{columnNbr}}"></div>
     {{/ each}}
     </div>
     </div>`;
@@ -27,17 +27,27 @@ class Creator {
     frameborder = "0" allow = "autoplay; encrypted-media"
     allowfullscreen ></iframe >`;
 
-    this.collection = `<div id="collection">
-    <div id="description"></div>
-    <h1>{{title}}</h1>
-    <img src="https://image.tmdb.org/t/p/w500{{image}}">
-    <p>{{desc}}</p>
-    <div id="parts">
+    this.collection = `
     {{#each items}}
-    <img src="https://image.tmdb.org/t/p/w500{{imagePart}}">
-    {{/ each}}
+    <div id="{{this.id}}" class="movie-part">
+      <img src="https://image.tmdb.org/t/p/w500{{this.poster_path}}">
     </div>
-    </div>`;
+    {{/ each}}`;
+
+    this.reco = `
+      {{#each items}}
+        <div id={{this.id}} class="movie-reco">  
+          <img src="https://image.tmdb.org/t/p/w500{{this.poster_path}}">
+        </div>
+      {{/ each}}`;
+
+    this.images = `
+    {{#each items}}
+      <div class="movie-image">
+        <img src="https://image.tmdb.org/t/p/w780{{this.file_path}}"> 
+      </div>
+    {{/ each}}`;
+
     this.details = `<div id="movie-details">
     <div id="movie-background" style="{{style}}"></div>
     <div id="movie-bar">
@@ -63,23 +73,29 @@ class Creator {
       </div>
       {{/ each}}
     </div>
-    <div id="movie-others">
-      <div id="movie-collection"></div>
+    <div id="movie-images">
+    </div>
+    {{#if hasCollection}}
+      <div id="movie-collection">
+      </div>
+    {{/if}}
+    <div id="movie-recommendations">
     </div>
   </div>`;
   }
 
-  createCredits(credits) {
+  filterCreditsArray(credits) {
     let directors = credits.crew;
     let actors = credits.cast;
     directors = directors.filter(crew => crew.job === 'Director');
     actors = actors.filter((cast, index) => index < 10 - directors.length);
     return directors.concat(actors);
   }
+
   createMovieDetails(id) {
     const source = this.details;
     mdb.getMovie(id).then((movie) => {
-      const creditsFiltered = this.createCredits(movie.credits);
+      const creditsFiltered = this.filterCreditsArray(movie.credits);
       const template = Handlebars.compile(source);
       const context = {
         poster: movie.poster_path,
@@ -88,6 +104,7 @@ class Creator {
         overview: movie.overview,
         date: parseInt(movie.release_date, 10),
         credits: creditsFiltered,
+        hasCollection: movie.belongs_to_collection,
       };
 
       Handlebars.registerHelper('creditImage', function () {
@@ -113,20 +130,53 @@ class Creator {
       if (movie.original_title !== movie.title) {
         context.originalTitle = `(${movie.original_title}) `;
       }
-      if (movie.belongs_to_collection) {
-        this.createCollection(movie.belongs_to_collection.id);
-      }
 
       context.style = `background: url(images/fade.png), 
 url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
-        height: 68vh;
+        height: 20vh;
         background-repeat: no-repeat;
         background-size: 100% 150%, cover;
-        background-position: 0% 0%,center 0%;`;
+        background-position: 0% 0%,center 0%;
+        margin-left: -22%;
+        margin-right: -22%;`;
       const result = template(context);
       document.getElementById('content')
         .insertAdjacentHTML('beforeend', result);
+
+      // if (movie.belongs_to_collection) {
+      //   this.createCollection(movie.belongs_to_collection.id);
+      // }
+      this.createImages(movie.images.backdrops);
+      this.createReco(movie.recommendations.results);
     });
+  }
+
+  createImages(images) {
+    images = images
+      .sort((a, b) => b.vote_count - a.vote_count);
+    images = images.filter((im, i) => i < 3);
+    const source = this.images;
+    const template = Handlebars.compile(source);
+    const context = {
+      items: images,
+    };
+
+    const result = template(context);
+    document.getElementById('movie-images')
+      .insertAdjacentHTML('beforeend', result);
+  }
+
+  createReco(recos) {
+    recos = recos.filter((movie, index) => index < 6);
+    const source = this.reco;
+    const template = Handlebars.compile(source);
+    const context = {
+      items: recos,
+    };
+
+    const result = template(context);
+    document.getElementById('movie-recommendations')
+      .insertAdjacentHTML('beforeend', result);
   }
 
   createCollection(id) {
@@ -145,11 +195,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
         desc: collection.overview,
         items: movies,
       };
-      Handlebars.registerHelper('imagePart', function () {
-        const name = Handlebars.escapeExpression(this.poster_path);
 
-        return new Handlebars.SafeString(`${name}`);
-      });
       const result = template(context);
 
       document.getElementById('movie-collection')
@@ -182,7 +228,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
   createSeen() {
     jdb.readDB('movie')
       .then((data) => {
-        const movies = this.sortByDate(data);
+        const movies = _sortByDate(data);
 
         for (const movie of movies) {
           const source = this.moviePoster;
@@ -248,7 +294,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       items: array,
     };
 
-    Handlebars.registerHelper('agree_button', function () {
+    Handlebars.registerHelper('columnNbr', function () {
       const name = Handlebars.escapeExpression(this.name);
 
       return new Handlebars.SafeString(`columnId-${name}`);
@@ -413,20 +459,19 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
         }
       });
   }
-
-  sortByDate(obj) {
-    const sort = [];
-    for (const key in obj) {
-      sort.push(obj[key]);
-    }
-    sort.sort((a, b) => {
-      a = a.date;
-      b = b.date;
-      return a < b ? -1 : a > b ? 1 : 0;
-    });
-    return sort;
-  }
 }
 
 module.exports = Creator;
 
+function _sortByDate(obj) {
+  const sort = [];
+  for (const key in obj) {
+    sort.push(obj[key]);
+  }
+  sort.sort((a, b) => {
+    a = a.date;
+    b = b.date;
+    return a < b ? -1 : a > b ? 1 : 0;
+  });
+  return sort;
+}

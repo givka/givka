@@ -11,7 +11,7 @@ const c = new Creator();
 
 c.createColumns(9);
 c.eventNav();
-c.createDiscover('popular');
+c.createSeen();
 
 // c.createDiscover('popular');
 // ev.nav();
