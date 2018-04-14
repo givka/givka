@@ -14,8 +14,9 @@
     "jimp": "^0.2.28",
     "jquery": "^3.3.1",
     "jshint": "^2.9.5",
+    "lazysizes": "^4.0.2",
     "loaders.css": "^0.1.2",
-    "npm": "^5.7.1",
+    "npm": "^5.8.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
     "torrent-search-api": "^1.0.27"

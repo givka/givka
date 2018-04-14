@@ -1,5 +1,5 @@
 const API_KEY = 'aa79a25e783821b082e1e241e41889db';
-const LANGUAGE = 'fr-FR';
+const LANGUAGE = 'en-US';
 
 const rp = require('request-promise');
 
@@ -9,13 +9,6 @@ class MovieDataBase {
     const addRequest = 'images';
 
     return _getRequest(url, addRequest);
-  }
-
-  getRecommendations(id, page) {
-    const url = `https://api.themoviedb.org/3/movie/${id}/similar`;
-
-    return _getRequest(url, null, page)
-      .then(data => data.results);
   }
 
   getTV(id) {

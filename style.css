@@ -7,29 +7,74 @@
     top: 0; bottom:0; left: 0; right: 0;  padding: 0;
     margin: 0;
     text-shadow: 2px 2px 8px #000000;
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-family:'Roboto', sans-serif;
 }
 
+.badreco{
+  opacity: 0.25;
+}
 h3{
   margin-top: 2%;
   padding-left: 2%;
   font-size: 75%;
 }
-#movie-details{
+
+.main-container {
+  perspective: 1px;
+  transform-style: preserve-3d;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.parallax-container {
+  display: flex;
+  flex: 1 0 auto;
+  position: relative;
+  height: 100vh;
+  transform: translateZ(-1px) scale(2);
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+}
+
+.parallax-container h1{
+  word-spacing: -15px;
+  text-align: center;
+  margin: auto;
+  font-size: 400%;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+
+.content-container {
+  display: block;
+  position: relative;
+  background-color: rgba(20, 24, 28,1);
+  z-index: 1;
+}
+
+#movie-details-panel > div{
+  
   margin-left: 15%;
   margin-right: 15%;
-
+}
+#movie-details-panel > h3{
+  
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 #movie-recommendations{
   padding-left: 1%;
   padding-right: 1%;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .movie-reco{
   padding:1%;
-  width:16.6%;
+  width:11.11%;
 }
 
 .movie-reco img{
@@ -45,6 +90,17 @@ h3{
 .movie-reco img:hover{
   transform: scale(1.05);
 }
+
+#movie-collection{
+  padding-left: 1%;
+  padding-right: 1%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+
+
 
 #movie-images{
   padding-left: 1%;
@@ -86,6 +142,7 @@ h3{
   font-size: 75%;
   text-align: center;
   white-space: nowrap;
+  overflow-x: hidden;
 }
 
 .movie-credit img{
@@ -103,9 +160,9 @@ h3{
 }
 h1{
   text-align: center;
-  margin-bottom: 20px;
-  margin-top:5vh;
-  font-size: 200%
+  margin: auto;
+  font-size: 200%;
+  font-family: 'IBM Plex Mono', monospace;
 }
 h2{
   text-align: center;
@@ -140,51 +197,46 @@ tr:nth-child(even) {
 .animate img
 {
   width:0% !important;
-    
-    
 }
 
-#row {
-    
-    display: flex;
-    flex-wrap: wrap;
-    
-}
 
-#column {
-    
-    flex:auto;
-    max-width: 11.111111%;
-    
-    
+#movies {   
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
 } 
 
-#column div{
+.container{
+    width: 9.09%;
     transition: all .3s ease;
-    padding:4%;
+    padding:0.4%;
     align-items: stretch;
-    
-    
 }
 
-#column div:hover {
-    
-    transform: scale(1.05);
-    
-    
+.container img:hover {
+    transform: scale(1.05); 
 }
 
-#column img {
+.container img {
   
-    transition: width 0.3s ease;
+    transition: 0.3s ease;
     border-radius: 5px;
     vertical-align: middle;
+    height:100%;
     width:100%;
+    object-fit: cover;
     box-shadow: 0 0px 10px rgba(0, 0, 0, 1)
 
 }
 
+#movie-background img{
+    object-fit: cover;
+    width: 100%;
+}
+
 #movie-bar{
+  margin-top: 15vh;
   display:flex;
 }
 #movie-image{
@@ -210,7 +262,7 @@ tr:nth-child(even) {
 }
 
 ul {
-    
+  
     height: 5vh;
     list-style-type: none;
     margin: 0;
@@ -222,6 +274,12 @@ ul {
     background-size: cover;
     
     border-bottom: 1px solid black;
+    position: fixed;
+    z-index: 1;
+    text-transform: uppercase;
+    
+
+    
     
 }
 
@@ -235,6 +293,7 @@ li a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
 }
 
 li a:hover {

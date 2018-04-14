@@ -8,7 +8,7 @@ class JsonDataBase {
           if (err) { reject(err); }
           data[obj.id] = {
             id: obj.id,
-            poster: obj.poster_path,
+            poster_path: obj.poster_path,
             title: obj.title,
             date: obj.release_date,
 

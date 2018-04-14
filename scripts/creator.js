@@ -9,18 +9,14 @@ const jdb = new JsonDataBase();
 
 class Creator {
   constructor() {
-    this.column = `<div id="movies">
-    <h1 id = "title" >Discover</h1>
-    <div id="row">
+    this.movies = `<div id=movies>
     {{#each items}}
-    <div id="column" class="{{columnNbr}}"></div>
+      <div id={{this.id}} class="container">
+        <img src=https://image.tmdb.org/t/p/w342{{this.poster_path}}>
+      </div>
     {{/ each}}
     </div>
-    </div>`;
-
-    this.moviePoster = `<div id={{id}} class="container">
-    <img src={{src}}>
-    </div>`;
+    `;
 
     this.trailer = `<iframe width="560" height="315" 
     src = "https://www.youtube.com/embed/{{key}}?rel=0&amp;showinfo=0"
@@ -29,15 +25,15 @@ class Creator {
 
     this.collection = `
     {{#each items}}
-    <div id="{{this.id}}" class="movie-part">
-      <img src="https://image.tmdb.org/t/p/w500{{this.poster_path}}">
+    <div id="{{this.id}}" class="movie-reco {{this.classname}}">
+      <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
     </div>
     {{/ each}}`;
 
     this.reco = `
       {{#each items}}
-        <div id={{this.id}} class="movie-reco">  
-          <img src="https://image.tmdb.org/t/p/w500{{this.poster_path}}">
+        <div id={{this.id}} class="movie-reco {{this.classname}}">  
+          <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
         </div>
       {{/ each}}`;
 
@@ -48,8 +44,21 @@ class Creator {
       </div>
     {{/ each}}`;
 
-    this.details = `<div id="movie-details">
-    <div id="movie-background" style="{{style}}"></div>
+    this.credits = `{{#each items}}
+    <div id="{{this.id}}" class="movie-credit">
+      <img src="{{creditImage}}"> 
+      <div id="credit-info">
+        <p id="credit-job">{{creditJob}}</p>
+        <p id="credit-name">{{this.name}}</p>
+      </div>
+    </div>
+    {{/ each}}`;
+
+    this.details = `
+    <div id="movie-background" class=parallax-container>
+      <h1 id="movie-title">{{title}}</h1>
+    </div>
+    <div id=movie-details-panel class=content-container>
     <div id="movie-bar">
       <div id="movie-image">
         <img src="https://image.tmdb.org/t/p/w500{{poster}}">
@@ -64,31 +73,18 @@ class Creator {
     </div>
     <h3>Credits</h3>
     <div id="movie-credits">
-      {{#each credits}}
-      <div id="{{this.id}}" class="movie-credit">
-        <img src="{{creditImage}}"> 
-        <div id="credit-info">
-          <p id="credit-job">{{creditJob}}</p>
-          <p id="credit-name">{{this.name}}</p>
-        </div>
-      </div>
-      {{/ each}}
     </div>
     <h3>Images</h3>
     <div id="movie-images">
+    </div>
+    <div id="movie-recommendations">
     </div>
     {{#if hasCollection}}
       <div id="movie-collection">
       </div>
     {{/if}}
-    <h3>Similar movies not seen</h3>
-    <div id="movie-recommendations">
     </div>
-  </div>`;
-
-    this.recoPage = 1;
-
-    this.recoArray = [];
+    `;
   }
 
   filterCreditsArray(credits) {
@@ -99,63 +95,75 @@ class Creator {
     return directors.concat(actors);
   }
 
-  createMovieDetails(id) {
-    const source = this.details;
-    mdb.getMovie(id).then((movie) => {
-      const creditsFiltered = this.filterCreditsArray(movie.credits);
-      const template = Handlebars.compile(source);
-      const context = {
-        poster: movie.poster_path,
-        title: movie.title,
-        runtime: this.convertRuntime(movie.runtime),
-        overview: movie.overview,
-        date: parseInt(movie.release_date, 10),
-        credits: creditsFiltered,
-        hasCollection: movie.belongs_to_collection,
-      };
+  createCredits(credits) {
+    credits = this.filterCreditsArray(credits);
+    const source = this.credits;
+    const template = Handlebars.compile(source);
+    const context = { items: credits };
 
-      Handlebars.registerHelper('creditImage', function () {
-        let string = null;
-        if (this.profile_path === null) {
-          string = 'images/no-profile.png';
-        } else {
-          string = `https://image.tmdb.org/t/p/w185${this.profile_path}`;
-        }
-        return new Handlebars.SafeString(string);
-      });
-
-      Handlebars.registerHelper('creditJob', function () {
-        let string = null;
-        if (this.job !== undefined) {
-          string = this.job;
-        } else {
-          string = this.character;
-        }
-        return new Handlebars.SafeString(string);
-      });
-
-      if (movie.original_title !== movie.title) {
-        context.originalTitle = `(${movie.original_title}) `;
+    Handlebars.registerHelper('creditImage', function () {
+      let string = null;
+      if (this.profile_path === null) {
+        string = 'images/no-profile.png';
+      } else {
+        string = `https://image.tmdb.org/t/p/w185${this.profile_path}`;
       }
-
-      context.style = `background: url(images/fade.png), 
-url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
-        height: 20vh;
-        background-repeat: no-repeat;
-        background-size: 100% 150%, cover;
-        background-position: 0% 0%,center 0%;
-        margin-left: -22%;
-        margin-right: -22%;`;
-      const result = template(context);
-      document.getElementById('content')
-        .insertAdjacentHTML('beforeend', result);
-
-      // if (movie.belongs_to_collection) {
-      //   this.createCollection(movie.belongs_to_collection.id);
-      // }
-      this.createImages(movie.images.backdrops);
-      this.createReco(movie.id, movie.recommendations.results);
+      return new Handlebars.SafeString(string);
     });
+
+    Handlebars.registerHelper('creditJob', function () {
+      let string = null;
+      if (this.job !== undefined) {
+        string = this.job;
+      } else {
+        string = this.character;
+      }
+      return new Handlebars.SafeString(string);
+    });
+    const result = template(context);
+
+    document.getElementById('movie-credits')
+      .insertAdjacentHTML('beforeend', result);
+  }
+
+  createMovieDetails(id) {
+    mdb.getMovie(id)
+      .then((movie) => {
+        const source = this.details;
+        const template = Handlebars.compile(source);
+
+        const context = {
+
+          poster: movie.poster_path,
+          title: movie.title,
+          runtime: this.convertRuntime(movie.runtime),
+          overview: movie.overview,
+          date: parseInt(movie.release_date, 10),
+          hasCollection: movie.belongs_to_collection,
+        };
+
+        if (movie.original_title !== movie.title) {
+          context.originalTitle = `(${movie.original_title}) `;
+        }
+
+        const result = template(context);
+        document.getElementById('movie-details')
+          .insertAdjacentHTML('beforeend', result);
+
+        this.createCredits(movie.credits);
+        this.createImages(movie.images.backdrops);
+        this.createReco(movie.id, movie.recommendations.results, 18);
+        if (movie.belongs_to_collection) {
+          this.createCollection(movie.belongs_to_collection.id);
+        }
+        let backdrop = movie.backdrop_path;
+        backdrop = `https://image.tmdb.org/t/p/original${backdrop}`;
+        $('#movie-background').css('background-image', `url('${backdrop}')`);
+        // return this.blurBase64URI(blurS, 2);
+      });
+    // .then((blur) => {
+    //   $('#movie-background').css('background-image', `url('${blur}')`);
+    // });
   }
 
   createImages(images) {
@@ -173,221 +181,121 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       .insertAdjacentHTML('beforeend', result);
   }
 
-  filterReco(id, recos) {
-    return jdb.readDB('movie')
-      .then((data) => {
-        recos = recos.filter(reco => data[reco.id] === undefined);
-        if (recos.length < 6) {
-          return mdb.getRecommendations(id, this.recoPage++)
-            .then((newRecos) => {
-              newRecos = newRecos.filter(reco => data[reco.id] === undefined);
-              console.log(newRecos, this.recoPage);
-              return recos.concat(newRecos);
-            });
-        }
-        return recos;
+  createReco(id, recos, nbrRecos) {
+    jdb.readDB('movie')
+      .then((movies) => {
+        const source = this.reco;
+        const template = Handlebars.compile(source);
+
+        recos = recos.map((reco) => {
+          if (movies[reco.id] !== undefined) {
+            reco.classname = 'badreco';
+          } else {
+            reco.classname = 'goodreco';
+          }
+          return reco;
+        }).sort((b, a) => {
+          if (a.classname < b.classname) return -1;
+          if (a.classname > b.classname) return 1;
+          return 0;
+        }).filter((elem, index) => index < nbrRecos);
+
+        const context = { items: recos };
+        const result = template(context);
+        const recoSeen = recos.filter(a => a.classname === 'badreco').length;
+        const percentSeen = Math.floor((recoSeen / recos.length) * 100);
+        const title = `<h3>Similar movies: ${percentSeen}% seen </h3>`;
+        document.getElementById('movie-recommendations')
+          .insertAdjacentHTML('beforebegin', title);
+        document.getElementById('movie-recommendations')
+          .insertAdjacentHTML('beforeend', result);
       });
-  }
-
-  async createReco(id, recos) {
-    this.recoPage = 1;
-    recos = await this.filterReco(id, recos);
-    recos = recos.filter((movie, index) => index < 6);
-    const source = this.reco;
-    const template = Handlebars.compile(source);
-    const context = {
-      items: recos,
-    };
-
-    const result = template(context);
-    document.getElementById('movie-recommendations')
-      .insertAdjacentHTML('beforeend', result);
 
     this.eventReco();
   }
 
   createCollection(id) {
-    return mdb.getCollection(id).then((collection) => {
-      const movies = collection.parts;
-      movies.sort((a, b) => {
-        a = parseInt(a.release_date, 10);
-        b = parseInt(b.release_date, 10);
-        return a < b ? -1 : a > b ? 1 : 0;
-      });
-      const source = this.collection;
-      const template = Handlebars.compile(source);
-      const context = {
-        title: collection.name,
-        items: movies,
-      };
+    mdb.getCollection(id).then((collection) => {
+      jdb.readDB('movie')
+        .then((movies) => {
+          let parts = collection.parts;
 
-      const result = template(context);
-
-      document.getElementById('movie-collection')
-        .insertAdjacentHTML('beforeend', result);
-    });
-  }
-
-  createTrailer(id) {
-    return mdb.getMovie(id)
-      .then((movie) => {
-        let trailer;
-        for (const video of movie.videos.results) {
-          if (video.type === 'Trailer') {
-            trailer = video;
-            break;
-          }
-        }
-
-        const source = this.trailer;
-        const template = Handlebars.compile(source);
-        const context = {
-          key: trailer.key,
-        };
-        const result = template(context);
-
-        document.getElementById('content')
-          .insertAdjacentHTML('beforeend', result);
-      });
-  }
-  createSeen() {
-    jdb.readDB('movie')
-      .then((data) => {
-        const movies = _sortByDate(data);
-
-        for (const movie of movies) {
-          const source = this.moviePoster;
-
+          const source = this.collection;
           const template = Handlebars.compile(source);
 
-          const context = {
-            id: movie.id,
-            src: `https://image.tmdb.org/t/p/w342${movie.poster}`,
-          };
-
-          const result = template(context);
-          const [minC] = this.getShortestColumn();
-          document.getElementsByClassName(`columnId-${minC}`)[0]
-            .insertAdjacentHTML('beforeend', result);
-        }
-        const count = `<h2 id="count">${$('div.container').length} movies</h2>`;
-        document.getElementById('title')
-          .innerHTML = 'Collection';
-        document.getElementById('title')
-          .insertAdjacentHTML('afterend', count);
-      });
-  }
-
-  createDiscover(list) {
-    return mdb.getDiscover(list, 10).then((movies) => {
-      jdb.readDB('movie')
-        .then((data) => {
-          for (const movie of movies) {
-            if (data[movie.id] !== undefined) {
-              continue;
+          parts = parts.map((part) => {
+            if (movies[part.id] !== undefined) {
+              part.classname = 'badreco';
+            } else {
+              part.classname = 'goodreco';
             }
-            const source = this.moviePoster;
+            return part;
+          }).sort((a, b) => {
+            a = parseInt(a.release_date, 10);
+            b = parseInt(b.release_date, 10);
+            return a < b ? -1 : a > b ? 1 : 0;
+          });
 
-            const template = Handlebars.compile(source);
-
-            const context = {
-              id: movie.id,
-              src: `https://image.tmdb.org/t/p/w342${movie.poster_path}`,
-            };
-
-            const result = template(context);
-            const [minC] = this.getShortestColumn();
-            document.getElementsByClassName(`columnId-${minC}`)[0]
-              .insertAdjacentHTML('beforeend', result);
-          }
+          const context = { items: parts };
+          const result = template(context);
+          const recoSeen = parts.filter(a => a.classname === 'badreco').length;
+          const percentSeen = Math.floor((recoSeen / parts.length) * 100);
+          const title = `<h3>Collection: ${percentSeen}% seen </h3>`;
+          document.getElementById('movie-collection')
+            .insertAdjacentHTML('beforebegin', title);
+          document.getElementById('movie-collection')
+            .insertAdjacentHTML('beforeend', result);
+          this.eventCollection();
         });
     });
   }
 
-  createColumns(nbrColumns) {
-    const source = this.column;
-    const template = Handlebars.compile(source);
-    const array = [...Array(nbrColumns).keys()];
+  createSeen() {
+    jdb.readDB('movie')
+      .then((data) => {
+        const movies = _sortByDate(data);
+        const source = this.movies;
+        const template = Handlebars.compile(source);
+        const context = { items: movies };
+        const result = template(context);
+        document.getElementById('movies-content')
+          .insertAdjacentHTML('beforeend', result);
 
-    for (const number of array) {
-      array[number] = {
-        name: number + 1,
-      };
-    }
+        this.updateTitle('Collection', movies);
 
-    const context = { items: array };
-
-    Handlebars.registerHelper('columnNbr', function () {
-      const name = Handlebars.escapeExpression(this.name);
-
-      return new Handlebars.SafeString(`columnId-${name}`);
-    });
-
-    const result = template(context);
-    document.getElementById('content').insertAdjacentHTML('afterbegin', result);
-    this.eventClickImage();
+        this.eventClickImage();
+      });
   }
 
-  getShortestColumn() {
-    let min = 1e9;
-    let minColumn;
-    const nbrColumns = $('#row').children().length;
+  createDiscover(list) {
+    return mdb.getDiscover(list, 10)
+      .then((movies) => {
+        jdb.readDB('movie')
+          .then((data) => {
+            movies = movies
+              .filter(movie => data[movie.id] === undefined);
+            const source = this.movies;
+            const template = Handlebars.compile(source);
+            const context = { items: movies };
+            const result = template(context);
+            document.getElementById('movies-content')
+              .insertAdjacentHTML('beforeend', result);
 
-    for (let c = 1; c <= nbrColumns; c += 1) {
-      const columnChildren = $(`.columnId-${c}`).children().length;
-      if (min > columnChildren) {
-        min = columnChildren;
-        minColumn = c;
-      }
-    }
-    return [minColumn, min];
-  }
+            this.updateTitle('Discover', movies);
 
-  getLongestColumn() {
-    let max = 0;
-    let maxColumn;
-    const nbrColumns = $('#row').children().length;
-
-    for (let c = 1; c <= nbrColumns; c += 1) {
-      const columnChildren = $(`.columnId-${c}`).children().length;
-      if (max < columnChildren) {
-        max = columnChildren;
-        maxColumn = c;
-      }
-    }
-    return [maxColumn, max];
-  }
-
-  updateColumn() {
-    const [minColumn, minChildren] = this.getShortestColumn();
-    const [maxColumn, maxChildren] = this.getLongestColumn();
-    if (maxChildren - minChildren < 1) {
-      return;
-    }
-    const toMove = document.querySelector(`.columnId-${maxColumn}`).lastChild;
-    if (toMove.classList[1] === 'animate') {
-      return;
-    }
-    toMove.classList.toggle('animate');
-
-    setTimeout(() => {
-      document.querySelector(`.columnId-${minColumn}`).appendChild(toMove);
-      setTimeout(() => {
-        toMove.classList.toggle('animate');
-      }, 300);
-    }, 300);
-  }
-
-  blurBase64URI(url, px) {
-    return new Promise((resolve) => {
-      Jimp.read(url).then((image) => {
-        image.blur(px)
-
-          .getBase64(Jimp.AUTO, (err, encoded) => {
-            resolve(encoded);
+            this.eventClickImage();
           });
       });
-    });
+  }
+
+  updateTitle(title, movies) {
+    const name = `<h1 id=${title.toLowerCase()}>${title}</h1>`;
+    const count = `<h2 id="count">${movies.length} movies</h2>`;
+
+    document.getElementById('title')
+      .insertAdjacentHTML('beforeend', name);
+    document.getElementById('title')
+      .insertAdjacentHTML('beforeend', count);
   }
 
   convertRuntime(mins) {
@@ -396,6 +304,17 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
     return `${h.toString()} h ${m < 10 ? '0' : ''}${m.toString()} min`;
   }
 
+  eventCollection() {
+    document.getElementById('movie-collection')
+      .addEventListener('click', (event) => {
+        if (event.target.tagName !== 'IMG') { return; }
+        if (event.metaKey || event.ctrlKey) {
+          this.eventAddMovieSeen(event);
+        } else {
+          this.eventMovieDetails(event);
+        }
+      }, false);
+  }
   eventReco() {
     document.getElementById('movie-recommendations')
       .addEventListener('click', (event) => {
@@ -407,6 +326,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
         }
       }, false);
   }
+
   eventClickImage() {
     document.getElementById('movies')
       .addEventListener('click', (event) => {
@@ -422,6 +342,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
         }
       }, false);
   }
+
   eventAddMovieSeen(event) {
     const element = event.path[1];
     const id = element.id;
@@ -432,7 +353,7 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       element.classList.toggle('animate');
       setTimeout(() => {
         $(divDelete).remove();
-        this.updateColumn();
+
         mdb.getMovie(id, null)
           .then(movie => jdb.addKeyDB('movie', movie));
       }, 250);
@@ -449,21 +370,21 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
       element.classList.toggle('animate');
       setTimeout(() => {
         $(divDelete).remove();
-        this.updateColumn();
+
         jdb.deleteKeyDB('movie', id);
         document.getElementById('count')
           .innerHTML = `${$('div.container').length} movies`;
       }, 250);
     }, 5000);
   }
+
   eventMovieDetails(event) {
-    if (document.getElementById('movie-details')) {
-      $('#movie-details').remove();
-    }
+    $('#movie-details').children().remove();
+
     const element = event.path[1];
     const id = element.id;
 
-    document.getElementById('movies').style.display = 'none';
+    document.getElementById('movies-content').style.display = 'none';
 
     this.createMovieDetails(id);
   }
@@ -472,30 +393,38 @@ url(https://image.tmdb.org/t/p/original${movie.backdrop_path});
     document.getElementById('navigation')
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'A') { return; }
-
         const id = event.target.id;
-
-        if (id === $('#title').html().toLowerCase()) {
-          if ($('#movie-details').length > 0) {
-            const movieDetails = document.getElementById('movie-details');
-            document.getElementById('content').removeChild(movieDetails);
-            document.getElementById('movies').style.display = 'block';
-          }
+        if (id === $('#title h1').html().toLowerCase()) {
+          $('#movie-details')
+            .children()
+            .remove();
+          document.getElementById('movies-content').style.display = '';
         } else {
-          if ($('#movie-details').length > 0) {
-            const movieDetails = document.getElementById('movie-details');
-            document.getElementById('content').removeChild(movieDetails);
-          }
-          const movies = document.getElementById('movies');
-          document.getElementById('content').removeChild(movies);
+          $('#title')
+            .children()
+            .remove();
 
-          this.createColumns(9);
+          $('#movies')
+            .children()
+            .remove();
 
           if (id === 'collection') { this.createSeen(); }
 
           if (id === 'discover') { this.createDiscover('popular'); }
         }
       });
+  }
+
+  blurBase64URI(url, px) {
+    return new Promise((resolve) => {
+      Jimp.read(url).then((image) => {
+        image.blur(px)
+
+          .getBase64(Jimp.AUTO, (err, encoded) => {
+            resolve(encoded);
+          });
+      });
+    });
   }
 }
 
