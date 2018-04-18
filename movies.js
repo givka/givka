@@ -8,10 +8,10 @@ const Creator = require('./scripts/creator');
 const c = new Creator();
 
 c.eventNav();
-c.createSeen();
-
-// c.createDiscover('popular');
-// ev.nav();
+// c.createSeen();
+//
+// c.createSeen();
+c.createPeople(12);
 
 // function getSC(movie) {
 //   const google = require('google');

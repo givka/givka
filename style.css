@@ -49,23 +49,31 @@ h3{
 
 .content-container {
   display: block;
+  box-shadow:0px 0px 10px rgba(0, 0, 0, 1);
+  background: rgba(0, 0, 0, 0.5);
   position: relative;
-  background-color: rgba(20, 24, 28,1);
   z-index: 1;
 }
 
-#movie-details-panel > div{
+.content-container > div{
   
   margin-left: 15%;
   margin-right: 15%;
 }
-#movie-details-panel > h3{
+.content-container > h3{
   
   margin-left: 15%;
   margin-right: 15%;
 }
 
 #movie-recommendations{
+  padding-left: 1%;
+  padding-right: 1%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#people-list{
   padding-left: 1%;
   padding-right: 1%;
   display: flex;
@@ -261,26 +269,49 @@ tr:nth-child(even) {
   text-align: justify;
 }
 
+#movie-background img{
+  object-fit: cover;
+  width: 100%;
+}
+
+#people-bar{
+margin-top: 15vh;
+display:flex;
+}
+#people-image{
+width:30%;
+padding:2%;
+}
+#people-image img{
+transition: ease 0.3s;
+width:100%;
+border-radius: 5px;
+vertical-align: middle;
+box-shadow: 0 0px 10px rgba(0, 0, 0, 1)
+}
+
+#people-image img:hover{
+
+transform: scale(1.05);
+}
+#people-description{
+width:70%;
+padding:2%;
+text-align: justify;
+}
+
 ul {
   
-    height: 5vh;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    font-size: 125%;
-    background-color: rgba(0, 0, 0, 0.5);
-   
-    background-size: cover;
-    
-    border-bottom: 1px solid black;
-    position: fixed;
-    z-index: 1;
-    text-transform: uppercase;
-    
+  height: 5vh;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 125%;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-size: cover;
+  box-shadow: 0px 0px 10px black;
 
-    
-    
 }
 
 li {

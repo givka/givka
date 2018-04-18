@@ -19,8 +19,8 @@ class MovieDataBase {
   }
 
   getPeople(id) {
-    const url = `https://api.themoviedb.org/3/people/${id}`;
-    const addRequest = 'movie_credits,images';
+    const url = `https://api.themoviedb.org/3/person/${id}`;
+    const addRequest = 'movie_credits,images,tagged_images';
 
     return _getRequest(url, addRequest);
   }
