@@ -7,7 +7,7 @@
     "ecmaVersion": 2017,
     "sourceType": "module"
   },
-  "extends": "airbnb",
+  "extends": "airbnb-base",
   "rules": {
     "max-len": [
       "error",
@@ -39,6 +39,7 @@
     "guard-for-in": "off",
     "prefer-destructuring": "off",
     "no-underscore-dangle": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "no-mixed-operators": "off"
   }
 }

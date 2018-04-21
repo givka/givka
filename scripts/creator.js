@@ -1,6 +1,8 @@
 const Handlebars = require('handlebars');
 const MovieDataBase = require('./movie-database');
 const $ = require('jquery');
+const Jimp = require('jimp');
+const RatingColor = require('./../lib/rating-color');
 
 const JsonDataBase = require('./json-database');
 
@@ -11,7 +13,7 @@ class Creator {
   constructor() {
     this.movies = `<div id=movies>
     {{#each items}}
-      <div id={{this.id}} class="container">
+      <div id={{this.id}} class="container {{this.seen}}">
         <img src=https://image.tmdb.org/t/p/w342{{this.poster_path}}>
       </div>
     {{/ each}}
@@ -27,13 +29,19 @@ class Creator {
     {{#each items}}
     <div id="{{this.id}}" class="movie-reco {{this.classname}}">
       <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+      <div id=ratiovote 
+        style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
+      </div>
     </div>
     {{/ each}}`;
 
     this.reco = `
       {{#each items}}
-        <div id={{this.id}} class="movie-reco {{this.classname}}">  
-          <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+        <div id={{this.id}} class="movie-reco {{this.classname}}">
+        <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+        <div id=ratiovote 
+        style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
+        </div>
         </div>
       {{/ each}}`;
 
@@ -70,6 +78,8 @@ class Creator {
           <p id="date">{{date}}</p>
           <p id="runtime">{{runtime}}</p>
           <p id="overview">{{overview}}</p>
+          <p id="voteaverage">{{voteAverage}}</p>
+          <p id="votecount">{{voteCount}}</p>
         </div>
       </div>
       <h3>Credits</h3>
@@ -249,6 +259,8 @@ class Creator {
       overview: movie.overview,
       date: parseInt(movie.release_date, 10),
       hasCollection: movie.belongs_to_collection,
+      voteCount: movie.vote_count,
+      voteAverage: movie.vote_average * 10,
     };
 
     if (movie.original_title !== movie.title) {
@@ -267,12 +279,15 @@ class Creator {
     }
     const backdrop = movie.backdrop_path;
 
-    const backdropImage = `https://image.tmdb.org/t/p/original${backdrop}`;
+    let backdropImage = `https://image.tmdb.org/t/p/original${backdrop}`;
     $('#movie-background').css('background-image', `url('${backdropImage}')`);
 
-    // backdropImage = `https://image.tmdb.org/t/p/w300${backdrop}`;
-    // const blur = await _blurBase64URI(backdropImage, 10);
-    // $('#movie-details-panel').css('background-image', `url('${blur}')`);
+    backdropImage = `https://image.tmdb.org/t/p/w300${backdrop}`;
+    const blur = await _blurBase64URI(backdropImage, 20);
+    $('#movie-details-panel').css('background-image', `url('${blur}')`);
+
+    const vote = movie.vote_average;
+    $('#voteaverage').css('background', RatingColor.ratingToColor(vote * 10));
   }
 
   createImages(images) {
@@ -302,6 +317,9 @@ class Creator {
       } else {
         reco.classname = 'goodreco';
       }
+      const vote = reco.vote_average * 10;
+      reco.voteWidth = vote;
+      reco.voteColor = RatingColor.ratingToColor(vote);
       return reco;
     }).sort((b, a) => {
       if (a.classname < b.classname) return -1;
@@ -337,6 +355,9 @@ class Creator {
       } else {
         part.classname = 'goodreco';
       }
+      const vote = part.vote_average * 10;
+      part.voteWidth = vote;
+      part.voteColor = RatingColor.ratingToColor(vote);
       return part;
     }).sort((a, b) => {
       a = parseInt(a.release_date, 10);
@@ -372,11 +393,16 @@ class Creator {
   }
 
   async createDiscover(list) {
-    let movies = await mdb.getDiscover(list, 10);
+    const movies = await mdb.getDiscover(list, 10);
     const data = await jdb.readDB('movie');
-
-    movies = movies
-      .filter(movie => data[movie.id] === undefined);
+    movies.map((movie) => {
+      if (data[movie.id] !== undefined) {
+        movie.seen = 'badreco';
+      } else {
+        movie.seen = '';
+      }
+      return movie;
+    });
     const source = this.movies;
     const template = Handlebars.compile(source);
     const context = { items: movies };
@@ -411,6 +437,7 @@ class Creator {
         }
       }, false);
   }
+
   eventReco() {
     document
       .getElementById('movie-recommendations')
@@ -508,7 +535,7 @@ class Creator {
 
           if (id === 'collection') { this.createSeen(); }
 
-          if (id === 'discover') { this.createDiscover('popular'); }
+          if (id === 'discover') { this.createDiscover('top_rated'); }
         }
       });
   }
@@ -547,17 +574,17 @@ function _sleep(s) {
   }));
 }
 
-// function _blurBase64URI(url, px) {
-// const Jimp = require('jimp');
-//   return new Promise((resolve) => {
-//     Jimp.read(url)
-//       .then((image) => {
-//         image.blur(px)
-//           .getBase64(Jimp.AUTO, (err, encoded) => {
-//             resolve(encoded);
-//           });
-//       });
-//   });
-// }
+function _blurBase64URI(url, px) {
+  return new Promise((resolve) => {
+    Jimp.read(url)
+      .then((image) => {
+        image.color([{ apply: 'shade', params: [50] }])
+          .blur(px)
+          .getBase64(Jimp.AUTO, (err, encoded) => {
+            resolve(encoded);
+          });
+      });
+  });
+}
 
 module.exports = Creator;

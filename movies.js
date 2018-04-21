@@ -10,8 +10,8 @@ const c = new Creator();
 c.eventNav();
 // c.createSeen();
 //
-// c.createSeen();
-c.createPeople(12);
+c.createSeen();
+// c.createPeople(12);
 
 // function getSC(movie) {
 //   const google = require('google');
