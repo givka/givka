@@ -275,8 +275,6 @@ tr:nth-child(even) {
 
 #movie-bar{
   display:flex;
-
-  padding-top: -100vh;
 }
 #movie-image{
   width:30%;
