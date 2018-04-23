@@ -1,134 +1,12 @@
 const Handlebars = require('handlebars');
-const MovieDataBase = require('./movie-database');
 const $ = require('jquery');
 const Jimp = require('jimp');
 const RatingColor = require('./../lib/rating-color');
-
-const JsonDataBase = require('./json-database');
-
-const mdb = new MovieDataBase();
-const jdb = new JsonDataBase();
+const JsonDB = require('./../lib/json-database');
+const MovieDB = require('./../lib/movie-database');
+const Template = require('./../lib/template');
 
 class Creator {
-  constructor() {
-    this.movies = `<div id=movies>
-    {{#each items}}
-      <div id={{this.id}} class="container {{this.seen}}">
-        <img src=https://image.tmdb.org/t/p/w342{{this.poster_path}}>
-      </div>
-    {{/ each}}
-    </div>
-    `;
-
-    this.trailer = `<iframe width="560" height="315" 
-    src = "https://www.youtube.com/embed/{{key}}?rel=0&amp;showinfo=0"
-    frameborder = "0" allow = "autoplay; encrypted-media"
-    allowfullscreen ></iframe >`;
-
-    this.collection = `
-    {{#each items}}
-    <div id="{{this.id}}" class="movie-reco {{this.classname}}">
-      <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-      <div id=ratiovote 
-        style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
-      </div>
-    </div>
-    {{/ each}}`;
-
-    this.reco = `
-      {{#each items}}
-        <div id={{this.id}} class="movie-reco {{this.classname}}">
-        <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-        <div id=ratiovote 
-        style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
-        </div>
-        </div>
-      {{/ each}}`;
-
-    this.images = `
-    {{#each items}}
-      <div class="movie-image">
-        <img src="https://image.tmdb.org/t/p/w780{{this.file_path}}"> 
-      </div>
-    {{/ each}}`;
-
-    this.credits = `{{#each items}}
-    <div id="{{this.id}}" class="movie-credit">
-      <img src="{{creditImage}}"> 
-      <div id="credit-info">
-        <p id="credit-job">{{creditJob}}</p>
-        <p id="credit-name">{{this.name}}</p>
-      </div>
-    </div>
-    {{/ each}}`;
-
-    this.details = `
-    <div id=movie-details class=main-container>
-      <div id="movie-background" class=parallax-container>
-        <h1 id="movie-title">{{title}}</h1>
-      </div>
-      <div id=movie-details-panel class=content-container>
-      <div id="movie-bar">
-        <div id="movie-image">
-          <img src="https://image.tmdb.org/t/p/w500{{poster}}">
-        </div>
-        <div id="movie-description">
-          <h1 id="movie-title">{{title}}</h1>
-          <h2 id="movie-original-title">{{originalTitle}}</h2>
-          <p id="date">{{date}}</p>
-          <p id="runtime">{{runtime}}</p>
-          <p id="overview">{{overview}}</p>
-          <p id="voteaverage">{{voteAverage}}</p>
-          <p id="votecount">{{voteCount}}</p>
-        </div>
-      </div>
-      <h3>Credits</h3>
-      <div id="movie-credits">
-      </div>
-      <h3>Images</h3>
-      <div id="movie-images">
-      </div>
-      <div id="movie-recommendations">
-      </div>
-      {{#if hasCollection}}
-        <div id="movie-collection">
-        </div>
-      {{/if}}
-      </div>
-    </div>
-    `;
-
-    this.people = `
-    <div id=people details class=main-container>
-      <div id="people-background" class=parallax-container>
-        <h1 id="people-name">{{name}}</h1>
-      </div>
-      <div id=people-details-panel class=content-container>
-      <div id="people-bar">
-        <div id="people-image">
-          <img src="https://image.tmdb.org/t/p/w500{{poster}}">
-        </div>
-        <div id="people-description">
-          <h1 id="people-name">{{name}}</h1>
-          <p id="date">{{birthday}}</p>
-          <p id="biography">{{biography}}</p>
-        </div>
-      </div>
-      <div id=people-list-content>
-      </div>
-    </div>
-    `;
-
-    this.list = `
-    <div id=people-list>
-      {{#each items}}
-        <div id={{this.id}} class="movie-reco {{this.classname}}">  
-          <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-        </div>
-      {{/ each}}
-    </div>`;
-  }
-
   eventList() {
     document
       .getElementById('people-list-content')
@@ -143,9 +21,9 @@ class Creator {
   }
 
   async createList(id, array, name) {
-    const movies = await jdb.readDB('movie');
+    const movies = await JsonDB.readDB('movie');
 
-    const source = this.list;
+    const source = Template.list();
 
     const template = Handlebars.compile(source);
 
@@ -176,7 +54,7 @@ class Creator {
   }
 
   async createPeople(id) {
-    const people = await mdb.getPeople(id);
+    const people = await MovieDB.getPeople(id);
 
     if (people.movie_credits.cast !== undefined) {
       const castArray = people.movie_credits.cast;
@@ -184,7 +62,7 @@ class Creator {
       this.createList(id, castArray, 'Actor');
     }
 
-    const source = this.people;
+    const source = Template.people();
     const template = Handlebars.compile(source);
 
     const context = {
@@ -204,8 +82,8 @@ class Creator {
       .sort((a, b) => b.width - a.width);
 
     const background = backdrops[0].file_path;
-    const backdropImage = `https://image.tmdb.org/t/p/original${background}`;
-    $('#people-background').css('background-image', `url('${backdropImage}')`);
+    const bI = `https://image.tmdb.org/t/p/original${background}`;
+    $('#people-background').css('background-image', `url('${bI}')`);
   }
 
   filterCreditsArray(credits) {
@@ -218,7 +96,7 @@ class Creator {
 
   createCredits(credits) {
     credits = this.filterCreditsArray(credits);
-    const source = this.credits;
+    const source = Template.credits();
     const template = Handlebars.compile(source);
     const context = { items: credits };
 
@@ -248,8 +126,8 @@ class Creator {
   }
 
   async createMovieDetails(id) {
-    const movie = await mdb.getMovie(id);
-    const source = this.details;
+    const movie = await MovieDB.getMovie(id);
+    const source = Template.details();
     const template = Handlebars.compile(source);
 
     const context = {
@@ -284,7 +162,9 @@ class Creator {
 
     backdropImage = `https://image.tmdb.org/t/p/w300${backdrop}`;
     const blur = await _blurBase64URI(backdropImage, 20);
-    $('#movie-details-panel').css('background-image', `url('${blur}')`);
+
+    $('#movie-details-panel')
+      .css('background-image', `url(${blur})`);
 
     const vote = movie.vote_average;
     $('#voteaverage').css('background', RatingColor.ratingToColor(vote * 10));
@@ -294,7 +174,7 @@ class Creator {
     images = images
       .sort((a, b) => b.vote_count - a.vote_count);
     images = images.filter((im, i) => i < 3);
-    const source = this.images;
+    const source = Template.images();
     const template = Handlebars.compile(source);
     const context = {
       items: images,
@@ -306,9 +186,9 @@ class Creator {
   }
 
   async createReco(id, recos, nbrRecos) {
-    const movies = await jdb.readDB('movie');
+    const movies = await JsonDB.readDB('movie');
 
-    const source = this.reco;
+    const source = Template.reco();
     const template = Handlebars.compile(source);
 
     recos = recos.map((reco) => {
@@ -321,10 +201,6 @@ class Creator {
       reco.voteWidth = vote;
       reco.voteColor = RatingColor.ratingToColor(vote);
       return reco;
-    }).sort((b, a) => {
-      if (a.classname < b.classname) return -1;
-      if (a.classname > b.classname) return 1;
-      return 0;
     }).filter((elem, index) => index < nbrRecos);
 
     const context = { items: recos };
@@ -341,12 +217,12 @@ class Creator {
   }
 
   async createCollection(id) {
-    const collection = await mdb.getCollection(id);
-    const movies = await jdb.readDB('movie');
+    const collection = await MovieDB.getCollection(id);
+    const movies = await JsonDB.readDB('movie');
 
     let parts = collection.parts;
 
-    const source = this.collection;
+    const source = Template.collection();
     const template = Handlebars.compile(source);
 
     parts = parts.map((part) => {
@@ -379,9 +255,9 @@ class Creator {
   }
 
   async createSeen() {
-    const data = await jdb.readDB('movie');
+    const data = await JsonDB.readDB('movie');
     const movies = _sortByDate(data);
-    const source = this.movies;
+    const source = Template.movies();
     const template = Handlebars.compile(source);
     const context = { items: movies };
     const result = template(context);
@@ -393,8 +269,8 @@ class Creator {
   }
 
   async createDiscover(list) {
-    const movies = await mdb.getDiscover(list, 10);
-    const data = await jdb.readDB('movie');
+    const movies = await MovieDB.getDiscover(list, 10);
+    const data = await JsonDB.readDB('movie');
     movies.map((movie) => {
       if (data[movie.id] !== undefined) {
         movie.seen = 'badreco';
@@ -403,7 +279,7 @@ class Creator {
       }
       return movie;
     });
-    const source = this.movies;
+    const source = Template.movies();
     const template = Handlebars.compile(source);
     const context = { items: movies };
     const result = template(context);
@@ -472,41 +348,38 @@ class Creator {
     const element = event.path[1];
     const id = element.id;
     element.classList.toggle('viewed');
-
     await _sleep(5);
-
     const divDelete = (`#${id}`);
     if (element.classList.length === 1) { return; }
     element.classList.toggle('animate');
-
     await _sleep(0.250);
-
     $(divDelete).remove();
-
-    const movie = await mdb.getMovie(id, null);
-
-    await jdb.addKeyDB('movie', movie);
+    const movie = await MovieDB.getMovie(id, null);
+    await JsonDB.addKeyDB('movie', movie);
   }
 
   async eventRemoveMovieSeen(event) {
+    // const element = event.path[1];
+    // const id = element.id;
+    // element.classList.toggle('viewed');
+    // await _sleep(5);
+    // const divDelete = (`#${id}`);
+    // if (element.classList.length === 1) { return; }
+    // element.classList.toggle('animate');
+    // await _sleep(0.250);
+    // $(divDelete).remove();
+    // await JsonDB.deleteKeyDB('movie', id);
+    // document.getElementById('count')
+    //   .innerHTML = `${$('div.container').length} movies`;
+
     const element = event.path[1];
     const id = element.id;
-    element.classList.toggle('viewed');
 
-    await _sleep(5);
+    element.classList.toggle('badreco');
 
-    const divDelete = (`#${id}`);
-    if (element.classList.length === 1) { return; }
-    element.classList.toggle('animate');
-
-    await _sleep(0.250);
-
-    $(divDelete).remove();
-
-    await jdb.deleteKeyDB('movie', id);
-
+    await JsonDB.deleteKeyDB('movie', id);
     document.getElementById('count')
-      .innerHTML = `${$('div.container').length} movies`;
+      .innerHTML = `${$('div.container:not(badreco)').length} movies`;
   }
 
   eventMovieDetails(event) {
@@ -586,5 +459,4 @@ function _blurBase64URI(url, px) {
       });
   });
 }
-
 module.exports = Creator;
