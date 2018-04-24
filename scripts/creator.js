@@ -295,10 +295,8 @@ class Creator {
     const name = `<h1 id=${title.toLowerCase()}>${title}</h1>`;
     const count = `<h2 id="count">${movies.length} movies</h2>`;
 
-    document.getElementById('title')
-      .insertAdjacentHTML('beforeend', name);
-    document.getElementById('title')
-      .insertAdjacentHTML('beforeend', count);
+    document.getElementById('movies-content')
+      .insertAdjacentHTML('afterbegin', name + count);
   }
 
   eventCollection() {
@@ -343,10 +341,11 @@ class Creator {
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'IMG') { return; }
         if (event.metaKey || event.ctrlKey) {
-          if ($('#title').html() === 'Discover') {
-            this.eventAddMovieSeen(event);
+          const container = event.path[1];
+          if (container.classList.contains('badreco')) {
+            this.eventRemoveMovieSeen(container);
           } else {
-            this.eventRemoveMovieSeen(event);
+            this.eventAddMovieSeen(container);
           }
         } else {
           this.eventMovieDetails(event);
@@ -356,7 +355,6 @@ class Creator {
 
   async eventAddMovieSeen(element) {
     const id = element.id.replace('id-', '');
-    console.log($(`#${element.id}`).find('*').length);
     element.classList.toggle('badreco');
     const movie = await MovieDB.getMovie(id, null);
     await JsonDB.addKeyDB('movie', movie);
@@ -364,19 +362,16 @@ class Creator {
 
   async eventRemoveMovieSeen(element) {
     const id = element.id.replace('id-', '');
-    console.log($(`#${element.id}`).find('*').length);
     element.classList.toggle('badreco');
     await JsonDB.deleteKeyDB('movie', id);
   }
 
   eventMovieDetails(event) {
+    _empty('#movies-content');
     _empty('#movie-content');
 
     const element = event.path[1];
     const id = element.id.replace('id-', '');
-
-    document.getElementById('movies-content').style.display = 'none';
-
     this.createMovieDetails(id);
   }
 
@@ -385,18 +380,13 @@ class Creator {
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'A') { return; }
         const id = event.target.id;
-        if (id === $('#title h1').html().toLowerCase()) {
-          _empty('#movie-content');
 
-          document.getElementById('movies-content').style.display = '';
-        } else {
-          _empty('#title');
-          _empty('#movies');
+        _empty('#movies-content');
+        _empty('#movie-content');
 
-          if (id === 'collection') { this.createSeen(); }
+        if (id === 'collection') { this.createSeen(); }
 
-          if (id === 'discover') { this.createDiscover('top_rated'); }
-        }
+        if (id === 'discover') { this.createDiscover('top_rated'); }
       });
   }
 }
