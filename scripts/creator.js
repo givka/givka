@@ -307,7 +307,12 @@ class Creator {
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'IMG') { return; }
         if (event.metaKey || event.ctrlKey) {
-          this.eventAddMovieSeen(event);
+          const container = event.path[1];
+          if (container.classList.contains('badreco')) {
+            this.eventRemoveMovieSeen(container);
+          } else {
+            this.eventAddMovieSeen(container);
+          }
         } else {
           this.eventMovieDetails(event);
         }
@@ -320,7 +325,12 @@ class Creator {
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'IMG') { return; }
         if (event.metaKey || event.ctrlKey) {
-          this.eventAddMovieSeen(event);
+          const container = event.path[1];
+          if (container.classList.contains('badreco')) {
+            this.eventRemoveMovieSeen(container);
+          } else {
+            this.eventAddMovieSeen(container);
+          }
         } else {
           this.eventMovieDetails(event);
         }
@@ -344,49 +354,26 @@ class Creator {
       }, false);
   }
 
-  async eventAddMovieSeen(event) {
-    const element = event.path[1];
-    const id = element.id;
-    element.classList.toggle('viewed');
-    await _sleep(5);
-    const divDelete = (`#${id}`);
-    if (element.classList.length === 1) { return; }
-    element.classList.toggle('animate');
-    await _sleep(0.250);
-    $(divDelete).remove();
+  async eventAddMovieSeen(element) {
+    const id = element.id.replace('id-', '');
+    console.log($(`#${element.id}`).find('*').length);
+    element.classList.toggle('badreco');
     const movie = await MovieDB.getMovie(id, null);
     await JsonDB.addKeyDB('movie', movie);
   }
 
-  async eventRemoveMovieSeen(event) {
-    // const element = event.path[1];
-    // const id = element.id;
-    // element.classList.toggle('viewed');
-    // await _sleep(5);
-    // const divDelete = (`#${id}`);
-    // if (element.classList.length === 1) { return; }
-    // element.classList.toggle('animate');
-    // await _sleep(0.250);
-    // $(divDelete).remove();
-    // await JsonDB.deleteKeyDB('movie', id);
-    // document.getElementById('count')
-    //   .innerHTML = `${$('div.container').length} movies`;
-
-    const element = event.path[1];
-    const id = element.id;
-
+  async eventRemoveMovieSeen(element) {
+    const id = element.id.replace('id-', '');
+    console.log($(`#${element.id}`).find('*').length);
     element.classList.toggle('badreco');
-
     await JsonDB.deleteKeyDB('movie', id);
-    document.getElementById('count')
-      .innerHTML = `${$('div.container:not(badreco)').length} movies`;
   }
 
   eventMovieDetails(event) {
     _empty('#movie-content');
 
     const element = event.path[1];
-    const id = element.id;
+    const id = element.id.replace('id-', '');
 
     document.getElementById('movies-content').style.display = 'none';
 
@@ -439,13 +426,13 @@ function _sortByDate(obj) {
   return sort;
 }
 
-function _sleep(s) {
-  return new Promise(((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, s * 1000);
-  }));
-}
+// function _sleep(s) {
+//   return new Promise(((resolve) => {
+//     setTimeout(() => {
+//       resolve();
+//     }, s * 1000);
+//   }));
+// }
 
 function _blurBase64URI(url, px) {
   return new Promise((resolve) => {
