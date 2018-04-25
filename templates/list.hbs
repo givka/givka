@@ -1,0 +1,7 @@
+<div id=people-list>
+  {{#each items}}
+  <div id=id-{{this.id}} class="movie-reco {{this.classname}}">
+    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+  </div>
+  {{/ each}}
+</div>

@@ -1,10 +1,9 @@
 const Handlebars = require('handlebars');
 const $ = require('jquery');
 const Jimp = require('jimp');
-const RatingColor = require('./../lib/rating-color');
-const JsonDB = require('./../lib/json-database');
-const MovieDB = require('./../lib/movie-database');
-const Template = require('./../lib/template');
+const RatingColor = require('./lib/rating-color');
+const JsonDB = require('./lib/json-database');
+const MovieDB = require('./lib/movie-database');
 
 class Creator {
   eventList() {
@@ -23,9 +22,7 @@ class Creator {
   async createList(id, array, name) {
     const movies = await JsonDB.readDB('movie');
 
-    const source = Template.list();
-
-    const template = Handlebars.compile(source);
+    const template = await _getTemplate('list');
 
     array = array.map((elem) => {
       if (movies[elem.id] !== undefined) {
@@ -62,8 +59,7 @@ class Creator {
       this.createList(id, castArray, 'Actor');
     }
 
-    const source = Template.people();
-    const template = Handlebars.compile(source);
+    const template = await _getTemplate('people');
 
     const context = {
       poster: people.profile_path,
@@ -86,49 +82,13 @@ class Creator {
     $('#people-background').css('background-image', `url('${bI}')`);
   }
 
-  filterCreditsArray(credits) {
-    let directors = credits.crew;
-    let actors = credits.cast;
-    directors = directors.filter(crew => crew.job === 'Director');
-    actors = actors.filter((cast, index) => index < 10 - directors.length);
-    return directors.concat(actors);
-  }
-
-  createCredits(credits) {
-    credits = this.filterCreditsArray(credits);
-    const source = Template.credits();
-    const template = Handlebars.compile(source);
-    const context = { items: credits };
-
-    Handlebars.registerHelper('creditImage', function () {
-      let string = null;
-      if (this.profile_path === null) {
-        string = 'images/no-profile.png';
-      } else {
-        string = `https://image.tmdb.org/t/p/w185${this.profile_path}`;
-      }
-      return new Handlebars.SafeString(string);
-    });
-
-    Handlebars.registerHelper('creditJob', function () {
-      let string = null;
-      if (this.job !== undefined) {
-        string = this.job;
-      } else {
-        string = this.character;
-      }
-      return new Handlebars.SafeString(string);
-    });
-    const result = template(context);
-
-    document.getElementById('movie-credits')
-      .insertAdjacentHTML('beforeend', result);
-  }
-
   async createMovieDetails(id) {
     const movie = await MovieDB.getMovie(id);
-    const source = Template.details();
-    const template = Handlebars.compile(source);
+
+    const template = await _getTemplate('movie-details');
+
+    const [recommendations,
+      recoSeen] = await _getRecommendations(movie.recommendations.results);
 
     const context = {
       poster: movie.poster_path,
@@ -139,6 +99,10 @@ class Creator {
       hasCollection: movie.belongs_to_collection,
       voteCount: movie.vote_count,
       voteAverage: movie.vote_average * 10,
+      images: _getImages(movie.images.backdrops),
+      credits: _getCredits(movie.credits),
+      recommendations,
+      recoSeen,
     };
 
     if (movie.original_title !== movie.title) {
@@ -149,9 +113,6 @@ class Creator {
     document.getElementById('movie-content')
       .insertAdjacentHTML('beforeend', result);
 
-    this.createCredits(movie.credits);
-    this.createImages(movie.images.backdrops);
-    this.createReco(movie.id, movie.recommendations.results, 18);
     if (movie.belongs_to_collection) {
       this.createCollection(movie.belongs_to_collection.id);
     }
@@ -170,60 +131,13 @@ class Creator {
     $('#voteaverage').css('background', RatingColor.ratingToColor(vote * 10));
   }
 
-  createImages(images) {
-    images = images
-      .sort((a, b) => b.vote_count - a.vote_count);
-    images = images.filter((im, i) => i < 3);
-    const source = Template.images();
-    const template = Handlebars.compile(source);
-    const context = {
-      items: images,
-    };
-
-    const result = template(context);
-    document.getElementById('movie-images')
-      .insertAdjacentHTML('beforeend', result);
-  }
-
-  async createReco(id, recos, nbrRecos) {
-    const movies = await JsonDB.readDB('movie');
-
-    const source = Template.reco();
-    const template = Handlebars.compile(source);
-
-    recos = recos.map((reco) => {
-      if (movies[reco.id] !== undefined) {
-        reco.classname = 'badreco';
-      } else {
-        reco.classname = 'goodreco';
-      }
-      const vote = reco.vote_average * 10;
-      reco.voteWidth = vote;
-      reco.voteColor = RatingColor.ratingToColor(vote);
-      return reco;
-    }).filter((elem, index) => index < nbrRecos);
-
-    const context = { items: recos };
-    const result = template(context);
-    const recoSeen = recos.filter(a => a.classname === 'badreco').length;
-    const percentSeen = Math.floor((recoSeen / recos.length) * 100);
-    const title = `<h3>Similar movies: ${percentSeen}% seen </h3>`;
-    document.getElementById('movie-recommendations')
-      .insertAdjacentHTML('beforebegin', title);
-    document.getElementById('movie-recommendations')
-      .insertAdjacentHTML('beforeend', result);
-
-    this.eventReco();
-  }
-
   async createCollection(id) {
     const collection = await MovieDB.getCollection(id);
     const movies = await JsonDB.readDB('movie');
 
     let parts = collection.parts;
 
-    const source = Template.collection();
-    const template = Handlebars.compile(source);
+    const template = await _getTemplate('collection');
 
     parts = parts.map((part) => {
       if (movies[part.id] !== undefined) {
@@ -257,10 +171,12 @@ class Creator {
   async createSeen() {
     const data = await JsonDB.readDB('movie');
     const movies = _sortByDate(data);
-    const source = Template.movies();
-    const template = Handlebars.compile(source);
+
     const context = { items: movies };
+
+    const template = await _getTemplate('movies');
     const result = template(context);
+
     document.getElementById('movies-content')
       .insertAdjacentHTML('beforeend', result);
 
@@ -279,8 +195,8 @@ class Creator {
       }
       return movie;
     });
-    const source = Template.movies();
-    const template = Handlebars.compile(source);
+
+    const template = await _getTemplate('movies');
     const context = { items: movies };
     const result = template(context);
 
@@ -435,5 +351,80 @@ function _blurBase64URI(url, px) {
           });
       });
   });
+}
+
+async function _getTemplate(name) {
+  if (Handlebars.templates === undefined ||
+    Handlebars.templates[name] === undefined) {
+    await $.ajax({
+      url: `templates/${name}.hbs`,
+      success(data) {
+        if (Handlebars.templates === undefined) {
+          Handlebars.templates = {};
+        }
+        Handlebars.templates[name] = Handlebars.compile(data);
+      },
+    });
+  }
+
+  return Handlebars.templates[name];
+}
+
+function _getImages(images) {
+  images = images
+    .sort((a, b) => b.vote_count - a.vote_count);
+  // images = images.filter((im, i) => i < 3);
+  return images;
+}
+
+function _getCredits(credits) {
+  let directors = credits.crew;
+  let actors = credits.cast;
+  directors = directors.filter(crew => crew.job === 'Director');
+  actors = actors.filter((cast, index) => index < 10 - directors.length);
+  credits = directors.concat(actors);
+
+  Handlebars.registerHelper('creditImage', function () {
+    let string = null;
+    if (this.profile_path === null) {
+      string = 'images/no-profile.png';
+    } else {
+      string = `https://image.tmdb.org/t/p/w185${this.profile_path}`;
+    }
+    return new Handlebars.SafeString(string);
+  });
+
+  Handlebars.registerHelper('creditJob', function () {
+    let string = null;
+    if (this.job !== undefined) {
+      string = this.job;
+    } else {
+      string = this.character;
+    }
+    return new Handlebars.SafeString(string);
+  });
+
+  return credits;
+}
+
+async function _getRecommendations(recos) {
+  const movies = await JsonDB.readDB('movie');
+
+  recos = recos.map((reco) => {
+    if (movies[reco.id] !== undefined) {
+      reco.classname = 'badreco';
+    } else {
+      reco.classname = 'goodreco';
+    }
+    const vote = reco.vote_average * 10;
+    reco.voteWidth = vote;
+    reco.voteColor = RatingColor.ratingToColor(vote);
+    return reco;
+  });
+
+  const recoSeen = recos.filter(a => a.classname === 'badreco').length;
+  const percentSeen = Math.floor((recoSeen / recos.length) * 100);
+
+  return [recos, percentSeen];
 }
 module.exports = Creator;

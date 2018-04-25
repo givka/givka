@@ -95,8 +95,9 @@ h3{
   flex-wrap: wrap;
 }
 .movie-reco{
-  padding:1%;
-  width:11.11%;
+  padding: 5px;
+  height: 220px;
+  width: 150px;
   transition: 0.3s ease;
 }
 .movie-reco img{
@@ -117,12 +118,13 @@ h3{
   flex-wrap: wrap;
 }
 #movie-images{
-  padding-left: 1%;
-  padding-right: 1%;
+  
   display: flex;
+  flex-wrap: wrap;
 }
 .movie-image{
-  padding:1%;
+  padding:5px;
+  width:220px;
 }
 .movie-image img{
   width:100%;

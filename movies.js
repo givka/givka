@@ -3,7 +3,7 @@ API key      : K4g6YAAqn
 Private key  : HARbbnt5S
 */
 
-const Creator = require('./scripts/creator');
+const Creator = require('./creator');
 
 const c = new Creator();
 
