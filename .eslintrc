@@ -41,6 +41,7 @@
     "no-underscore-dangle": "off",
     "no-use-before-define": "off",
     "no-mixed-operators": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "consistent-return": "off"
   }
 }

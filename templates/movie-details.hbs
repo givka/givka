@@ -33,7 +33,7 @@
     <div id="movie-images">
       {{#each images}}
       <div class="movie-image">
-        <img src="https://image.tmdb.org/t/p/w780{{this.file_path}}">
+        <img src="https://image.tmdb.org/t/p/w300{{this.file_path}}">
       </div>
       {{/ each}}
     </div>
@@ -48,7 +48,15 @@
       {{/ each}}
     </div>
     {{#if hasCollection}}
+    <h3>Collection: {{partSeen}}% seen </h3>
     <div id="movie-collection">
+      {{#each parts}}
+      <div id="id-{{this.id}}" class="movie-reco {{this.classname}}">
+        <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+        <div id="ratiovote" style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
+        </div>
+      </div>
+      {{/ each}}
     </div>
     {{/if}}
   </div>

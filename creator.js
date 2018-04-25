@@ -87,9 +87,15 @@ class Creator {
 
     const template = await _getTemplate('movie-details');
 
+    const images = _getImages(movie.images.backdrops);
+    const bg = images[0].file_path;
+
+    const credits = _getCredits(movie.credits);
     const [recommendations,
       recoSeen] = await _getRecommendations(movie.recommendations.results);
 
+    const [parts,
+      partSeen] = await _getCollection(movie.belongs_to_collection);
     const context = {
       poster: movie.poster_path,
       title: movie.title,
@@ -99,10 +105,12 @@ class Creator {
       hasCollection: movie.belongs_to_collection,
       voteCount: movie.vote_count,
       voteAverage: movie.vote_average * 10,
-      images: _getImages(movie.images.backdrops),
-      credits: _getCredits(movie.credits),
+      images,
+      credits,
       recommendations,
       recoSeen,
+      parts,
+      partSeen,
     };
 
     if (movie.original_title !== movie.title) {
@@ -113,59 +121,17 @@ class Creator {
     document.getElementById('movie-content')
       .insertAdjacentHTML('beforeend', result);
 
-    if (movie.belongs_to_collection) {
-      this.createCollection(movie.belongs_to_collection.id);
-    }
-    const backdrop = movie.backdrop_path;
+    let bgImg = `https://image.tmdb.org/t/p/original${bg}`;
+    $('#movie-background').css('background-image', `url('${bgImg}')`);
 
-    let backdropImage = `https://image.tmdb.org/t/p/original${backdrop}`;
-    $('#movie-background').css('background-image', `url('${backdropImage}')`);
-
-    backdropImage = `https://image.tmdb.org/t/p/w300${backdrop}`;
-    const blur = await _blurBase64URI(backdropImage, 20);
-
-    $('#movie-details-panel')
-      .css('background-image', `url(${blur})`);
+    bgImg = `https://image.tmdb.org/t/p/w300${bg}`;
+    const blur = await _blurBase64URI(bgImg, 20);
+    $('#movie-details-panel').css('background-image', `url(${blur})`);
 
     const vote = movie.vote_average;
     $('#voteaverage').css('background', RatingColor.ratingToColor(vote * 10));
-  }
 
-  async createCollection(id) {
-    const collection = await MovieDB.getCollection(id);
-    const movies = await JsonDB.readDB('movie');
-
-    let parts = collection.parts;
-
-    const template = await _getTemplate('collection');
-
-    parts = parts.map((part) => {
-      if (movies[part.id] !== undefined) {
-        part.classname = 'badreco';
-      } else {
-        part.classname = 'goodreco';
-      }
-      const vote = part.vote_average * 10;
-      part.voteWidth = vote;
-      part.voteColor = RatingColor.ratingToColor(vote);
-      return part;
-    }).sort((a, b) => {
-      a = parseInt(a.release_date, 10);
-      b = parseInt(b.release_date, 10);
-      return a < b ? -1 : a > b ? 1 : 0;
-    });
-
-    const context = { items: parts };
-    const result = template(context);
-
-    const recoSeen = parts.filter(a => a.classname === 'badreco').length;
-    const percentSeen = Math.floor((recoSeen / parts.length) * 100);
-    const title = `<h3>Collection: ${percentSeen}% seen </h3>`;
-    document.getElementById('movie-collection')
-      .insertAdjacentHTML('beforebegin', title);
-    document.getElementById('movie-collection')
-      .insertAdjacentHTML('beforeend', result);
-    this.eventCollection();
+    this.eventPosterMovieDetails();
   }
 
   async createSeen() {
@@ -215,27 +181,9 @@ class Creator {
       .insertAdjacentHTML('afterbegin', name + count);
   }
 
-  eventCollection() {
+  eventPosterMovieDetails() {
     document
-      .getElementById('movie-collection')
-      .addEventListener('click', (event) => {
-        if (event.target.tagName !== 'IMG') { return; }
-        if (event.metaKey || event.ctrlKey) {
-          const container = event.path[1];
-          if (container.classList.contains('badreco')) {
-            this.eventRemoveMovieSeen(container);
-          } else {
-            this.eventAddMovieSeen(container);
-          }
-        } else {
-          this.eventMovieDetails(event);
-        }
-      }, false);
-  }
-
-  eventReco() {
-    document
-      .getElementById('movie-recommendations')
+      .getElementById('movie-details')
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'IMG') { return; }
         if (event.metaKey || event.ctrlKey) {
@@ -427,4 +375,35 @@ async function _getRecommendations(recos) {
 
   return [recos, percentSeen];
 }
+
+async function _getCollection(hasCollection) {
+  if (hasCollection === null) { return [null, null]; }
+  const id = hasCollection.id;
+  const collection = await MovieDB.getCollection(id);
+  const movies = await JsonDB.readDB('movie');
+
+  let parts = collection.parts;
+
+  parts = parts.map((part) => {
+    if (movies[part.id] !== undefined) {
+      part.classname = 'badreco';
+    } else {
+      part.classname = 'goodreco';
+    }
+    const vote = part.vote_average * 10;
+    part.voteWidth = vote;
+    part.voteColor = RatingColor.ratingToColor(vote);
+    return part;
+  }).sort((a, b) => {
+    a = parseInt(a.release_date, 10);
+    b = parseInt(b.release_date, 10);
+    return a < b ? -1 : a > b ? 1 : 0;
+  });
+
+  const recoSeen = parts.filter(a => a.classname === 'badreco').length;
+  const percentSeen = Math.floor((recoSeen / parts.length) * 100);
+
+  return [parts, percentSeen];
+}
+
 module.exports = Creator;
