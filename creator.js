@@ -82,20 +82,40 @@ class Creator {
     $('#people-background').css('background-image', `url('${bI}')`);
   }
 
-  async createMovieDetails(id) {
-    const movie = await MovieDB.getMovie(id);
+  async createBackground(img, title) {
+    const template = await _getTemplate('movie-background');
+    const context = { title };
+    const result = template(context);
 
+    document.getElementById('movie-content')
+      .insertAdjacentHTML('beforeend', result);
+
+    let bgImg = `https://image.tmdb.org/t/p/original${img}`;
+    $('#movie-background').css('background-image', `url('${bgImg}')`);
+    bgImg = `https://image.tmdb.org/t/p/w300${img}`;
+    const blur = await _blurBase64URI(bgImg, 20);
+    $('#movie-details-panel').css('background-image', `url(${blur})`);
+  }
+  async createMovieDetails(id) {
     const template = await _getTemplate('movie-details');
 
+    const movie = await MovieDB.getMovie(id);
+
+    const [credits,
+      director] = _getCredits(movie.credits);
     const images = _getImages(movie.images.backdrops);
     const bg = images[0].file_path;
 
-    const credits = _getCredits(movie.credits);
-    const [recommendations,
-      recoSeen] = await _getRecommendations(movie.recommendations.results);
+    this.createBackground(bg, movie.title);
 
-    const [parts,
-      partSeen] = await _getCollection(movie.belongs_to_collection);
+    const moviesDB = await JsonDB.readDB('movie');
+
+    const [recommendations, collectionParts, directorMovies] = await Promise.all([
+      _getRecommendations(movie.recommendations.results, moviesDB),
+      _getCollection(movie.belongs_to_collection, moviesDB),
+      _getDirectorMovies(director, moviesDB),
+    ]);
+
     const context = {
       poster: movie.poster_path,
       title: movie.title,
@@ -108,9 +128,8 @@ class Creator {
       images,
       credits,
       recommendations,
-      recoSeen,
-      parts,
-      partSeen,
+      collectionParts,
+      directorMovies,
     };
 
     if (movie.original_title !== movie.title) {
@@ -118,15 +137,8 @@ class Creator {
     }
 
     const result = template(context);
-    document.getElementById('movie-content')
+    document.getElementById('movie-details-panel')
       .insertAdjacentHTML('beforeend', result);
-
-    let bgImg = `https://image.tmdb.org/t/p/original${bg}`;
-    $('#movie-background').css('background-image', `url('${bgImg}')`);
-
-    bgImg = `https://image.tmdb.org/t/p/w300${bg}`;
-    const blur = await _blurBase64URI(bgImg, 20);
-    $('#movie-details-panel').css('background-image', `url(${blur})`);
 
     const vote = movie.vote_average;
     $('#voteaverage').css('background', RatingColor.ratingToColor(vote * 10));
@@ -255,6 +267,34 @@ class Creator {
   }
 }
 
+async function _getDirectorMovies(director, moviesDB) {
+  director = await MovieDB.getPeople(director.id);
+
+  let movies = director.movie_credits.crew;
+  movies = movies.filter(movie => movie.poster_path);
+
+  movies = movies.filter(movie => movie.job === 'Director');
+
+  movies = movies.map((movie) => {
+    if (moviesDB[movie.id] !== undefined) {
+      movie.classname = 'badreco';
+    }
+    const vote = movie.vote_average * 10;
+    movie.voteWidth = vote;
+    movie.voteColor = RatingColor.ratingToColor(vote);
+    return movie;
+  });
+
+  movies = _sortByKey(movies, 'vote_count');
+
+  movies.filter(movie => movie.poster_path);
+
+  const moviesSeen = movies.filter(a => a.classname === 'badreco').length;
+  const percentSeen = Math.floor((moviesSeen / movies.length) * 100);
+
+  return { movies, percentSeen };
+}
+
 function _empty(selector) {
   return $(selector)
     .children()
@@ -319,12 +359,14 @@ async function _getTemplate(name) {
 }
 
 function _getImages(images) {
-  images = images
-    .sort((a, b) => b.vote_count - a.vote_count);
+  images = _sortByKey(images, 'vote_count');
   // images = images.filter((im, i) => i < 3);
   return images;
 }
 
+function _sortByKey(array, key) {
+  return array.sort((a, b) => b[key] - a[key]);
+}
 function _getCredits(credits) {
   let directors = credits.crew;
   let actors = credits.cast;
@@ -352,17 +394,15 @@ function _getCredits(credits) {
     return new Handlebars.SafeString(string);
   });
 
-  return credits;
+  return [credits, directors[0]];
 }
 
-async function _getRecommendations(recos) {
-  const movies = await JsonDB.readDB('movie');
+async function _getRecommendations(movies, moviesDB) {
+  movies = movies.filter(movie => movie.poster_path);
 
-  recos = recos.map((reco) => {
-    if (movies[reco.id] !== undefined) {
+  movies = movies.map((reco) => {
+    if (moviesDB[reco.id] !== undefined) {
       reco.classname = 'badreco';
-    } else {
-      reco.classname = 'goodreco';
     }
     const vote = reco.vote_average * 10;
     reco.voteWidth = vote;
@@ -370,40 +410,39 @@ async function _getRecommendations(recos) {
     return reco;
   });
 
-  const recoSeen = recos.filter(a => a.classname === 'badreco').length;
-  const percentSeen = Math.floor((recoSeen / recos.length) * 100);
+  movies = _sortByKey(movies, 'vote_count');
 
-  return [recos, percentSeen];
+  const recoSeen = movies.filter(a => a.classname === 'badreco').length;
+  const percentSeen = Math.floor((recoSeen / movies.length) * 100);
+
+  return { movies, percentSeen };
 }
 
-async function _getCollection(hasCollection) {
+async function _getCollection(hasCollection, moviesDB) {
   if (hasCollection === null) { return [null, null]; }
   const id = hasCollection.id;
   const collection = await MovieDB.getCollection(id);
-  const movies = await JsonDB.readDB('movie');
 
-  let parts = collection.parts;
+  let movies = collection.parts;
 
-  parts = parts.map((part) => {
-    if (movies[part.id] !== undefined) {
+  movies = movies.filter(movie => movie.poster_path);
+
+  movies = movies.map((part) => {
+    if (moviesDB[part.id] !== undefined) {
       part.classname = 'badreco';
-    } else {
-      part.classname = 'goodreco';
     }
     const vote = part.vote_average * 10;
     part.voteWidth = vote;
     part.voteColor = RatingColor.ratingToColor(vote);
     return part;
-  }).sort((a, b) => {
-    a = parseInt(a.release_date, 10);
-    b = parseInt(b.release_date, 10);
-    return a < b ? -1 : a > b ? 1 : 0;
   });
 
-  const recoSeen = parts.filter(a => a.classname === 'badreco').length;
-  const percentSeen = Math.floor((recoSeen / parts.length) * 100);
+  movies = _sortByKey(movies, 'release_date');
 
-  return [parts, percentSeen];
+  const recoSeen = movies.filter(a => a.classname === 'badreco').length;
+  const percentSeen = Math.floor((recoSeen / movies.length) * 100);
+
+  return { movies, percentSeen };
 }
 
 module.exports = Creator;

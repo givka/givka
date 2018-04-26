@@ -11,6 +11,7 @@
   text-shadow: 2px 2px 8px #000000;
   font-family:'Roboto', sans-serif;
 }
+
 .badreco{
   filter:blur(5px);
   opacity: 0.5;
@@ -82,25 +83,26 @@ h3{
   margin-left: 15%;
   margin-right: 15%;
 }
-#movie-recommendations{
+.list{
   padding-left: 1%;
   padding-right: 1%;
   display: flex;
   flex-wrap: wrap;
 }
+
 #people-list{
   padding-left: 1%;
   padding-right: 1%;
   display: flex;
   flex-wrap: wrap;
 }
-.movie-reco{
+.movie-poster{
   padding: 5px;
-  height: 220px;
-  width: 150px;
+  height: 175px;
+  width: 120px;
   transition: 0.3s ease;
 }
-.movie-reco img{
+.movie-poster img{
   width:100%;
   height:100%;
   border-radius: 5px;
@@ -108,15 +110,10 @@ h3{
   vertical-align: middle;
   box-shadow: 0 0px 10px rgba(0, 0, 0, 1);
 }
-.movie-reco:hover{
+.movie-poster:hover{
   transform: scale(1.05);
 }
-#movie-collection{
-  padding-left: 1%;
-  padding-right: 1%;
-  display: flex;
-  flex-wrap: wrap;
-}
+
 #movie-images{
   
   display: flex;
@@ -202,25 +199,7 @@ tr:nth-child(even) {
   margin-left:15%;
   margin-right:15%;
 }
-.container{
-  width: 150px;
-  height:220px;
-  padding:5px;
-  transition: all 0.3s ease;
-  align-items: stretch;
-}
-.container:hover{
-  transform: scale(1.05);
-}
-.container img {
-  vertical-align: middle;
-  border-radius: 5px;
-  vertical-align: middle;
-  height:100%;
-  width:100%;
-  object-fit: cover;
-  box-shadow: 0 0px 10px rgba(0, 0, 0, 1) 
-}
+
 #movie-background img{
   object-fit: cover;
   width: 100%;

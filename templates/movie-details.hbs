@@ -1,63 +1,66 @@
-<div id=movie-details class=main-container>
-  <div id="movie-background" class=parallax-container>
+<div id="movie-bar">
+  <div id="movie-image">
+    <img src="https://image.tmdb.org/t/p/w500{{poster}}">
+  </div>
+  <div id="movie-description">
     <h1 id="movie-title">{{title}}</h1>
+    <h2 id="movie-original-title">{{originalTitle}}</h2>
+    <p id="date">{{date}}</p>
+    <p id="runtime">{{runtime}}</p>
+    <p id="overview">{{overview}}</p>
+    <p id="voteaverage">{{voteAverage}}</p>
+    <p id="votecount">{{voteCount}}</p>
   </div>
-  <div id=movie-details-panel class=content-container>
-    <div id="movie-bar">
-      <div id="movie-image">
-        <img src="https://image.tmdb.org/t/p/w500{{poster}}">
-      </div>
-      <div id="movie-description">
-        <h1 id="movie-title">{{title}}</h1>
-        <h2 id="movie-original-title">{{originalTitle}}</h2>
-        <p id="date">{{date}}</p>
-        <p id="runtime">{{runtime}}</p>
-        <p id="overview">{{overview}}</p>
-        <p id="voteaverage">{{voteAverage}}</p>
-        <p id="votecount">{{voteCount}}</p>
-      </div>
+</div>
+<h3>Credits</h3>
+<div id="movie-credits">
+  {{#each credits}}
+  <div id="id-{{this.id}}" class="movie-credit">
+    <img src="{{creditImage}}">
+    <div id="credit-info">
+      <p id="credit-job">{{creditJob}}</p>
+      <p id="credit-name">{{this.name}}</p>
     </div>
-    <h3>Credits</h3>
-    <div id="movie-credits">
-      {{#each credits}}
-      <div id="id-{{this.id}}" class="movie-credit">
-        <img src="{{creditImage}}">
-        <div id="credit-info">
-          <p id="credit-job">{{creditJob}}</p>
-          <p id="credit-name">{{this.name}}</p>
-        </div>
-      </div>
-      {{/ each}}
-    </div>
-    <h3>Images</h3>
-    <div id="movie-images">
-      {{#each images}}
-      <div class="movie-image">
-        <img src="https://image.tmdb.org/t/p/w300{{this.file_path}}">
-      </div>
-      {{/ each}}
-    </div>
-    <h3>Similar movies: {{recoSeen}}% seen </h3>
-    <div id="movie-recommendations">
-      {{#each recommendations}}
-      <div id=id-{{this.id}} class="movie-reco {{this.classname}}">
-        <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-        <div id=ratiovote style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
-        </div>
-      </div>
-      {{/ each}}
-    </div>
-    {{#if hasCollection}}
-    <h3>Collection: {{partSeen}}% seen </h3>
-    <div id="movie-collection">
-      {{#each parts}}
-      <div id="id-{{this.id}}" class="movie-reco {{this.classname}}">
-        <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-        <div id="ratiovote" style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
-        </div>
-      </div>
-      {{/ each}}
-    </div>
-    {{/if}}
   </div>
+  {{/ each}}
+</div>
+<h3>Images</h3>
+<div id="movie-images">
+  {{#each images}}
+  <div class="movie-image">
+    <img src="https://image.tmdb.org/t/p/w300{{this.file_path}}">
+  </div>
+  {{/ each}}
+</div>
+{{#if hasCollection}}
+<h3>Collection: {{collectionParts.percentSeen}}% seen </h3>
+<div id="movie-collection" class="list">
+  {{#each collectionParts.movies}}
+  <div id="id-{{this.id}}" class="movie-poster {{this.classname}}">
+    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+    <div id="ratiovote" style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
+    </div>
+  </div>
+  {{/ each}}
+</div>
+{{/if}}
+<h3>Similar movies: {{recommendations.percentSeen}}% seen </h3>
+<div id="movie-recommendations" class="list">
+  {{#each recommendations.movies}}
+  <div id=id-{{this.id}} class="movie-poster {{this.classname}}">
+    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+    <div id=ratiovote style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
+    </div>
+  </div>
+  {{/ each}}
+</div>
+<h3>Director movies: {{directorMovies.percentSeen}}% seen </h3>
+<div id="movie-director" class="list">
+  {{#each directorMovies.movies}}
+  <div id=id-{{this.id}} class="movie-poster {{this.classname}}">
+    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+    <div id=ratiovote style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
+    </div>
+  </div>
+  {{/ each}}
 </div>
