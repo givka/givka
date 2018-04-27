@@ -101,12 +101,11 @@ class Creator {
 
     const movie = await MovieDB.getMovie(id);
 
+    this.createBackground(movie.backdrop_path, movie.title);
+
     const [credits,
       director] = _getCredits(movie.credits);
     const images = _getImages(movie.images.backdrops);
-    const bg = images[0].file_path;
-
-    this.createBackground(bg, movie.title);
 
     const moviesDB = await JsonDB.readDB('movie');
 
@@ -282,6 +281,7 @@ async function _getDirectorMovies(director, moviesDB) {
     const vote = movie.vote_average * 10;
     movie.voteWidth = vote;
     movie.voteColor = RatingColor.ratingToColor(vote);
+
     return movie;
   });
 
@@ -291,7 +291,7 @@ async function _getDirectorMovies(director, moviesDB) {
 
   const moviesSeen = movies.filter(a => a.classname === 'badreco').length;
   const percentSeen = Math.floor((moviesSeen / movies.length) * 100);
-
+  console.log(movies);
   return { movies, percentSeen };
 }
 
