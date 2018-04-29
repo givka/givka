@@ -4,6 +4,7 @@
   "main": "main.js",
   "devDependencies": {},
   "scripts": {
+    "prestart": "lessc css/styles.less css/styles.css",
     "start": "electron ."
   },
   "author": "Ketshi",

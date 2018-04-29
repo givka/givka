@@ -29,10 +29,10 @@ app.on('ready', () => {
     backgroundColor: '#14181C',
     height: 800,
     width: 1280,
-    webPreferences: { experimentalFeatures: true },
+    fullscreen: true,
   });
   // Monokai backgroundColor: '#262820'
-  mainWindow.maximize();
+  // Letterboxd backgroundColor: '#14181C'
 
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'givka.html'),

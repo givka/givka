@@ -42,6 +42,7 @@
     "no-use-before-define": "off",
     "no-mixed-operators": "off",
     "linebreak-style": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "camelcase": "off"
   }
 }

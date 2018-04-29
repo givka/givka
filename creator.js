@@ -5,6 +5,8 @@ const RatingColor = require('./lib/rating-color');
 const JsonDB = require('./lib/json-database');
 const MovieDB = require('./lib/movie-database');
 
+let _backdrops = {};
+
 class Creator {
   eventList() {
     document
@@ -82,7 +84,11 @@ class Creator {
     $('#people-background').css('background-image', `url('${bI}')`);
   }
 
-  async createBackground(img, title) {
+  async createBackground(id) {
+    $('#spinner').css('display', 'block');
+
+    const title = _backdrops[id].title;
+    const img = _backdrops[id].backdrop_path;
     const template = await _getTemplate('movie-background');
     const context = { title };
     const result = template(context);
@@ -91,17 +97,28 @@ class Creator {
       .insertAdjacentHTML('beforeend', result);
 
     let bgImg = `https://image.tmdb.org/t/p/original${img}`;
-    $('#movie-background').css('background-image', `url('${bgImg}')`);
-    bgImg = `https://image.tmdb.org/t/p/w300${img}`;
-    const blur = await _blurBase64URI(bgImg, 20);
-    $('#movie-details-panel').css('background-image', `url(${blur})`);
+
+    const test = new Image();
+    test.onload = function () {
+      $('#movie-background').css('background-image', `url('${bgImg}')`);
+      bgImg = `https://image.tmdb.org/t/p/w300${img}`;
+
+      _blurBase64URI(bgImg, 20).then((blur) => {
+        $('#movie-details-panel').css('background-image', `url(${blur})`);
+        $('#spinner').css('display', 'none');
+        $('#movie-details').css('display', 'block');
+      });
+    };
+    test.src = bgImg;
   }
+
   async createMovieDetails(id) {
+    this.createBackground(id);
+    _backdrops = {};
+
     const template = await _getTemplate('movie-details');
 
     const movie = await MovieDB.getMovie(id);
-
-    this.createBackground(movie.backdrop_path, movie.title);
 
     const [credits,
       director] = _getCredits(movie.credits);
@@ -149,6 +166,9 @@ class Creator {
     const data = await JsonDB.readDB('movie');
     const movies = _sortByDate(data);
 
+    _backdrops = {};
+    _fillBackdrops(movies);
+
     const context = { items: movies };
 
     const template = await _getTemplate('movies');
@@ -163,6 +183,10 @@ class Creator {
 
   async createDiscover(list) {
     const movies = await MovieDB.getDiscover(list, 10);
+
+    _backdrops = {};
+    _fillBackdrops(movies);
+
     const data = await JsonDB.readDB('movie');
     movies.map((movie) => {
       if (data[movie.id] !== undefined) {
@@ -291,7 +315,9 @@ async function _getDirectorMovies(director, moviesDB) {
 
   const moviesSeen = movies.filter(a => a.classname === 'badreco').length;
   const percentSeen = Math.floor((moviesSeen / movies.length) * 100);
-  console.log(movies);
+
+  _fillBackdrops(movies);
+
   return { movies, percentSeen };
 }
 
@@ -320,20 +346,13 @@ function _sortByDate(obj) {
   return sort;
 }
 
-// function _sleep(s) {
-//   return new Promise(((resolve) => {
-//     setTimeout(() => {
-//       resolve();
-//     }, s * 1000);
-//   }));
-// }
-
 function _blurBase64URI(url, px) {
   return new Promise((resolve) => {
     Jimp.read(url)
       .then((image) => {
         image.color([{ apply: 'shade', params: [50] }])
           .blur(px)
+          // .resize(10, 10)
           .getBase64(Jimp.AUTO, (err, encoded) => {
             resolve(encoded);
           });
@@ -345,7 +364,7 @@ async function _getTemplate(name) {
   if (Handlebars.templates === undefined ||
     Handlebars.templates[name] === undefined) {
     await $.ajax({
-      url: `templates/${name}.hbs`,
+      url: `views/${name}.hbs`,
       success(data) {
         if (Handlebars.templates === undefined) {
           Handlebars.templates = {};
@@ -360,13 +379,14 @@ async function _getTemplate(name) {
 
 function _getImages(images) {
   images = _sortByKey(images, 'vote_count');
-  // images = images.filter((im, i) => i < 3);
+  images = images.filter((im, i) => i < 6);
   return images;
 }
 
 function _sortByKey(array, key) {
   return array.sort((a, b) => b[key] - a[key]);
 }
+
 function _getCredits(credits) {
   let directors = credits.crew;
   let actors = credits.cast;
@@ -415,6 +435,8 @@ async function _getRecommendations(movies, moviesDB) {
   const recoSeen = movies.filter(a => a.classname === 'badreco').length;
   const percentSeen = Math.floor((recoSeen / movies.length) * 100);
 
+  _fillBackdrops(movies);
+
   return { movies, percentSeen };
 }
 
@@ -439,10 +461,28 @@ async function _getCollection(hasCollection, moviesDB) {
 
   movies = _sortByKey(movies, 'release_date');
 
+  _fillBackdrops(movies);
+
   const recoSeen = movies.filter(a => a.classname === 'badreco').length;
   const percentSeen = Math.floor((recoSeen / movies.length) * 100);
 
   return { movies, percentSeen };
 }
+
+function _fillBackdrops(movies) {
+  movies.forEach((movie) => {
+    const backdrop_path = movie.backdrop_path;
+    const title = movie.title;
+    _backdrops[movie.id] = { title, backdrop_path };
+  });
+}
+
+// function _sleep(s) {
+//   return new Promise(((resolve) => {
+//     setTimeout(() => {
+//       resolve();
+//     }, s * 1000);
+//   }));
+// }
 
 module.exports = Creator;
