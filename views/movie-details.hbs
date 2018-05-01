@@ -25,42 +25,15 @@
   {{/ each}}
 </div>
 <h3>Images</h3>
-<div id="movie-images" class="list">
+<div id="movie-images">
   {{#each images}}
   <div class="movie-image">
-    <img src="https://image.tmdb.org/t/p/w300{{this.file_path}}">
+    <img src="https://image.tmdb.org/t/p/w780{{this.file_path}}">
   </div>
   {{/ each}}
 </div>
 {{#if hasCollection}}
-<h3>Collection: {{collectionParts.percentSeen}}% seen </h3>
-<div id="movie-collection" class="list">
-  {{#each collectionParts.movies}}
-  <div id="id-{{this.id}}" class="movie-poster {{this.classname}}">
-    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-    <div id="ratiovote" style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
-    </div>
-  </div>
-  {{/ each}}
-</div>
+<div id="collection-parts"></div>
 {{/if}}
-<h3>Similar movies: {{recommendations.percentSeen}}% seen </h3>
-<div id="movie-recommendations" class="list">
-  {{#each recommendations.movies}}
-  <div id=id-{{this.id}} class="movie-poster {{this.classname}}">
-    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-    <div id=ratiovote style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
-    </div>
-  </div>
-  {{/ each}}
-</div>
-<h3>Director movies: {{directorMovies.percentSeen}}% seen </h3>
-<div id="movie-director" class="list">
-  {{#each directorMovies.movies}}
-  <div id=id-{{this.id}} class="movie-poster {{this.classname}}">
-    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
-    <div id=ratiovote style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
-    </div>
-  </div>
-  {{/ each}}
-</div>
+<div id="recommendations"></div>
+<div id="director-movies"></div>

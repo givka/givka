@@ -1,0 +1,12 @@
+<h3>{{list.name}}</h3>
+<h4>
+  <span>{{list.percentSeen}}</span>% seen</h4>
+<div class="list">
+  {{#each list.movies}}
+  <div class="id-{{this.id}} movie-poster {{this.classname}}">
+    <img src="https://image.tmdb.org/t/p/w342{{this.poster_path}}">
+    <div id="ratiovote" style="width: {{this.voteWidth}}%; background: {{this.voteColor}};">
+    </div>
+  </div>
+  {{/ each}}
+</div>

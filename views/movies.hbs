@@ -1,6 +1,6 @@
 <div id=movies>
   {{#each items}}
-  <div id=id-{{this.id}} class="movie-poster {{this.seen}}">
+  <div class="id-{{this.id}} movie-poster {{this.seen}}">
     <img src="https://image.tmdb.org/t/p/w185{{this.poster_path}}">
   </div>
   {{/ each}}
