@@ -8,6 +8,51 @@ const CreatorHelper = require('./creator-helper');
 let _backdrops = {};
 
 class Creator {
+  async createPeopleDetails(id) {
+    const template = await CreatorHelper.getTemplate('people-details');
+    const people = await MovieDB.getPeople(id);
+
+    const context = {
+      people,
+    };
+
+    const result = template(context);
+    document.getElementById('people-content')
+      .insertAdjacentHTML('beforeend', result);
+    $('#people-details').css('display', 'block');
+
+    const crew = people.movie_credits.crew
+      .filter(e => e.job === 'Director')
+      .filter(e => e.vote_count > 50)
+      .sort((a, b) => b.vote_count - a.vote_count);
+
+    const cast = people.movie_credits.cast
+      .filter(e => e.vote_count > 50)
+      .sort((a, b) => b.vote_count - a.vote_count);
+
+    const list2 = { name: 'Actor', percentSeen: 0, movies: cast };
+    const list3 = { name: 'Director', percentSeen: 0, movies: crew };
+
+    const context2 = { list: list2 };
+    const context3 = { list: list3 };
+    const template2 = await CreatorHelper.getTemplate('list');
+    const result2 = template2(context2);
+
+    const template3 = await CreatorHelper.getTemplate('list');
+    const result3 = template3(context3);
+
+    document.getElementById('people-details-panel')
+      .insertAdjacentHTML('beforeend', result2);
+
+    document.getElementById('people-details-panel')
+      .insertAdjacentHTML('beforeend', result3);
+
+    _fillBackdrops(list2.movies);
+
+    _fillBackdrops(list3.movies);
+
+    this.eventPosterMovieDetails('people-details');
+  }
   async createMovieDetails(id) {
     CreatorHelper.getBackground(id, _backdrops[id]);
 
@@ -51,7 +96,7 @@ class Creator {
     const vote = movie.vote_average;
     $('#voteaverage').css('background', RatingColor.ratingToColor(vote * 10));
 
-    this.eventPosterMovieDetails();
+    this.eventPosterMovieDetails('movie-details');
   }
 
   async createRecommendations(movie, moviesDB) {
@@ -150,22 +195,26 @@ class Creator {
     this.eventClickImage();
   }
 
-  eventPosterMovieDetails() {
+  eventPosterMovieDetails(selector) {
     document
-      .getElementById('movie-details')
+      .getElementById(selector)
       .addEventListener('click', (event) => {
         if (event.target.tagName !== 'IMG') { return; }
+        const container = event.path[1];
         if (event.metaKey || event.ctrlKey) {
-          const container = event.path[1];
-          const isSeen = container.classList.contains('badreco');
-          if (isSeen) {
+          if (container.classList.contains('badreco')) {
             this.eventRemoveMovieSeen(container);
           } else {
             this.eventAddMovieSeen(container);
           }
           _updatePercentSeen();
         } else {
-          this.eventMovieDetails(event);
+          if (container.classList.contains('movie-credit')) {
+            this.eventPeopleDetails(event);
+          }
+          if (container.classList.contains('movie-poster')) {
+            this.eventMovieDetails(event);
+          }
         }
       }, false);
   }
@@ -204,10 +253,21 @@ class Creator {
   eventMovieDetails(event) {
     _empty('#movies-content');
     _empty('#movie-content');
+    _empty('#people-content');
 
     const element = event.path[1];
     const id = element.classList[0].replace('id-', '');
     this.createMovieDetails(id);
+  }
+
+  eventPeopleDetails(event) {
+    _empty('#movies-content');
+    _empty('#movie-content');
+    _empty('#people-content');
+
+    const element = event.path[1];
+    const id = element.classList[0].replace('id-', '');
+    this.createPeopleDetails(id);
   }
 
   eventNav() {
@@ -218,6 +278,7 @@ class Creator {
 
         _empty('#movies-content');
         _empty('#movie-content');
+        _empty('#people-content');
 
         if (id === 'collection') { this.createSeen(); }
 
