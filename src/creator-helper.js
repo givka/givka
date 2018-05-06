@@ -86,33 +86,21 @@ class CreatorHelper {
     return { movies, percentSeen };
   }
 
-  static async getBackground(id, background) {
-    $('#spinner').css('display', 'block');
+  static async setBackground(backdrop) {
+    const img = backdrop;
 
-    const title = background.title;
-    const img = background.backdrop_path;
-    const template = await this.getTemplate('movie-background');
-    const context = { title };
-    const result = template(context);
+    const bgImg = `https://image.tmdb.org/t/p/w300${img}`;
 
-    document.getElementById('movie-content')
-      .insertAdjacentHTML('beforeend', result);
+    const blur = await _blurBase64URI(bgImg, 5);
 
-    let bgImg = `https://image.tmdb.org/t/p/original${img}`;
+    while ($('#movie-details').length === 0) {
+      const seconds = 1;
+      console.log(`waiting for ${seconds}s`);
+      await new Promise(resolve => setTimeout(() => resolve(), 1000 * seconds));
+    }
+    $('#movie-details').css('background-image', `url(${blur})`);
 
-    const test = new Image();
-    test.onload = function () {
-      $('#movie-background').css('background-image', `url('${bgImg}')`);
-
-      bgImg = `https://image.tmdb.org/t/p/w300${img}`;
-
-      _blurBase64URI(bgImg, 20).then((blur) => {
-        $('#movie-details-panel').css('background-image', `url(${blur})`);
-        $('#spinner').css('display', 'none');
-        $('#movie-details').css('display', 'block');
-      });
-    };
-    test.src = bgImg;
+    return blur;
   }
 
   static async getTemplate(name) {

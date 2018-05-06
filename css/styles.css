@@ -73,6 +73,7 @@ h3 {
 }
 .content-container {
   display: block;
+  background: rgba(0, 0, 0, 0.5);
   box-shadow: 0px -20px 40px rgba(0, 0, 0, 0.75);
   background-position: center;
   background-size: cover;
@@ -174,7 +175,6 @@ h4 {
 }
 h1 {
   text-align: center;
-  margin: 20px auto;
   font-size: 200%;
   font-family: 'IBM Plex Mono', monospace;
 }
@@ -207,7 +207,7 @@ tr:nth-child(even) {
   margin-bottom: 10px;
 }
 .movie-poster:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 .movie-poster img {
   width: 100%;
@@ -230,34 +230,61 @@ tr:nth-child(even) {
   margin-bottom: 20px;
 }
 #movies-content {
-  margin-left: 15%;
-  margin-right: 15%;
+  padding-right: 15%;
+  padding-left: 15%;
+}
+#movies-content h1 {
+  padding-top: calc(5vh + 20px);
+}
+#movies-content::before {
+  z-index: -1;
+  content: ' ';
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: white;
+  background-image: url('http://www.dalih.net/v1/wp-content/uploads/2014/10/free-blur-background-images.jpg');
+  background-size: cover;
+  will-change: transform;
 }
 #movie-background img {
   object-fit: cover;
   width: 100%;
+}
+#movie-details {
+  padding-top: calc(5vh + 20px);
+  padding-bottom: 20px;
+  padding-right: 15%;
+  padding-left: 15%;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 #movie-bar {
   display: flex;
 }
 #movie-image {
   width: 30%;
-  padding: 2%;
 }
 #movie-image img {
   transition: ease 0.3s;
-  width: 80%;
+  width: 100%;
   border-radius: 5px;
   vertical-align: middle;
   box-shadow: 0 0px 10px #000000;
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 #movie-image img:hover {
-  transform: scale(1.05);
+  filter: grayscale();
 }
 #movie-description {
   width: 70%;
-  padding: 2%;
+  padding: 0% 2%;
   text-align: justify;
 }
 #movie-background img {
@@ -288,6 +315,7 @@ tr:nth-child(even) {
   text-align: justify;
 }
 ul {
+  position: fixed;
   z-index: 1;
   height: 5vh;
   list-style-type: none;
@@ -295,11 +323,12 @@ ul {
   padding: 0;
   overflow: hidden;
   font-size: 125%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   background-size: cover;
   box-shadow: 0px 0px 10px black;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 ul li {
   float: left;
@@ -312,7 +341,6 @@ ul li a {
   font-family: 'IBM Plex Mono', monospace;
 }
 ul li a:hover {
-  background-color: rgba(38, 40, 32, 0.5);
   transform: scale(1.05);
   transition: 0.3s ease;
   cursor: pointer;

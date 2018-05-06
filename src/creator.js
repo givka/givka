@@ -53,20 +53,27 @@ class Creator {
 
     this.eventPosterMovieDetails('people-details');
   }
-  async createMovieDetails(id) {
-    CreatorHelper.getBackground(id, _backdrops[id]);
 
+  async createMovieDetails(id) {
+    _showSpinner();
+
+    CreatorHelper.setBackground(_backdrops[id].backdrop_path);
     _backdrops = {};
 
-    const template = await CreatorHelper.getTemplate('movie-details');
-
-    const movie = await MovieDB.getMovie(id);
+    const [
+      template,
+      movie,
+      moviesDB,
+    ] = await Promise
+      .all([
+        CreatorHelper.getTemplate('movie-details'),
+        MovieDB.getMovie(id),
+        JsonDB.readDB('movie'),
+      ]);
 
     const [credits,
       director] = CreatorHelper.getCredits(movie.credits);
     const images = CreatorHelper.getImages(movie.images.backdrops);
-
-    const moviesDB = await JsonDB.readDB('movie');
 
     const context = {
       poster: movie.poster_path,
@@ -81,22 +88,27 @@ class Creator {
       credits,
     };
 
-    this.createRecommendations(movie, moviesDB);
-    this.createDirectorMovies(director, moviesDB);
-    this.createCollection(movie, moviesDB);
-
     if (movie.original_title !== movie.title) {
       context.originalTitle = `(${movie.original_title}) `;
     }
 
     const result = template(context);
-    document.getElementById('movie-details-panel')
+    document.getElementById('movie-content')
       .insertAdjacentHTML('beforeend', result);
+
+    await Promise
+      .all([
+        this.createRecommendations(movie, moviesDB),
+        this.createDirectorMovies(director, moviesDB),
+        this.createCollection(movie, moviesDB),
+      ]);
 
     const vote = movie.vote_average;
     $('#voteaverage').css('background', RatingColor.ratingToColor(vote * 10));
 
     this.eventPosterMovieDetails('movie-details');
+
+    _hideSpinner('#movie-details');
   }
 
   async createRecommendations(movie, moviesDB) {
@@ -150,6 +162,7 @@ class Creator {
   }
 
   async createSeen() {
+    _showSpinner();
     const data = await JsonDB.readDB('movie');
     const movies = _sortByDate(data);
 
@@ -166,9 +179,12 @@ class Creator {
 
     _updateTitle('Collection', movies);
     this.eventClickImage();
+    _hideSpinner('#movies');
   }
 
   async createDiscover(list) {
+    _showSpinner();
+
     const movies = await MovieDB.getDiscover(list, 10);
 
     _backdrops = {};
@@ -193,6 +209,8 @@ class Creator {
 
     _updateTitle('Discover', movies);
     this.eventClickImage();
+
+    _hideSpinner('#movies');
   }
 
   eventPosterMovieDetails(selector) {
@@ -287,6 +305,14 @@ class Creator {
   }
 }
 
+function _showSpinner() {
+  $('#spinner').css('display', 'block');
+}
+
+function _hideSpinner(selector) {
+  $('#spinner').css('display', 'none');
+  $(selector).css('opacity', '1');
+}
 function _updateTitle(title, movies) {
   const name = `<h1 id=${title.toLowerCase()}>${title}</h1>`;
   const count = `<h2 id="count">${movies.length} movies</h2>`;
