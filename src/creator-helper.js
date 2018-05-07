@@ -5,6 +5,11 @@ const $ = require('jquery');
 const RatingColor = require('./../lib/rating-color');
 const MovieDB = require('./../lib/movie-database');
 
+let ruleAdded = false;
+const styleEl = document.createElement('style');
+document.head.appendChild(styleEl);
+const styleSheet = styleEl.sheet;
+
 class CreatorHelper {
   static getCredits(credits) {
     let directors = credits.crew;
@@ -91,14 +96,10 @@ class CreatorHelper {
 
     const bgImg = `https://image.tmdb.org/t/p/w300${img}`;
 
-    const blur = await _blurBase64URI(bgImg, 5);
+    const blur = await _blurBase64URI(bgImg, 3);
 
-    while ($('#movie-details').length === 0) {
-      const seconds = 1;
-      console.log(`waiting for ${seconds}s`);
-      await new Promise(resolve => setTimeout(() => resolve(), 1000 * seconds));
-    }
-    $('#movie-details').css('background-image', `url(${blur})`);
+    _createRule(blur);
+    // $('#movie-details').css('background-image', `url(${blur})`);
 
     return blur;
   }
@@ -119,6 +120,10 @@ class CreatorHelper {
 
     return Handlebars.templates[name];
   }
+
+  static setMoviesBackground() {
+    return _deleteRule();
+  }
 }
 
 function _sortByKey(array, key) {
@@ -129,7 +134,7 @@ function _blurBase64URI(url, px) {
   return new Promise((resolve) => {
     Jimp.read(url)
       .then((image) => {
-        image.color([{ apply: 'shade', params: [50] }])
+        image.color([{ apply: 'shade', params: [70] }])
           .blur(px)
           // .resize(10, 10)
           .getBase64(Jimp.AUTO, (err, encoded) => {
@@ -153,5 +158,35 @@ function _filterSeen(movies, moviesDB) {
   });
 }
 
+function _createRule(urlString) {
+  if (ruleAdded) {
+    styleSheet.deleteRule(0);
+  } else {
+    ruleAdded = true;
+  }
+  const background = `url(${urlString})`;
+  const rule = `#movies-content::before {
+    z-index: -1;
+    content: ' ';
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-image: ${background};
+    background-size: cover;
+    will-change: transform;
+    transform: scale(1);
+  }`;
+  styleSheet.insertRule(rule, 0);
+}
+
+async function _deleteRule() {
+  if (ruleAdded) {
+    styleSheet.deleteRule(0);
+    ruleAdded = false;
+    await new Promise(resolve => setTimeout(() => resolve(), 1000));
+  }
+}
 module.exports = CreatorHelper;
 

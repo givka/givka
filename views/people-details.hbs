@@ -1,6 +1,13 @@
-<div id="people-details" class="main-container">
-  <div id="people-background" class="parallax-container">
-    <h1 id="people-title">{{people.name}}</h1>
+<div id="people-details" class="main-container" style="opacity:0;">
+  <div id="movie-bar" class="parallax-container">
+    <div id="movie-image">
+      <img src="https://image.tmdb.org/t/p/w500{{people.profile_path}}">
+    </div>
+    <div id="movie-description">
+      <h1 id="movie-title">{{people.name}}</h1>
+      <p id="date">{{people.birthday}} - {{people.deathday}}</p>
+      <p id="overview">{{people.biography}}</p>
+    </div>
   </div>
   <div id="people-details-panel" class="content-container">
     <h1 id="people-title">{{people.name}}</h1>

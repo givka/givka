@@ -9,12 +9,22 @@ let _backdrops = {};
 
 class Creator {
   async createPeopleDetails(id) {
-    const template = await CreatorHelper.getTemplate('people-details');
-    const people = await MovieDB.getPeople(id);
+    _showSpinner();
 
-    const context = {
+    const [
+      template,
       people,
-    };
+      moviesDB,
+    ] = await Promise
+      .all([
+        CreatorHelper.getTemplate('people-details'),
+        MovieDB.getPeople(id),
+        JsonDB.readDB('movie'),
+      ]);
+
+    await CreatorHelper.setMoviesBackground();
+
+    const context = { people };
 
     const result = template(context);
     document.getElementById('people-content')
@@ -24,11 +34,29 @@ class Creator {
     const crew = people.movie_credits.crew
       .filter(e => e.job === 'Director')
       .filter(e => e.vote_count > 50)
-      .sort((a, b) => b.vote_count - a.vote_count);
+      .sort((a, b) => b.vote_count - a.vote_count)
+      .map((movie) => {
+        if (moviesDB[movie.id] !== undefined) {
+          movie.classname = 'badreco';
+        }
+        const vote = movie.vote_average * 10;
+        movie.voteWidth = vote;
+        movie.voteColor = RatingColor.ratingToColor(vote);
+        return movie;
+      });
 
     const cast = people.movie_credits.cast
       .filter(e => e.vote_count > 50)
-      .sort((a, b) => b.vote_count - a.vote_count);
+      .sort((a, b) => b.vote_count - a.vote_count)
+      .map((movie) => {
+        if (moviesDB[movie.id] !== undefined) {
+          movie.classname = 'badreco';
+        }
+        const vote = movie.vote_average * 10;
+        movie.voteWidth = vote;
+        movie.voteColor = RatingColor.ratingToColor(vote);
+        return movie;
+      });
 
     const list2 = { name: 'Actor', percentSeen: 0, movies: cast };
     const list3 = { name: 'Director', percentSeen: 0, movies: crew };
@@ -52,6 +80,8 @@ class Creator {
     _fillBackdrops(list3.movies);
 
     this.eventPosterMovieDetails('people-details');
+
+    _hideSpinner('#people-details');
   }
 
   async createMovieDetails(id) {
@@ -163,6 +193,9 @@ class Creator {
 
   async createSeen() {
     _showSpinner();
+
+    await CreatorHelper.setMoviesBackground();
+
     const data = await JsonDB.readDB('movie');
     const movies = _sortByDate(data);
 
@@ -184,6 +217,8 @@ class Creator {
 
   async createDiscover(list) {
     _showSpinner();
+
+    await CreatorHelper.setMoviesBackground();
 
     const movies = await MovieDB.getDiscover(list, 10);
 
