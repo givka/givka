@@ -185,8 +185,8 @@ async function _deleteRule() {
   if (ruleAdded) {
     styleSheet.deleteRule(0);
     ruleAdded = false;
-    await new Promise(resolve => setTimeout(() => resolve(), 1000));
   }
+  await new Promise(resolve => setTimeout(() => resolve(), 500));
 }
 module.exports = CreatorHelper;
 
