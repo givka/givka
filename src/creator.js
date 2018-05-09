@@ -22,8 +22,6 @@ class Creator {
         JsonDB.readDB('movie'),
       ]);
 
-    await CreatorHelper.setMoviesBackground();
-
     const context = { people };
 
     const result = template(context);

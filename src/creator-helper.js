@@ -93,14 +93,10 @@ class CreatorHelper {
 
   static async setBackground(backdrop) {
     const img = backdrop;
-
-    const bgImg = `https://image.tmdb.org/t/p/w300${img}`;
-
+    const size = '300';
+    const bgImg = `https://image.tmdb.org/t/p/w${size}${img}`;
     const blur = await _blurBase64URI(bgImg, 3);
-
     _createRule(blur);
-    // $('#movie-details').css('background-image', `url(${blur})`);
-
     return blur;
   }
 
@@ -134,7 +130,9 @@ function _blurBase64URI(url, px) {
   return new Promise((resolve) => {
     Jimp.read(url)
       .then((image) => {
-        image.color([{ apply: 'shade', params: [70] }])
+        image
+          .color([{ apply: 'shade', params: [70] }])
+          // .cover(300, 159)
           .blur(px)
           // .resize(10, 10)
           .getBase64(Jimp.AUTO, (err, encoded) => {
@@ -169,10 +167,6 @@ function _createRule(urlString) {
     z-index: -1;
     content: ' ';
     position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
     background-image: ${background};
     background-size: cover;
     will-change: transform;

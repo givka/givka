@@ -4,9 +4,8 @@
       <img src="https://image.tmdb.org/t/p/w500{{poster}}">
     </div>
     <div id="movie-description">
-      <h1 id="movie-title">{{title}}</h1>
+      <h1 id="movie-title">{{title}} ({{date}})</h1>
       <h2 id="movie-original-title">{{originalTitle}}</h2>
-      <p id="date">{{date}}</p>
       <p id="runtime">{{runtime}}</p>
       <p id="overview">{{overview}}</p>
       <div id="credits">
@@ -23,9 +22,6 @@
           {{/ each}}
         </div>
       </div>
-      {{!--
-      <p id="voteaverage">{{voteAverage}}</p>
-      <p id="votecount">{{voteCount}}</p> --}}
     </div>
 
   </div>
@@ -34,7 +30,7 @@
     <div id="movie-images">
       {{#each images}}
       <div class="movie-image">
-        <img src="https://image.tmdb.org/t/p/w780{{this.file_path}}">
+        <img src="https://image.tmdb.org/t/p/w300{{this.file_path}}">
       </div>
       {{/ each}}
     </div>
