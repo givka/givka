@@ -45,7 +45,7 @@ class CreatorHelper {
     movies = _filterSeen(movies, moviesDB);
     movies = _sortByKey(movies, 'vote_count');
 
-    const recoSeen = movies.filter(a => a.classname === 'badreco').length;
+    const recoSeen = movies.filter(a => a.classname === 'movie-seen').length;
     const percentSeen = Math.floor((recoSeen / movies.length) * 100);
 
     return { movies, percentSeen };
@@ -61,7 +61,7 @@ class CreatorHelper {
     movies = _filterSeen(movies, moviesDB);
     movies = _sortByKey(movies, 'release_date');
 
-    const recoSeen = movies.filter(a => a.classname === 'badreco').length;
+    const recoSeen = movies.filter(a => a.classname === 'movie-seen').length;
     const percentSeen = Math.floor((recoSeen / movies.length) * 100);
 
     return { movies, percentSeen };
@@ -85,7 +85,7 @@ class CreatorHelper {
 
     movies = movies.filter(m => m.vote_count > 50);
 
-    const moviesSeen = movies.filter(a => a.classname === 'badreco').length;
+    const moviesSeen = movies.filter(a => a.classname === 'movie-seen').length;
     const percentSeen = Math.floor((moviesSeen / movies.length) * 100);
 
     return { movies, percentSeen };
@@ -97,6 +97,17 @@ class CreatorHelper {
     const bgImg = `https://image.tmdb.org/t/p/w${size}${img}`;
     const blur = await _blurBase64URI(bgImg, 3);
     _createRule(blur);
+
+    const width = window.innerWidth
+      || document.documentElement.clientWidth
+      || document.body.clientWidth;
+
+    const height = window.innerHeight
+      || document.documentElement.clientHeight
+      || document.body.clientHeight;
+
+    console.log(width, height);
+
     return blur;
   }
 
@@ -147,7 +158,7 @@ function _filterSeen(movies, moviesDB) {
 
   return movies.map((movie) => {
     if (moviesDB[movie.id] !== undefined) {
-      movie.classname = 'badreco';
+      movie.classname = 'movie-seen';
     }
     const vote = movie.vote_average * 10;
     movie.voteWidth = vote;

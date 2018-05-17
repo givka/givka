@@ -35,7 +35,7 @@ class Creator {
       .sort((a, b) => b.vote_count - a.vote_count)
       .map((movie) => {
         if (moviesDB[movie.id] !== undefined) {
-          movie.classname = 'badreco';
+          movie.classname = 'movie-seen';
         }
         const vote = movie.vote_average * 10;
         movie.voteWidth = vote;
@@ -48,7 +48,7 @@ class Creator {
       .sort((a, b) => b.vote_count - a.vote_count)
       .map((movie) => {
         if (moviesDB[movie.id] !== undefined) {
-          movie.classname = 'badreco';
+          movie.classname = 'movie-seen';
         }
         const vote = movie.vote_average * 10;
         movie.voteWidth = vote;
@@ -213,6 +213,32 @@ class Creator {
     _hideSpinner('#movies');
   }
 
+  async createArtists() {
+    _showSpinner();
+    const artists = await MovieDB.getArt();
+
+    artists
+      .forEach((a) => { a.image = a.image.replace('!Large.jpg', ''); });
+
+    // .filter(a => a.image !== 'https://uploads.wikiart.org/Content/images/FRAME-600x480.jpg')
+    // .filter(a => a.image !== 'https://uploads.wikiart.org/Content/images/ARTIST-480x600.jpg')
+
+    console.log(artists);
+    await CreatorHelper.setMoviesBackground();
+
+    const context = { items: artists };
+
+    const template = await CreatorHelper.getTemplate('artists');
+    const result = template(context);
+
+    document.getElementById('movies-content')
+      .insertAdjacentHTML('beforeend', result);
+
+    _updateTitle('Artists', artists);
+    this.eventClickImage();
+    _hideSpinner('#movies');
+  }
+
   async createDiscover(list) {
     _showSpinner();
 
@@ -226,7 +252,7 @@ class Creator {
     const data = await JsonDB.readDB('movie');
     movies.map((movie) => {
       if (data[movie.id] !== undefined) {
-        movie.seen = 'badreco';
+        movie.seen = 'movie-seen';
       } else {
         movie.seen = '';
       }
@@ -253,7 +279,7 @@ class Creator {
         if (event.target.tagName !== 'IMG') { return; }
         const container = event.path[1];
         if (event.metaKey || event.ctrlKey) {
-          if (container.classList.contains('badreco')) {
+          if (container.classList.contains('movie-seen')) {
             this.eventRemoveMovieSeen(container);
           } else {
             this.eventAddMovieSeen(container);
@@ -277,7 +303,7 @@ class Creator {
         if (event.target.tagName !== 'IMG') { return; }
         if (event.metaKey || event.ctrlKey) {
           const container = event.path[1];
-          if (container.classList.contains('badreco')) {
+          if (container.classList.contains('movie-seen')) {
             this.eventRemoveMovieSeen(container);
           } else {
             this.eventAddMovieSeen(container);
@@ -290,14 +316,14 @@ class Creator {
 
   async eventAddMovieSeen(element) {
     const id = element.classList[0].replace('id-', '');
-    $(`.${element.classList[0]}`).toggleClass('badreco');
+    $(`.${element.classList[0]}`).toggleClass('movie-seen');
     const movie = await MovieDB.getMovie(id, null);
     await JsonDB.addKeyDB('movie', movie);
   }
 
   async eventRemoveMovieSeen(element) {
     const id = element.classList[0].replace('id-', '');
-    $(`.${element.classList[0]}`).toggleClass('badreco');
+    $(`.${element.classList[0]}`).toggleClass('movie-seen');
     await JsonDB.deleteKeyDB('movie', id);
   }
 
@@ -334,6 +360,8 @@ class Creator {
         if (id === 'collection') { this.createSeen(); }
 
         if (id === 'discover') { this.createDiscover('top_rated'); }
+
+        if (id === 'art') { this.createArtists(); }
       });
   }
 }
@@ -391,9 +419,9 @@ function _updatePercentSeen() {
   document.querySelectorAll('.list')
     .forEach((list) => {
       const percentSeen = list.parentElement.getElementsByTagName('span')[0];
-      const badrecos = list.querySelectorAll('.badreco').length;
+      const watched = list.querySelectorAll('.movie-seen').length;
       const movies = list.querySelectorAll('.movie-poster').length;
-      percentSeen.innerHTML = Math.floor(badrecos / movies * 100);
+      percentSeen.innerHTML = Math.floor(watched / movies * 100);
     });
 }
 // function _sleep(s) {

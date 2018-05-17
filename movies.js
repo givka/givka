@@ -8,9 +8,9 @@ const Creator = require('./src/creator');
 const c = new Creator();
 
 c.eventNav();
-// c.createSeen();
-//
 c.createSeen();
+//
+// c.createArtists();
 // c.createPeople(12);
 
 // function getSC(movie) {
