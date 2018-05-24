@@ -1,25 +1,33 @@
 {
   "name": "givka",
+  "private": true,
   "version": "1.0.0",
+  "description": "",
   "main": "main.js",
-  "devDependencies": {},
   "scripts": {
-    "prestart": "lessc css/styles.less css/styles.css",
     "start": "electron ."
   },
-  "author": "Ketshi",
-  "license": "MIT",
-  "description": "Givka",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://givka@bitbucket.org/givka/givka.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/givka/givka#readme",
   "dependencies": {
-    "electron": "^1.8.2",
-    "electron-json-storage": "^4.0.2",
-    "eslint": "^4.19.0",
+    "angular": "^1.7.0",
+    "angular-route": "^1.7.0",
+    "electron": "^2.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.11.0",
-    "handlebars": "^4.0.11",
-    "jimp": "^0.2.28",
-    "jquery": "^3.3.1",
-    "request-promise": "^4.2.2"
+    "eslint-plugin-import": "^2.12.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-less": "^3.5.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uglify-es": "^1.0.4"
   }
 }

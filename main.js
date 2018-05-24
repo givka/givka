@@ -22,20 +22,18 @@ const mainMenuTemplate = [
   },
 ];
 
-// Listen for the app to be ready
 app.on('ready', () => {
-  // Create new window
   mainWindow = new BrowserWindow({
-    backgroundColor: '#14181C',
+    // backgroundColor: '#14181C',
     height: 800,
     width: 1280,
-    fullscreen: true,
+    // fullscreen: true,
   });
-  // Monokai backgroundColor: '#262820'
-  // Letterboxd backgroundColor: '#14181C'
+
+  console.log(__dirname);
 
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'givka.html'),
+    pathname: path.join(__dirname, 'dist/index.html'),
     protocol: 'file',
     slashes: true,
   }));
@@ -55,7 +53,7 @@ if (process.env.NODE_ENV !== 'production') {
 
     submenu: [{
       label: 'Toggle DevTools',
-      accelerator: 'Command+I',
+      accelerator: 'I',
       click(item, focusedWindow) {
         focusedWindow.toggleDevTools();
       },

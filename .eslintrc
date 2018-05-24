@@ -4,46 +4,11 @@
     "node": true
   },
   "parserOptions": {
-    "ecmaVersion": 2017,
-    "sourceType": "module"
+    "ecmaVersion": 2017
   },
-  "extends": "airbnb-base",
   "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 100
-      }
-    ],
-    "no-restricted-syntax": 0,
-    "import/no-unresolved": [
-      "error",
-      {
-        "ignore": [
-          "scripts/"
-        ]
-      }
-    ],
-    "class-methods-use-this": "off",
-    "no-plusplus": "off",
-    "no-param-reassign": "off",
-    "no-multiple-empty-lines": [
-      "error",
-      {
-        "max": 1
-      }
-    ],
-    "func-names": "off",
-    "no-nested-ternary": "off",
-    "no-continue": "off",
-    "guard-for-in": "off",
-    "prefer-destructuring": "off",
-    "no-underscore-dangle": "off",
-    "no-use-before-define": "off",
-    "no-mixed-operators": "off",
-    "linebreak-style": "off",
-    "consistent-return": "off",
-    "camelcase": "off",
-    "no-await-in-loop": "off"
+    "semi": "error",
+    "prefer-arrow-callback": "error",
+    "prefer-template": "error"
   }
 }
