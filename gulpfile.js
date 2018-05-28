@@ -1,13 +1,13 @@
+const templateCache = require('gulp-angular-templatecache');
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const less = require('gulp-less');
 const path = require('path');
-const debug = require('gulp-debug');
+
 
 gulp.task('less', () => {
   return gulp
     .src('./src/**/*.less')
-    .pipe(debug())
     .pipe(less({
       paths: [path.join(__dirname, 'less', 'includes')]
     }))
@@ -23,16 +23,15 @@ gulp.task('js', () => {
       "./src/index.js",
       "./src/**/*.js"
     ])
-    .pipe(debug())
     .pipe(concat('scripts.js'))
     .pipe(gulp.dest('./dist/js'));
 });
 
 gulp.task('html', () => {
   return gulp
-    .src('./src/**/*.html')
-    .pipe(debug())
-    .pipe(gulp.dest('./dist/'));
+    .src('./src/Movies/**/*.html')
+    .pipe(templateCache())
+    .pipe(gulp.dest('./dist/js'));
 });
 
 gulp.task('build', () => {

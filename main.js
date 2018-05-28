@@ -33,7 +33,7 @@ app.on('ready', () => {
   console.log(__dirname);
 
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'dist/index.html'),
+    pathname: path.join(__dirname, 'src/index.html'),
     protocol: 'file',
     slashes: true,
   }));
