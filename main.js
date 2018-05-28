@@ -24,10 +24,10 @@ const mainMenuTemplate = [
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
-    // backgroundColor: '#14181C',
+    backgroundColor: '#14181C',
     height: 800,
     width: 1280,
-    // fullscreen: true,
+    fullscreen: true,
   });
 
   console.log(__dirname);
