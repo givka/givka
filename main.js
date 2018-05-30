@@ -30,8 +30,6 @@ app.on('ready', () => {
     fullscreen: true,
   });
 
-  console.log(__dirname);
-
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'src/index.html'),
     protocol: 'file',

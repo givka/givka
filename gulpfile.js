@@ -4,39 +4,35 @@ const concat = require('gulp-concat');
 const less = require('gulp-less');
 const path = require('path');
 
+gulp.task('less', () => gulp
+  .src('./src/**/*.less')
+  .pipe(less({
+    paths: [path.join(__dirname, 'less', 'includes')],
+  }))
+  .pipe(concat('main.css'))
+  .pipe(gulp.dest('./dist/css')));
 
-gulp.task('less', () => {
-  return gulp
-    .src('./src/**/*.less')
-    .pipe(less({
-      paths: [path.join(__dirname, 'less', 'includes')]
-    }))
-    .pipe(concat('main.css'))
-    .pipe(gulp.dest('./dist/css'));
-});
+gulp.task('jsLib', () => gulp
+  .src([
+    './node_modules/angular/angular.js',
+  ])
+  .pipe(concat('js-lib.js'))
+  .pipe(gulp.dest('./dist/js')));
 
-gulp.task('js', () => {
-  return gulp
-    .src([
-      "./node_modules/angular/angular.js",
-      "./node_modules/angular-route/angular-route.js",
-      "./src/index.js",
-      "./src/**/*.js"
-    ])
-    .pipe(concat('scripts.js'))
-    .pipe(gulp.dest('./dist/js'));
-});
+gulp.task('js', () => gulp
+  .src([
+    './src/index.js',
+    './src/**/*.js',
+  ])
+  .pipe(concat('scripts.js'))
+  .pipe(gulp.dest('./dist/js')));
 
-gulp.task('html', () => {
-  return gulp
-    .src('./src/Movies/**/*.html')
-    .pipe(templateCache())
-    .pipe(gulp.dest('./dist/js'));
-});
+gulp.task('html', () => gulp
+  .src('./src/**/*Component.html')
+  .pipe(templateCache())
+  .pipe(gulp.dest('./dist/js')));
 
-gulp.task('build', () => {
-  return gulp.start(['less', 'html', 'js']);
-});
+gulp.task('build', () => gulp.start(['less', 'html', 'jsLib', 'js']));
 
 gulp.task('watch', () => {
   gulp.start(['build']);
