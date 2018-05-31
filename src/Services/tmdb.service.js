@@ -1,8 +1,8 @@
 angular.module('givka')
-  .service('MovieDBService', ['$http', class MovieDBService {
-    constructor($http) {
+  .service('TmdbService', ['$http', '$q', class TmdbService {
+    constructor($http, $q) {
       this.$http = $http;
-
+      this.$q = $q;
       this.apiKey = 'aa79a25e783821b082e1e241e41889db';
       this.language = 'en-US';
     }
@@ -37,11 +37,11 @@ angular.module('givka')
       for (let i = 1; i <= number; i += 1) {
         PromiseArray.push(this._getRequest(url, null, i));
       }
-      return Promise.all(PromiseArray)
+      return this.$q.all(PromiseArray)
         .then((allResponses) => {
           let results = allResponses.map(value => value.results);
           results = [].concat(...results);
-          return results;
+          return Object.keys(results).map(key => results[key]);
         });
     }
 
@@ -58,6 +58,6 @@ angular.module('givka')
         },
         body: '{}',
         json: true,
-      });
+      }).then(result => result.data);
     }
   }]);

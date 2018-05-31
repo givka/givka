@@ -27,7 +27,7 @@ app.on('ready', () => {
     backgroundColor: '#14181C',
     height: 800,
     width: 1280,
-    fullscreen: true,
+    // fullscreen: true,
   });
 
   mainWindow.loadURL(url.format({
