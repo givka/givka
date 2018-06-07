@@ -1,2 +1,5 @@
+const _ = require('lodash');
+
 angular.module('templates', []);
-var app = angular.module("givka", []);
+const app = angular.module('givka', []);
+

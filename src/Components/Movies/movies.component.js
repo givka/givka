@@ -23,7 +23,7 @@ angular.module('givka')
         this.StorageService.readDB('movie')
           .then((movies) => {
             this.movies = Object.keys(movies).map(key => movies[key]);
-            console.log(this.movies);
+            this.movies = _.orderBy(this.movies, e => e.title);
           });
       }
 

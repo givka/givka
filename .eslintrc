@@ -11,7 +11,8 @@
     "sourceType": "module"
   },
   "globals": {
-    "angular": true
+    "angular": true,
+    "_": true
   },
   "rules": {
     "class-methods-use-this": "off",
