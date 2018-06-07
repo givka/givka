@@ -14,21 +14,6 @@
     "angular": true
   },
   "rules": {
-    "max-len": [
-      "error",
-      {
-        "code": 100
-      }
-    ],
-    "no-restricted-syntax": 0,
-    "import/no-unresolved": [
-      "error",
-      {
-        "ignore": [
-          "scripts/"
-        ]
-      }
-    ],
     "class-methods-use-this": "off",
     "no-plusplus": "off",
     "no-param-reassign": "off",
@@ -38,17 +23,6 @@
         "max": 1
       }
     ],
-    "func-names": "off",
-    "no-nested-ternary": "off",
-    "no-continue": "off",
-    "guard-for-in": "off",
-    "prefer-destructuring": "off",
-    "no-underscore-dangle": "off",
-    "no-use-before-define": "off",
-    "no-mixed-operators": "off",
-    "linebreak-style": "off",
-    "consistent-return": "off",
-    "camelcase": "off",
-    "no-await-in-loop": "off"
+    "no-underscore-dangle": "off"
   }
 }
