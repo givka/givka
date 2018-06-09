@@ -53,7 +53,7 @@ if (process.env.NODE_ENV !== 'production') {
 
     submenu: [{
       label: 'Toggle DevTools',
-      accelerator: 'I',
+      accelerator: 'Cmd+I',
       click(item, focusedWindow) {
         focusedWindow.toggleDevTools();
       },

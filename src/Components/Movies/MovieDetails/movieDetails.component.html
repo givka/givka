@@ -1,7 +1,7 @@
 <div class="movie-details-component">
+
   <div id="movie-bar">
     <div id="movie-image">
-
       <img ng-src="https://image.tmdb.org/t/p/w500{{$ctrl.movie.poster}}">
     </div>
     <div id="movie-description">
@@ -16,11 +16,10 @@
                ng-repeat="credit in $ctrl.movie.credits">
             <img ng-src="https://image.tmdb.org/t/p/w185{{credit.profile_path}}">
             <div id="credit-info">
-              <p id="credit-job">{{creditJob}}</p>
-              <p id="credit-name">{{this.name}}</p>
+              <p id="credit-job">{{credit.role}}</p>
+              <p id="credit-name">{{credit.name}}</p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -31,12 +30,17 @@
     <div id="movie-images">
       <div class="movie-image"
            ng-repeat="image in $ctrl.movie.images">
-        <img src="https://image.tmdb.org/t/p/w300{{image.file_path}}">
+        <img ng-src="https://image.tmdb.org/t/p/w780{{image.file_path}}">
       </div>
     </div>
     <div id="collection-parts"
-         ng-if="$ctrl.hasCollection"></div>
-    <div id="recommendations"></div>
+         ng-if="$ctrl.hasCollection">
+
+    </div>
+    <div id="recommendations">
+      <movie-list-component list-name="Similar movies"
+                            movie-list="$ctrl.movie.recommendations"></movie-list-component>
+    </div>
     <div id="director-movies"></div>
   </div>
 </div>

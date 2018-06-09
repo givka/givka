@@ -21,20 +21,12 @@ angular.module('givka')
       }
 
       onClickPoster(movie) {
-        this.isLoading = true;
-
         this.TmdbService.getMovie(movie.id)
           .then((result) => {
             this.movieDetails = new this.MovieDetailsFactory(result);
             this.showMovieDetails = true;
-            console.log(this.movieDetails);
           })
-          .catch(err => console.log(err))
           .finally(() => { this.isLoading = false; });
-
-        // this.movieDetails = movie;
-
-        // this.showMovieDetails = true;
       }
     }],
 

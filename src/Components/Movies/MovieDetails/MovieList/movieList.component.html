@@ -1,0 +1,14 @@
+<div class="movie-list-component">
+  <h3>{{$ctrl.listName}}</h3>
+  <h4>
+    <span>{{$ctrl.percentSeen}}</span>% seen</h4>
+  <div class="list">
+    <div class="movie-poster"
+         ng-repeat="movie in $ctrl.movieList">
+      <img ng-src="https://image.tmdb.org/t/p/w185{{movie.poster}}">
+      <div id="ratiovote"
+           ng-style="{width: movie.voteWidth+'%', background: movie.voteColor}">
+      </div>
+    </div>
+  </div>
+</div>

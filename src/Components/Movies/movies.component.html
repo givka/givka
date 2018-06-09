@@ -12,7 +12,11 @@
   </div>
 
   <div ng-if="$ctrl.showMovieDetails">
+
+    <div class="close-button"
+         ng-click="$ctrl.showMovieDetails=false">x</div>
     <movie-details-component movie="$ctrl.movieDetails">
     </movie-details-component>
+
   </div>
 </div>

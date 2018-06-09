@@ -1,4 +1,16 @@
 .movies-component {
+  .close-button {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+    height: 10px;
+    width: 10px;
+    &:hover {
+      cursor: pointer;
+      color: red;
+      transform: scale(1.1)
+    }
+  }
   padding: 0 15%;
   h1 {
     text-align: center;
