@@ -1,0 +1,42 @@
+<div class="movie-details-component">
+  <div id="movie-bar">
+    <div id="movie-image">
+
+      <img ng-src="https://image.tmdb.org/t/p/w500{{$ctrl.movie.poster}}">
+    </div>
+    <div id="movie-description">
+      <h1 id="movie-title">{{$ctrl.movie.title}} ({{$ctrl.movie.releaseDate}})</h1>
+      <h2 id="movie-original-title">{{$ctrl.movie.originalTitle}}</h2>
+      <p id="runtime">{{$ctrl.movie.runtime}}</p>
+      <p id="overview">{{$ctrl.movie.overview}}</p>
+      <div id="credits">
+        <h3>Credits</h3>
+        <div id="movie-credits">
+          <div class="id-{{this.id}} movie-credit"
+               ng-repeat="credit in $ctrl.movie.credits">
+            <img ng-src="https://image.tmdb.org/t/p/w185{{credit.profile_path}}">
+            <div id="credit-info">
+              <p id="credit-job">{{creditJob}}</p>
+              <p id="credit-name">{{this.name}}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div>
+    <h3>Images</h3>
+    <div id="movie-images">
+      <div class="movie-image"
+           ng-repeat="image in $ctrl.movie.images">
+        <img src="https://image.tmdb.org/t/p/w300{{image.file_path}}">
+      </div>
+    </div>
+    <div id="collection-parts"
+         ng-if="$ctrl.hasCollection"></div>
+    <div id="recommendations"></div>
+    <div id="director-movies"></div>
+  </div>
+</div>

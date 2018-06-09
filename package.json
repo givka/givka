@@ -17,6 +17,7 @@
   "dependencies": {
     "angular": "^1.7.0",
     "electron": "^2.0.2",
+    "electron-reload": "^1.2.2",
     "electron-json-storage": "^4.1.0",
     "lodash": "^4.17.10"
   },
