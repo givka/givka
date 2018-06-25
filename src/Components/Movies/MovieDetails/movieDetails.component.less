@@ -132,8 +132,10 @@ h4 {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  height: 200px;
-  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  height: 175px;
+  margin: 10px 0;
   flex-direction: column;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -147,17 +149,14 @@ h4 {
 }
 
 .movie-image {
-  margin-right: 10px;
   height: 175px;
   img {
     height: 100%;
-    border-radius: 5px;
     transition: 0.3s ease;
     vertical-align: middle;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0px 10px rgba(0, 0, 0, 1);
     &:hover {
-      transform: scale(1.05);
+      filter: grayscale(100);
+      cursor: pointer;
     }
   }
 }

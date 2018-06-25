@@ -1,0 +1,15 @@
+<div class="main-component">
+  <div class="navigation-bar">
+    <div class="ib link"
+         ng-click="$ctrl.moviesType='discover'">Discover</div>
+    <div class="ib link"
+         ng-click="$ctrl.moviesType='seen'">Seen</div>
+  </div>
+
+  <div class="content">
+
+    <movies-component type="$ctrl.moviesType">
+    </movies-component>
+
+  </div>
+</div>

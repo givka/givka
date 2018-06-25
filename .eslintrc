@@ -31,6 +31,8 @@
       {
         "allowSingleLine": true
       }
-    ]
+    ],
+    "no-useless-return": "off",
+    "no-unused-expressions": "off"
   }
 }

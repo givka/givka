@@ -32,18 +32,18 @@ angular.module('givka')
             id: obj.id,
             poster_path: obj.poster_path,
             title: obj.title,
-            date: obj.release_date,
+            release_date: obj.release_date,
             backdrop_path: obj.backdrop_path,
           };
           return this.writeDB(key, data);
         });
     }
 
-    deleteKeyDB(key, id) {
+    deleteKeyDB(key, movie) {
       return this.readDB(key)
         .then((data) => {
-          if (data[id] !== undefined) {
-            delete data[id];
+          if (data[movie.id] !== undefined) {
+            delete data[movie.id];
           }
           return this.writeDB(key, data);
         });
