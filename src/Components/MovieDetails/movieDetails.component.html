@@ -39,7 +39,8 @@
     </div>
     <div id="recommendations">
       <movie-list-component list-name="Similar movies"
-                            movie-list="$ctrl.movie.recommendations"></movie-list-component>
+                            movie-list="$ctrl.movie.recommendations"
+                            show-movie-details-list="$ctrl.toggleMovieDetails(element)"></movie-list-component>
     </div>
     <div id="director-movies"></div>
   </div>

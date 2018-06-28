@@ -12,7 +12,8 @@
   },
   "globals": {
     "angular": true,
-    "_": true
+    "_": true,
+    "Jimp": true
   },
   "rules": {
     "class-methods-use-this": "off",

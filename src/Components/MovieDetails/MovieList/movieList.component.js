@@ -3,11 +3,16 @@ angular.module('givka')
     bindings: {
       movieList: '<',
       listName: '@',
+      showMovieDetailsList: '&',
     },
-    templateUrl: 'Components/Movies/MovieDetails/MovieList/movieList.component.html',
+    templateUrl: 'Components/MovieDetails/MovieList/movieList.component.html',
     controller: [class MovieListComponent {
       $onChanges() {
 
+      }
+
+      onClickPoster(movie) {
+        this.showMovieDetailsList({ element: movie });
       }
     }],
 

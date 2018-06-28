@@ -1,25 +1,14 @@
 <div class="movies-component">
-  <div ng-if="!$ctrl.showMovieDetails">
-    <h1 class="cap">{{$ctrl.type}}</h1>
-    <h2>{{$ctrl.movies.length}} movies</h2>
-    <h3>{{$ctrl.percentSeen}}</h3>
-    <div class="movies">
-      <div class="movie-poster"
-           ng-class="{'movie-seen' : movie.seen}"
-           ng-repeat="movie in $ctrl.movies"
-           ng-click="$ctrl.onClickPoster(movie, $event)">
-        <img ng-src="https://image.tmdb.org/t/p/w185{{movie.poster_path}}">
-      </div>
+  <h1 class="cap">{{$ctrl.type}}</h1>
+  <h2>{{$ctrl.movies.length}} movies</h2>
+  <h3>{{$ctrl.percentSeen}}</h3>
+  <div class="movies">
+    <div class="movie-poster"
+         ng-class="{'movie-seen' : movie.seen}"
+         ng-repeat="movie in $ctrl.movies"
+         ng-click="$ctrl.onClickPoster(movie, $event)">
+      <img ng-src="https://image.tmdb.org/t/p/w185{{movie.poster_path}}">
     </div>
   </div>
 
-  <div ng-if="$ctrl.showMovieDetails">
-
-    <div class="close-button"
-         ng-click="$ctrl.showMovieDetails=false">x</div>
-
-    <movie-details-component movie="$ctrl.movieDetails">
-    </movie-details-component>
-
-  </div>
 </div>

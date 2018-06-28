@@ -2,6 +2,7 @@ angular.module('givka')
   .component('moviesComponent', {
     bindings: {
       type: '<',
+      showMovieDetails: '&',
     },
     templateUrl: 'Components/Movies/movies.component.html',
     controller: ['TmdbService', 'StorageService', 'MovieDetailsFactory', class MoviesComponent {
@@ -40,14 +41,7 @@ angular.module('givka')
 
       onClickPoster(movie, event) {
         if (this._toggleSeen(movie, event)) { return; }
-
-        this.isLoading = true;
-        this.TmdbService.getMovie(movie.id)
-          .then((result) => {
-            this.movieDetails = new this.MovieDetailsFactory(result);
-            this.showMovieDetails = true;
-          })
-          .finally(() => { this.isLoading = false; });
+        this.showMovieDetails({ element: movie });
       }
 
       _filterSeen(movies, moviesSeen) {

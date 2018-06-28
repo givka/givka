@@ -62,26 +62,6 @@ angular.module('givka')
             return movie;
           });
       }
-
-      // _setBackground(backdrop) {
-      //   const img = backdrop;
-      //   const size = '300';
-      //   const bgImg = `https://image.tmdb.org/t/p/w${size}${img}`;
-      //   const blur = await _blurBase64URI(bgImg, 3);
-      //   _createRule(blur);
-
-      //   const width = window.innerWidth
-      //     || document.documentElement.clientWidth
-      //     || document.body.clientWidth;
-
-      //   const height = window.innerHeight
-      //     || document.documentElement.clientHeight
-      //     || document.body.clientHeight;
-
-      //   console.log(width, height);
-
-      //   return blur;
-      // }
     }
 
     return MovieDetailsFactory;

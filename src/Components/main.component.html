@@ -1,15 +1,49 @@
 <div class="main-component">
   <div class="navigation-bar">
     <div class="ib link"
-         ng-click="$ctrl.moviesType='discover'">Discover</div>
+         ng-click="$ctrl.onClickNavigation('discover')">Discover</div>
     <div class="ib link"
-         ng-click="$ctrl.moviesType='seen'">Seen</div>
+         ng-click="$ctrl.onClickNavigation('seen')">Seen</div>
   </div>
 
-  <div class="content">
+  <div class="main-content">
 
-    <movies-component type="$ctrl.moviesType">
-    </movies-component>
+    <div ng-if="!$ctrl.isLoading">
+      <movies-component ng-if="!$ctrl.showMovieDetails"
+                        type="$ctrl.moviesType"
+                        show-movie-details="$ctrl.toggleMovieDetails(element)">
+      </movies-component>
+
+      <div ng-if="$ctrl.showMovieDetails">
+
+        <div class="link close-movie-details"
+             ng-click="$ctrl.onCloseMovieDetails()">
+          <i class="fas fa-times"></i>
+        </div>
+
+        <movie-details-component movie="$ctrl.movieDetails"
+                                 show-movie-details="$ctrl.toggleMovieDetails(element)">
+        </movie-details-component>
+
+      </div>
+
+    </div>
+
+    <div ng-if="$ctrl.isLoading">
+      <div id="spinner">
+        <div class="sk-cube-grid">
+          <div class="sk-cube sk-cube1"></div>
+          <div class="sk-cube sk-cube2"></div>
+          <div class="sk-cube sk-cube3"></div>
+          <div class="sk-cube sk-cube4"></div>
+          <div class="sk-cube sk-cube5"></div>
+          <div class="sk-cube sk-cube6"></div>
+          <div class="sk-cube sk-cube7"></div>
+          <div class="sk-cube sk-cube8"></div>
+          <div class="sk-cube sk-cube9"></div>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>
