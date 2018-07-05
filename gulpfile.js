@@ -27,6 +27,10 @@ gulp.task('html', () => gulp
 
 gulp.task('build', () => gulp.start(['less', 'html', 'jsLib', 'js']));
 
+gulp.task('default', () => {
+  gulp.start(['build']);
+});
+
 gulp.task('watch', () => {
   gulp.start(['build']);
   gulp.watch(['./src/**/*.less'], ['less']);
