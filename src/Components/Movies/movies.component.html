@@ -4,7 +4,7 @@
   <h3>{{$ctrl.percentSeen}}</h3>
   <div class="movies">
     <div class="movie-poster"
-         ng-class="{'movie-seen' : movie.seen}"
+         ng-class="{'movie-seen' : ($ctrl.type === 'discover' && movie.seen) || ($ctrl.type === 'seen' && !movie.seen)}"
          ng-repeat="movie in $ctrl.movies"
          ng-click="$ctrl.onClickPoster(movie, $event)">
       <img ng-src="https://image.tmdb.org/t/p/w185{{movie.poster_path}}">

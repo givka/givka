@@ -35,6 +35,7 @@ angular.module('givka')
             release_date: obj.release_date,
             backdrop_path: obj.backdrop_path,
           };
+          console.log('add');
           return this.writeDB(key, data);
         });
     }
@@ -45,6 +46,7 @@ angular.module('givka')
           if (data[movie.id] !== undefined) {
             delete data[movie.id];
           }
+          console.log('delete');
           return this.writeDB(key, data);
         });
     }

@@ -2,42 +2,82 @@ angular.module('givka')
   .component('mainComponent', {
     bindings: {},
     templateUrl: 'Components/main.component.html',
-    controller: ['$timeout', 'TmdbService', 'MovieDetailsFactory', class MainComponent {
-      constructor($timeout, TmdbService, MovieDetailsFactory) {
+    controller: ['$timeout', '$q', 'TmdbService', 'MovieDetailsFactory', 'StorageService', class MainComponent {
+      constructor($timeout, $q, TmdbService, MovieDetailsFactory, StorageService) {
         this.$timeout = $timeout;
+        this.$q = $q;
         this.TmdbService = TmdbService;
         this.MovieDetailsFactory = MovieDetailsFactory;
-        this.moviesType = 'seen';
+        this.StorageService = StorageService;
+
         this.ruleAdded = false;
+        this.type = 'seen';
       }
 
       $onInit() {
         this._initStyleSheet();
+        this._getMovies(this.type);
       }
 
       toggleMovieDetails(movie) {
         this.isLoading = true;
-
         this._createRule(movie.backdrop_path || movie.backdrop);
-
         this.TmdbService.getMovie(movie.id)
           .then((result) => {
             this.movieDetails = new this.MovieDetailsFactory(result);
             this.showMovieDetails = true;
           })
-          .finally(() => { this.isLoading = false; });
+          .finally(() => {
+            this.$timeout(() => { this.isLoading = false; }, 1000);
+          });
       }
 
       onCloseMovieDetails() {
         this.showMovieDetails = false;
-
         this._deleteRule();
+
+        this.isLoading = true;
+        this.$timeout(() => { this.isLoading = false; }, 1000);
       }
 
       onClickNavigation(type) {
-        this.moviesType = type;
         this.showMovieDetails = false;
         this._deleteRule();
+
+        if (this.type !== type) {
+          this._getMovies(type);
+        }
+        else {
+          this.isLoading = true;
+          this.$timeout(() => { this.isLoading = false; }, 1000);
+        }
+      }
+
+      _getMovies(type) {
+        this.isLoading = true;
+        const promises = [];
+        promises.push(this.StorageService.readDB('movie'));
+        if (type === 'discover') {
+          promises.push(this.TmdbService.getDiscover('top_rated', 20));
+        }
+
+        this.$q.all(promises)
+          .then(([watchedMovies, discoverMovies]) => {
+            let _movies = discoverMovies || Object.keys(watchedMovies).map(id => watchedMovies[id]);
+            _movies = this._filterSeen(_movies, watchedMovies);
+            this.movies = _movies;
+            this.type = type;
+          })
+          .finally(() => {
+            this.$timeout(() => { this.isLoading = false; }, 1000);
+          });
+      }
+
+      _filterSeen(movies, moviesSeen) {
+        return movies.map((movie) => {
+          movie.seen = !!moviesSeen[movie.id];
+          return movie;
+        });
       }
 
       _initStyleSheet() {
@@ -75,10 +115,6 @@ angular.module('givka')
           this.styleSheet.deleteRule(0);
           this.ruleAdded = false;
         }
-        this.isLoading = true;
-        this.$timeout(() => {
-          this.isLoading = false;
-        }, 500);
       }
 
       _blurBase64URI(bgImg, pixels) {

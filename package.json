@@ -5,6 +5,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
+    "postinstall": "gulp",
     "start": "electron ."
   },
   "repository": {
