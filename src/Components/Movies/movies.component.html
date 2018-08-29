@@ -1,7 +1,7 @@
 <div class="movies-component">
   <h1 class="cap">{{$ctrl.type}}</h1>
   <h2>{{$ctrl.movies.length}} movies</h2>
-  <h3>{{$ctrl.percentSeen}}</h3>
+
   <div class="movies">
     <div class="movie-poster"
          ng-class="{'movie-seen' : ($ctrl.type === 'discover' && movie.seen) || ($ctrl.type === 'seen' && !movie.seen)}"

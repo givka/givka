@@ -2,9 +2,9 @@ angular.module('givka')
   .component('mainComponent', {
     bindings: {},
     templateUrl: 'Components/main.component.html',
-    controller: ['$timeout', '$q', 'TmdbService', 'MovieDetailsFactory', 'StorageService', class MainComponent {
-      constructor($timeout, $q, TmdbService, MovieDetailsFactory, StorageService) {
-        this.$timeout = $timeout;
+    controller: ['$scope', '$q', 'TmdbService', 'MovieDetailsFactory', 'StorageService', class MainComponent {
+      constructor($scope, $q, TmdbService, MovieDetailsFactory, StorageService) {
+        this.$scope = $scope;
         this.$q = $q;
         this.TmdbService = TmdbService;
         this.MovieDetailsFactory = MovieDetailsFactory;
@@ -17,6 +17,10 @@ angular.module('givka')
       $onInit() {
         this._initStyleSheet();
         this._getMovies(this.type);
+
+        this.$scope.$on('movieDetails', ($event, data) => {
+          this.toggleMovieDetails(data.movie);
+        });
       }
 
       toggleMovieDetails(movie) {
@@ -28,7 +32,7 @@ angular.module('givka')
             this.showMovieDetails = true;
           })
           .finally(() => {
-            this.$timeout(() => { this.isLoading = false; }, 1000);
+            this.isLoading = false;
           });
       }
 
@@ -37,7 +41,7 @@ angular.module('givka')
         this._deleteRule();
 
         this.isLoading = true;
-        this.$timeout(() => { this.isLoading = false; }, 1000);
+        this.isLoading = false;
       }
 
       onClickNavigation(type) {
@@ -49,7 +53,7 @@ angular.module('givka')
         }
         else {
           this.isLoading = true;
-          this.$timeout(() => { this.isLoading = false; }, 1000);
+          this.isLoading = false;
         }
       }
 
@@ -69,7 +73,7 @@ angular.module('givka')
             this.type = type;
           })
           .finally(() => {
-            this.$timeout(() => { this.isLoading = false; }, 1000);
+            this.isLoading = false;
           });
       }
 

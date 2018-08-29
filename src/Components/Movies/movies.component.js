@@ -3,11 +3,11 @@ angular.module('givka')
     bindings: {
       movies: '<',
       type: '<',
-      showMovieDetails: '&',
     },
     templateUrl: 'Components/Movies/movies.component.html',
-    controller: ['TmdbService', 'StorageService', 'MovieDetailsFactory', class MoviesComponent {
-      constructor(TmdbService, StorageService, MovieDetailsFactory) {
+    controller: ['$scope', 'TmdbService', 'StorageService', 'MovieDetailsFactory', class MoviesComponent {
+      constructor($scope, TmdbService, StorageService, MovieDetailsFactory) {
+        this.$scope = $scope;
         this.TmdbService = TmdbService;
         this.StorageService = StorageService;
         this.MovieDetailsFactory = MovieDetailsFactory;
@@ -20,7 +20,7 @@ angular.module('givka')
           this.percentSeen = this._getPercentSeen(this.movies);
         }
         else {
-          this.showMovieDetails({ element: movie });
+          this.$scope.$emit('movieDetails', { movie });
         }
       }
 
