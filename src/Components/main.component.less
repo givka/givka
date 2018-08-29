@@ -1,4 +1,3 @@
-@import 'shared/Spinner/spinner.component.less';
 .main-component {
   .navigation-bar {
     z-index: 10;
@@ -34,6 +33,33 @@
       float: right;
       margin-top: 20px;
       font-size: 20px;
+    }
+    .movie-poster {
+      height: 175px;
+      width: 120px;
+      transition: 0.2s ease;
+      border: solid 1px;
+      border-radius: 5px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+      }
+      &.movie-seen {
+        opacity: 0.1;
+        &:hover {
+          opacity: 0.5;
+        }
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        object-fit: cover;
+        vertical-align: middle;
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 1);
+      }
     }
   }
 }

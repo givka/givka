@@ -1,0 +1,79 @@
+.movie-details-component {
+  .movie-bar {
+    display: flex;
+    .movie-description {
+      width: 80%;
+      padding: 20px;
+      text-align: justify;
+    }
+    .movie-main-poster {
+      width: 20%;
+      display: flex;
+      align-items: center;
+      img {
+        transition: ease 0.3s;
+        max-width: 250px;
+        width: 100%;
+        border-radius: 5px;
+        vertical-align: middle;
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+  .movie-images {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    height: 175px;
+    margin: 10px 0;
+    flex-direction: column;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    .movie-image {
+      height: 175px;
+      img {
+        height: 100%;
+        transition: 0.3s ease;
+        vertical-align: middle;
+        &:hover {
+          filter: brightness(1.25);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .movie-credits {
+    display: flex;
+    padding-left: 1%;
+    padding-right: 1%;
+    .movie-credit {
+      width: 10%;
+      padding: 1%;
+      img {
+        transition: 0.3s ease;
+        border-radius: 5px;
+        vertical-align: middle;
+        width: 100%;
+        height: 66%;
+        box-shadow: 0 0px 10px rgba(0, 0, 0, 1);
+        object-fit: cover;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+      .credit-info {
+        margin-top: 5%;
+        p {
+          font-size: 75%;
+          text-align: center;
+          white-space: nowrap;
+          overflow-x: hidden;
+        }
+      }
+    }
+  }
+}

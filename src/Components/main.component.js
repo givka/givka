@@ -19,6 +19,7 @@ angular.module('givka')
         this._getMovies(this.type);
 
         this.$scope.$on('movieDetails', ($event, data) => {
+          console.log($event, data);
           this.toggleMovieDetails(data.movie);
         });
       }

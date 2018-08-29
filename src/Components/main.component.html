@@ -11,8 +11,7 @@
     <div ng-if="!$ctrl.isLoading">
       <movies-component ng-if="!$ctrl.showMovieDetails"
                         movies="$ctrl.movies"
-                        type="$ctrl.type"
-                        show-movie-details="$ctrl.toggleMovieDetails(element)">
+                        type="$ctrl.type">
       </movies-component>
 
       <div ng-if="$ctrl.showMovieDetails">

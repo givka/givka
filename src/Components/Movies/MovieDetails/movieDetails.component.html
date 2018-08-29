@@ -1,21 +1,21 @@
 <div class="movie-details-component">
 
-  <div id="movie-bar">
-    <div id="movie-image">
+  <div class="movie-bar">
+    <div class="movie-main-poster">
       <img ng-src="https://image.tmdb.org/t/p/w500{{$ctrl.movie.poster}}">
     </div>
-    <div id="movie-description">
+    <div class="movie-description">
       <h1 id="movie-title">{{$ctrl.movie.title}} ({{$ctrl.movie.releaseDate}})</h1>
       <h2 id="movie-original-title">{{$ctrl.movie.originalTitle}}</h2>
       <p id="runtime">{{$ctrl.movie.runtime}}</p>
       <p id="overview">{{$ctrl.movie.overview}}</p>
       <div id="credits">
         <h3>Credits</h3>
-        <div id="movie-credits">
+        <div class="movie-credits">
           <div class="id-{{this.id}} movie-credit"
                ng-repeat="credit in $ctrl.movie.credits">
             <img ng-src="https://image.tmdb.org/t/p/w185{{credit.profile_path}}">
-            <div id="credit-info">
+            <div class="credit-info">
               <p id="credit-job">{{credit.role}}</p>
               <p id="credit-name">{{credit.name}}</p>
             </div>
@@ -27,7 +27,7 @@
   </div>
   <div>
     <h3>Images</h3>
-    <div id="movie-images">
+    <div class="movie-images">
       <div class="movie-image"
            ng-repeat="image in $ctrl.movie.images">
         <img ng-src="https://image.tmdb.org/t/p/w780{{image.file_path}}">
@@ -39,8 +39,7 @@
     </div>
     <div id="recommendations">
       <movie-list-component list-name="Similar movies"
-                            movie-list="$ctrl.movie.recommendations"
-                            show-movie-details-list="$ctrl.toggleMovieDetails(element)"></movie-list-component>
+                            movie-list="$ctrl.movie.recommendations"></movie-list-component>
     </div>
     <div id="director-movies"></div>
   </div>

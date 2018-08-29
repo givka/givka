@@ -7,7 +7,7 @@
          ng-repeat="movie in $ctrl.movieList"
          ng-click="$ctrl.onClickPoster(movie, $event)">
       <img ng-src="https://image.tmdb.org/t/p/w185{{movie.poster}}">
-      <div id="ratiovote"
+      <div class="ratio-vote"
            ng-style="{width: movie.voteWidth+'%', background: movie.voteColor}">
       </div>
     </div>
