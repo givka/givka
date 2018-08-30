@@ -10,6 +10,10 @@ angular.module('givka')
       constructor($scope) {
         this.$scope = $scope;
       }
+
+      onClickPoster(movie, event) {
+        this.$scope.$emit('clickPoster', { movie, event });
+      }
     }],
 
   });

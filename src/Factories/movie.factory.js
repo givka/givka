@@ -1,16 +1,16 @@
 angular.module('givka')
-  .factory('MovieDetailsFactory', (ColorService) => {
-    class MovieDetailsFactory {
-      constructor(options) {
-        this.backdrop = options.backdrop_path;
+  .factory('MovieFactory', (ColorService) => {
+    class MovieFactory {
+      constructor(options, moviesSeen = {}) {
+        this.backdrop = options.backdrop_path || options.backdrop;
         this.hasCollection = options.belongs_to_collection;
         this.id = options.id;
         this.originalTitle = options.orginal_title;
         this.overview = options.overview;
         this.title = options.title;
         this.popularity = options.popularity;
-        this.poster = options.poster_path;
-        this.releaseDate = options.release_date;
+        this.poster = options.poster_path || options.poster;
+        this.releaseDate = moment(options.release_date || options.releaseDate, 'YYYY-MM-DD');
         this.runtime = options.runtime;
         this.tagLine = options.tagline;
         this.voteAverage = options.vote_average;
@@ -18,7 +18,8 @@ angular.module('givka')
         this.credits = this._formatCredits(options.credits);
         this.images = this._formatImages(options.images);
         this.videos = options.videos;
-        this.recommendations = this._filterSeen(options.recommendations);
+        this.recommendations = this._formatMovies(options.recommendations, moviesSeen);
+        this.seen = !!moviesSeen[this.id];
       }
 
       _formatCredits(credits) {
@@ -44,18 +45,13 @@ angular.module('givka')
         return images;
       }
 
-      _filterSeen(movies) {
+      _formatMovies(movies, moviesSeen) {
         if (!movies) { return null; }
 
-        movies = movies.results;
-
-        return movies
-          .map(movie => new MovieDetailsFactory(movie))
+        return movies.results
+          .map(movie => new MovieFactory(movie, moviesSeen))
           .filter(movie => movie.poster)
           .map((movie) => {
-            // if (moviesDB[movie.id] !== undefined) {
-            //   movie.className = 'movie-seen';
-            // }
             const vote = movie.voteAverage * 10;
             movie.voteWidth = vote;
             movie.voteColor = ColorService.ratingToColor(vote);
@@ -64,5 +60,5 @@ angular.module('givka')
       }
     }
 
-    return MovieDetailsFactory;
+    return MovieFactory;
   });

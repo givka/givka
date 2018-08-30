@@ -13,7 +13,8 @@
   "globals": {
     "angular": true,
     "_": true,
-    "Jimp": true
+    "Jimp": true,
+    "moment": true
   },
   "rules": {
     "class-methods-use-this": "off",

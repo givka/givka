@@ -1,9 +1,9 @@
 <div class="movie-list-component">
   <h3>{{$ctrl.listName}}</h3>
-  <h4>
-    <span>{{$ctrl.percentSeen}}</span>% seen</h4>
+
   <div class="list">
     <div class="movie-poster"
+         ng-class="{'movie-seen' : movie.seen}"
          ng-repeat="movie in $ctrl.movieList"
          ng-click="$ctrl.onClickPoster(movie, $event)">
       <img ng-src="https://image.tmdb.org/t/p/w185{{movie.poster}}">

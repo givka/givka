@@ -1,36 +1,19 @@
 <div class="main-component">
   <div class="navigation-bar">
     <div class="ib link"
-         ng-click="$ctrl.onClickNavigation('discover')">Discover</div>
+         ng-click="$ctrl.onClickTab('movies')">Movies</div>
     <div class="ib link"
-         ng-click="$ctrl.onClickNavigation('seen')">Seen</div>
+         ng-click="$ctrl.onClickTab('tv')">TV Shows</div>
+    <div class="ib link"
+         ng-click="$ctrl.onClickTab('art')">Art</div>
+
   </div>
 
   <div class="main-content">
 
-    <div ng-if="!$ctrl.isLoading">
-      <movies-component ng-if="!$ctrl.showMovieDetails"
-                        movies="$ctrl.movies"
-                        type="$ctrl.type">
+    <div ng-if="$ctrl.tabSelected==='movies'">
+      <movies-component movies="$ctrl.movies">
       </movies-component>
-
-      <div ng-if="$ctrl.showMovieDetails">
-
-        <div class="link close-movie-details"
-             ng-click="$ctrl.onCloseMovieDetails()">
-          <i class="fas fa-times"></i>
-        </div>
-
-        <movie-details-component movie="$ctrl.movieDetails"
-                                 show-movie-details="$ctrl.toggleMovieDetails(element)">
-        </movie-details-component>
-
-      </div>
-
-    </div>
-
-    <div ng-if="$ctrl.isLoading">
-      <spinner-component></spinner-component>
     </div>
 
   </div>

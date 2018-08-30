@@ -30,10 +30,10 @@ angular.module('givka')
         .then((data) => {
           data[obj.id] = {
             id: obj.id,
-            poster_path: obj.poster_path,
+            poster: obj.poster,
             title: obj.title,
-            release_date: obj.release_date,
-            backdrop_path: obj.backdrop_path,
+            releaseDate: obj.releaseDate,
+            backdrop: obj.backdrop,
           };
           console.log('add');
           return this.writeDB(key, data);
