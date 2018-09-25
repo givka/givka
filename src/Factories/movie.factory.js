@@ -1,11 +1,11 @@
 angular.module('givka')
-  .factory('MovieFactory', (ColorService) => {
+  .factory('MovieFactory', ($q, ColorService, TmdbService) => {
     class MovieFactory {
       constructor(options, moviesSeen = {}) {
         this.backdrop = options.backdrop_path || options.backdrop;
         this.hasCollection = options.belongs_to_collection;
         this.id = options.id;
-        this.originalTitle = options.orginal_title;
+        this.originalTitle = options.original_title;
         this.overview = options.overview;
         this.title = options.title;
         this.popularity = options.popularity;
@@ -18,8 +18,19 @@ angular.module('givka')
         this.credits = this._formatCredits(options.credits);
         this.images = this._formatImages(options.images);
         this.videos = options.videos;
-        this.recommendations = this._formatMovies(options.recommendations, moviesSeen);
+        this.recommendations = this._formatMovies(options.recommendations && options.recommendations.results, moviesSeen);
         this.seen = !!moviesSeen[this.id];
+        this.trailer = this._formatTrailer(options.videos);
+      }
+
+      _formatTrailer(videos) {
+        if (!videos) { return null; }
+
+        let trailers = videos.results.filter(t => t.type === 'Trailer');
+
+        trailers = this._sortByKey(trailers, 'size');
+
+        return trailers[0].key || null;
       }
 
       _formatCredits(credits) {
@@ -48,7 +59,7 @@ angular.module('givka')
       _formatMovies(movies, moviesSeen) {
         if (!movies) { return null; }
 
-        return movies.results
+        return movies
           .map(movie => new MovieFactory(movie, moviesSeen))
           .filter(movie => movie.poster)
           .map((movie) => {
@@ -57,6 +68,67 @@ angular.module('givka')
             movie.voteColor = ColorService.ratingToColor(vote);
             return movie;
           });
+      }
+
+      getDetails(moviesSeen) {
+        return $q.all([
+          this._getDirectorMovies(moviesSeen),
+          this._getCollectionMovies(moviesSeen),
+        ])
+          .then(([directorMovies, collectionMovies]) => {
+            this.directorMovies = directorMovies;
+            this.collectionMovies = collectionMovies;
+            return this;
+          });
+      }
+
+      _getDirectorMovies(moviesSeen) {
+        const director = this.credits[0];
+        if (!director || director.job !== 'Director') { return null; }
+
+        return TmdbService.getPeople(director.id)
+          .then((_director) => {
+            let movies = _director.movie_credits.crew;
+
+            movies = movies.filter(movie => movie.job === 'Director');
+
+            movies = this._formatMovies(movies, moviesSeen);
+            movies = this._sortByKey(movies, 'voteCount');
+
+            movies = movies.filter(m => m.voteCount > 50);
+
+            return movies;
+          });
+      }
+
+      async _getCollectionMovies(moviesSeen) {
+        if (!this.hasCollection) { return null; }
+        const collection = await TmdbService.getCollection(this.hasCollection.id);
+        let movies = collection.parts;
+        movies = this._formatMovies(movies, moviesSeen);
+        movies = this._sortByKey(movies, 'releaseDate');
+
+        return movies;
+      }
+
+      _sortByKey(movies, key) {
+        return _.orderBy(movies, movie => movie[key], 'desc');
+      }
+
+      toggleSeen(movie, showMovieDetails) {
+        if (showMovieDetails) {
+          [].concat(movie.directorMovies, movie.collectionMovies, movie.recommendations)
+            .filter(m => m)
+            .filter(m => m.id === this.id)
+            .forEach((m) => { m.seen = !m.seen; });
+        }
+        else {
+          this.seen = !this.seen;
+        }
+      }
+
+      getTrailerKey() {
+        return `https://www.youtube.com/embed/${this.trailer}`;
       }
     }
 

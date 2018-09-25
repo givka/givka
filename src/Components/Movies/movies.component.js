@@ -70,10 +70,19 @@ angular.module('givka')
 
         const promises = [this.TmdbService.getMovie(movie.id), this.StorageService.readDB('movie')];
 
-        this.$q.all(promises).then(([movieDetails, moviesSeen]) => {
-          this.movieDetails = new this.MovieFactory(movieDetails, moviesSeen);
-          this.showMovieDetails = true;
-        })
+        this.$q.all(promises)
+          .then(([movieDetails, moviesSeen]) => {
+            console.log(movieDetails);
+
+            const _movie = new this.MovieFactory(movieDetails, moviesSeen);
+            return _movie.getDetails(moviesSeen);
+          })
+          .then((movieDetails) => {
+            this.movieDetails = movieDetails;
+
+            console.log(movieDetails);
+            this.showMovieDetails = true;
+          })
           .finally(() => {
             this.isLoading = false;
           });
@@ -81,7 +90,8 @@ angular.module('givka')
 
       onClickPoster(movie, event) {
         if (event.ctrlKey || event.metaKey) {
-          movie.seen = !movie.seen;
+          movie.toggleSeen(this.movieDetails, this.showMovieDetails);
+
           movie.seen ? this.StorageService.addKeyDB('movie', movie) : this.StorageService.deleteKeyDB('movie', movie);
         }
         else {

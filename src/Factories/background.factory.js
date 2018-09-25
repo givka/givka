@@ -47,7 +47,7 @@ angular.module('givka')
         return new Promise((resolve) => {
           Jimp.read(bgImg)
             .then((image) => {
-              image.color([{ apply: 'shade', params: [70] }])
+              image.color([{ apply: 'shade', params: [50] }])
                 .blur(pixels)
                 .getBase64(Jimp.AUTO, (err, encoded) => {
                   resolve(encoded);

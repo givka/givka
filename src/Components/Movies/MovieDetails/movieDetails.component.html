@@ -14,7 +14,11 @@
         <div class="movie-credits">
           <div class="id-{{this.id}} movie-credit"
                ng-repeat="credit in $ctrl.movie.credits">
-            <img ng-src="https://image.tmdb.org/t/p/w185{{credit.profile_path}}">
+            <img ng-if="credit.profile_path"
+                 ng-src="https://image.tmdb.org/t/p/w185{{credit.profile_path}}">
+            <img ng-if="!credit.profile_path"
+                 ng-src="./../assets/no-profile.png">
+
             <div class="credit-info">
               <p id="credit-job">{{credit.role}}</p>
               <p id="credit-name">{{credit.name}}</p>
@@ -26,6 +30,7 @@
 
   </div>
   <div>
+
     <h3>Images</h3>
     <div class="movie-images">
       <div class="movie-image"
@@ -33,14 +38,29 @@
         <img ng-src="https://image.tmdb.org/t/p/w780{{image.file_path}}">
       </div>
     </div>
-    <div id="collection-parts"
-         ng-if="$ctrl.hasCollection">
 
+    <div class="collection-movies"
+         ng-if="$ctrl.movie.collectionMovies">
+      <movie-list-component list-name="Collection movies"
+                            movie-list="$ctrl.movie.collectionMovies"></movie-list-component>
     </div>
-    <div id="recommendations">
+    <div class="recommendations">
       <movie-list-component list-name="Similar movies"
                             movie-list="$ctrl.movie.recommendations"></movie-list-component>
     </div>
-    <div id="director-movies"></div>
+    <div class="director-movies">
+      <movie-list-component list-name="Director movies"
+                            movie-list="$ctrl.movie.directorMovies"></movie-list-component>
+    </div>
+
+    <div class="trailer"
+         ng-if="$ctrl.movie.trailer">
+
+      <iframe ng-src="{{$ctrl.movie.getTrailerKey()}}"
+              frameborder="0"
+              allowfullscreen></iframe>
+
+    </div>
+
   </div>
 </div>
