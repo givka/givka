@@ -14,6 +14,8 @@ angular.module('givka')
         this.BackgroundFactory = new BackgroundFactory();
         this.isLoading = false;
         this.type = 'seen';
+
+        this.orderAsc = true;
       }
 
       $onInit() {
@@ -56,11 +58,29 @@ angular.module('givka')
             _movies = _movies.map(movie => new this.MovieFactory(movie, watchedMovies));
 
             this.movies = _movies;
+
             this.type = type;
           })
           .finally(() => {
             this.isLoading = false;
           });
+      }
+
+      search(query) {
+        if (!query) { this.searchResult = null; return; }
+
+        this.TmdbService.getSearchResult(query)
+          .then((data) => {
+            this.searchResult = data.results;
+            console.log(data.results);
+          });
+      }
+
+      sortBy(key) {
+        const order = this.orderAsc ? 'asc' : 'desc';
+        this.movies = _.orderBy(this.movies, movie => movie[key], order);
+
+        this.orderAsc = !this.orderAsc;
       }
 
       toggleMovieDetails(movie) {
@@ -72,15 +92,12 @@ angular.module('givka')
 
         this.$q.all(promises)
           .then(([movieDetails, moviesSeen]) => {
-            console.log(movieDetails);
-
             const _movie = new this.MovieFactory(movieDetails, moviesSeen);
             return _movie.getDetails(moviesSeen);
           })
           .then((movieDetails) => {
             this.movieDetails = movieDetails;
 
-            console.log(movieDetails);
             this.showMovieDetails = true;
           })
           .finally(() => {

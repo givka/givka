@@ -5,6 +5,14 @@
          ng-click="$ctrl.onClickNavigation('discover')">Discover</div>
     <div class="ib link"
          ng-click="$ctrl.onClickNavigation('seen')">Seen</div>
+    <div class="ib">
+
+      <input type="text"
+             ng-model="$ctrl.searchTerm"
+             ng-change="$ctrl.search($ctrl.searchTerm)"
+             ng-model-options="{debounce: 500}">
+
+    </div>
 
   </div>
 
@@ -18,7 +26,24 @@
       <h1 class="cap">{{$ctrl.type}}</h1>
       <h2>{{$ctrl.movies.length}} movies</h2>
 
-      <div class="movies">
+      <div class="sort">
+        <span>Sort by: </span>
+        <span class="link"
+              ng-click="$ctrl.sortBy('releaseDate')">Date</span>
+        <span class="link"
+              ng-click="$ctrl.sortBy('title')">Title</span>
+
+      </div>
+
+      <div class="no-movies"
+           ng-if="!$ctrl.movies.length">
+        <span> You have no movie in your collection, please add some by clicking on a poster while holding the Cmd or
+          Ctrl Key
+        </span>
+      </div>
+
+      <div class="movies"
+           ng-if="$ctrl.movies.length">
 
         <div class="movie-poster"
              ng-class="{'movie-seen' : ($ctrl.type === 'discover' && movie.seen) || ($ctrl.type === 'seen' && !movie.seen)}"
@@ -26,6 +51,7 @@
              ng-click="$ctrl.onClickPoster(movie, $event)">
           <img ng-src="https://image.tmdb.org/t/p/w185{{movie.poster}}">
         </div>
+
       </div>
     </div>
 

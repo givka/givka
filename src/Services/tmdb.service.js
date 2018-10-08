@@ -7,6 +7,11 @@ angular.module('givka')
       this.language = 'en-US';
     }
 
+    getSearchResult(query) {
+      const url = `https://api.themoviedb.org/3/search/multi?query=${query}`;
+      return this._getRequest(url);
+    }
+
     getCollection(id) {
       const url = `https://api.themoviedb.org/3/collection/${id}`;
       const addRequest = 'images';

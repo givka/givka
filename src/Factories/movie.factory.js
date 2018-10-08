@@ -10,7 +10,8 @@ angular.module('givka')
         this.title = options.title;
         this.popularity = options.popularity;
         this.poster = options.poster_path || options.poster;
-        this.releaseDate = moment(options.release_date || options.releaseDate, 'YYYY-MM-DD');
+        this.releaseDate = options.release_date || options.releaseDate;
+        // moment(options.release_date || options.releaseDate, 'YYYY-MM-DD');
         this.runtime = options.runtime;
         this.tagLine = options.tagline;
         this.voteAverage = options.vote_average;
@@ -28,7 +29,7 @@ angular.module('givka')
 
         let trailers = videos.results.filter(t => t.type === 'Trailer');
 
-        trailers = this._sortByKey(trailers, 'size');
+        trailers = this.sortByKey(trailers, 'size');
 
         return trailers[0].key || null;
       }
@@ -93,7 +94,7 @@ angular.module('givka')
             movies = movies.filter(movie => movie.job === 'Director');
 
             movies = this._formatMovies(movies, moviesSeen);
-            movies = this._sortByKey(movies, 'voteCount');
+            movies = this.sortByKey(movies, 'voteCount');
 
             movies = movies.filter(m => m.voteCount > 50);
 
@@ -106,12 +107,13 @@ angular.module('givka')
         const collection = await TmdbService.getCollection(this.hasCollection.id);
         let movies = collection.parts;
         movies = this._formatMovies(movies, moviesSeen);
-        movies = this._sortByKey(movies, 'releaseDate');
+
+        movies = this.sortByKey(movies, 'releaseDate');
 
         return movies;
       }
 
-      _sortByKey(movies, key) {
+      sortByKey(movies, key) {
         return _.orderBy(movies, movie => movie[key], 'desc');
       }
 
