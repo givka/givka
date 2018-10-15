@@ -4,15 +4,15 @@ movie-component {
   transition: 0.2s ease;
   padding-right: 10px;
   padding-bottom: 10px;
-  &:hover {
-    transform: scale(1.05);
-    cursor: pointer;
-  }
   &.movie-seen {
     opacity: 0.1;
     &:hover {
       opacity: 0.5;
     }
+  }
+  &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
   }
   img {
     width: 100%;

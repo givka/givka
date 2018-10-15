@@ -12,7 +12,7 @@ import { MovieService } from '../../../services/movie.service';
 export class MovieComponent {
   @Input() movie: Movie;
 
-  @Input() size: number
+  @Input() size: number;
 
   constructor(private movieService: MovieService) {
 

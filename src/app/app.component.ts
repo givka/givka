@@ -1,8 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 
 import { ElectronService } from './services/electron.service';
-import { AppConfig } from '../environments/environment';
 
 @Component({
   selector: 'app-component',
@@ -13,21 +11,13 @@ import { AppConfig } from '../environments/environment';
 export class AppComponent {
   tabSelected: string = 'movies';
 
-  constructor(public electronService: ElectronService,
-    private translate: TranslateService) {
-    translate.setDefaultLang('en');
-    // console.log('AppConfig', AppConfig);
-
-    if (electronService.isElectron()) {
-      // console.log('Mode electron');
-      // console.log('Electron ipcRenderer', electronService.ipcRenderer);
-      // console.log('NodeJS childProcess', electronService.childProcess);
-    } else {
-      console.log('Mode web');
-    }
+  constructor(public electronService: ElectronService) {
   }
 
-  onClickTab(tab) {
-    this.tabSelected = tab;
+  onClickTab(tab: string) {
+    this.tabSelected = null;
+    setTimeout(() => {
+      this.tabSelected = tab;
+    });
   }
 }

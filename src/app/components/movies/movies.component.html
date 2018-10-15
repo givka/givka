@@ -5,6 +5,12 @@
 <div *ngIf="!loading">
 
   <div *ngIf="showMovieDetails">
+
+    <div class="link close-movie-details"
+         (click)="onCloseMovieDetails()">
+      <i class="fas fa-times"></i>
+    </div>
+
     <movie-details-component [movie]="movieDetails">
     </movie-details-component>
   </div>

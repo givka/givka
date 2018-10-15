@@ -1,5 +1,3 @@
-import { MovieDetails } from './movie-details';
-
 export class Movie {
   public backdrop: string;
 

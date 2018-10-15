@@ -9,6 +9,7 @@ import { MovieDetails } from '../../factories/movie-details';
 import { TmdbService } from '../../services/tmdb.service';
 import { StorageService } from '../../services/storage.service';
 import { MovieService } from '../../services/movie.service';
+import { Background } from '../../factories/background';
 
 @Component({
   selector: 'movies-component',
@@ -29,6 +30,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
+  background: Background = new Background();
+
   constructor(
     private tmdb: TmdbService,
     private storage: StorageService,
@@ -36,7 +39,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.clickOnDiscover();
+    this.clickOnSeen();
     this.subscription = this.movieService.getMovie()
       .subscribe((subject) => {
         this.onClickPoster(subject.movie, subject.event);
@@ -45,12 +48,18 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.background.removeBackground();
+  }
+
+  onCloseMovieDetails() {
+    this.showMovieDetails = false;
+    this.background.removeBackground();
   }
 
   async clickOnDiscover() {
     this.type = 'discover';
     this.loading = true;
-    this.showMovieDetails = false;
+    this.onCloseMovieDetails();
 
     this.movies = await this.tmdb.getDiscover('top_rated')
       .finally(() => { this.loading = false; });
@@ -59,10 +68,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
   async clickOnSeen() {
     this.type = 'seen';
     this.loading = true;
-    this.showMovieDetails = false;
+    this.onCloseMovieDetails();
 
     const seen = await this.storage.readDB('movie');
-    this.movies = Object.keys(seen).map(movie => new Movie(seen[movie], seen));
+    this.movies = Object.keys(seen)
+      .map(movie => new Movie(seen[movie], seen));
     this.loading = false;
   }
 
@@ -77,13 +87,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   goToMovieDetails(movie: Movie) {
     this.loading = true;
-
-    // this.BackgroundFactory.addBackground(movie.backdrop || movie.backdrop_path);
+    this.background.addBackground(movie.backdrop);
 
     this.tmdb.getMovieDetails(movie.id)
       .then((movieDetails) => {
         this.movieDetails = movieDetails;
-        console.log(this.movieDetails);
         this.showMovieDetails = true;
       })
       .finally(() => {
