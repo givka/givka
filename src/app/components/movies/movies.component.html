@@ -1,0 +1,29 @@
+<div *ngIf="loading">
+  <spinner-component></spinner-component>
+</div>
+
+<div *ngIf="!loading">
+
+  <div *ngIf="showMovieDetails">
+    <movie-details-component [movie]="movieDetails">
+    </movie-details-component>
+  </div>
+
+  <div *ngIf="!showMovieDetails">
+    <div>
+      <span class="tab"
+            (click)="clickOnDiscover()">Discover</span>
+      <span class="tab"
+            (click)="clickOnSeen()">Seen</span>
+    </div>
+    <div *ngIf="movies"
+         class="movies">
+      <movie-component *ngFor="let posterMovie of movies"
+                       [movie]="posterMovie"
+                       [size]="185"
+                       [ngClass]="{'movie-seen' : (type === 'discover' && posterMovie.seen) || (type === 'seen' && !posterMovie.seen)}">
+      </movie-component>
+
+    </div>
+  </div>
+</div>

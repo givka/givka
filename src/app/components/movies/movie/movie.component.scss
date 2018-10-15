@@ -1,0 +1,24 @@
+movie-component {
+  height: 139px;
+  width: 92.5px;
+  transition: 0.2s ease;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+  &.movie-seen {
+    opacity: 0.1;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    object-fit: cover;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
+  }
+}

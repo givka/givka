@@ -1,0 +1,10 @@
+<div class="sub-title">{{listName}}</div>
+
+<div class="list">
+
+  <movie-component *ngFor="let posterMovie of listMovies"
+                   [movie]="posterMovie"
+                   [size]="185"
+                   [ngClass]="{'movie-seen' : posterMovie.seen}">
+  </movie-component>
+</div>
