@@ -20,8 +20,8 @@ app-component {
   }
   .main-content {
     position: relative;
-    padding: 0 5%;
-    margin-top: 50px;
+    padding: 10px 10%;
+    padding-top: 50px;
     &::before {
       z-index: -1;
       content: ' ';

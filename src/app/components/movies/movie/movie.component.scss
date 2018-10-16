@@ -4,6 +4,7 @@ movie-component {
   transition: 0.2s ease;
   padding-right: 10px;
   padding-bottom: 10px;
+  user-select: none;
   &.movie-seen {
     opacity: 0.1;
     &:hover {

@@ -10,6 +10,7 @@ import { TmdbService } from '../../services/tmdb.service';
 import { StorageService } from '../../services/storage.service';
 import { MovieService } from '../../services/movie.service';
 import { Background } from '../../factories/background';
+import { Utils } from '../../factories/utils';
 
 @Component({
   selector: 'movies-component',
@@ -26,11 +27,15 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   loading: boolean = true;
 
-  type: string;
+  type: string = 'seen';
 
   subscription: Subscription;
 
   background: Background = new Background();
+
+  orderAsc = {
+    title: true, releaseDate: true, voteAverage: false, voteCount: false,
+  };
 
   constructor(
     private tmdb: TmdbService,
@@ -97,5 +102,16 @@ export class MoviesComponent implements OnInit, OnDestroy {
       .finally(() => {
         this.loading = false;
       });
+  }
+
+  orderBy(key) {
+    const order = this.orderAsc[key] ? 'asc' : 'desc';
+    this.orderAsc[key] = !this.orderAsc[key];
+
+    console.log(this.orderAsc);
+
+    this.loading = true;
+    this.movies = Utils.orderBy(this.movies, key, order);
+    this.loading = false;
   }
 }
