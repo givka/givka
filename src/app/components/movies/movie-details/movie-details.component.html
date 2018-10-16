@@ -5,11 +5,11 @@
                    [size]="500"></movie-component>
 
   <div class="movie-description">
-    <h1 id="movie-title">{{movie.title}} ({{movie.releaseDate}})</h1>
-    <h2 id="movie-original-title"
-        *ngIf="movie.title !== movie.originalTitle">{{movie.originalTitle}}</h2>
-    <p id="runtime">{{movie.runtime}}</p>
-    <p id="overview">{{movie.overview}}</p>
+    <div>{{movie.title}}</div>
+    <div *ngIf="movie.title !== movie.originalTitle">({{movie.originalTitle}})</div>
+    <div>{{movie.releaseDate}}</div>
+    <div>{{movie.runtime}}</div>
+    <div>{{movie.overview}}</div>
   </div>
 
 </div>

@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export class Movie {
   public backdrop: string;
 
@@ -20,7 +22,7 @@ export class Movie {
     this.id = options.id;
     this.title = options.title;
     this.poster = options.poster_path || options.poster;
-    this.releaseDate = options.release_date || options.releaseDate;
+    this.releaseDate = moment(options.release_date || options.releaseDate).format('LL');
     this.voteCount = options.vote_count || options.voteCount;
     this.voteAverage = options.vote_average || options.voteAverage;
     this.seen = !!moviesSeen[this.id];

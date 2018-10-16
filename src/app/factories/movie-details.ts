@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Utils } from './utils';
 import { Movie } from './movie';
 
@@ -34,7 +36,7 @@ export class MovieDetails extends Movie {
     this.originalTitle = options.original_title;
     this.overview = options.overview;
     this.popularity = options.popularity;
-    this.runtime = options.runtime;
+    this.runtime = moment.utc().startOf('day').add(options.runtime, 'minutes').format('h[h] mm[min]');
     this.tagLine = options.tagline;
     this.voteCount = options.vote_count;
 
