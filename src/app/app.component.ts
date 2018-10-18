@@ -9,7 +9,7 @@ import { ElectronService } from './services/electron.service';
   encapsulation: ViewEncapsulation.None
   })
 export class AppComponent {
-  tabSelected: string = 'movies';
+  tabSelected: string = 'art';
 
   constructor(public electronService: ElectronService) {
   }

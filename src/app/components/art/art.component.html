@@ -1,0 +1,23 @@
+<div *ngIf="loading">
+  <spinner-component></spinner-component>
+</div>
+<div *ngIf="!loading">
+
+  <h1>Discover Paintings</h1>
+  <div class="paintings">
+    <div class="painting"
+         *ngFor="let painting of paintings"
+         (click)="onClickPainting(painting,$event)">
+      <img [src]="painting.imageSmall">
+    </div>
+  </div>
+
+  <div class="modal"
+       *ngIf="showPopup">
+    <span class="close link"
+          (click)="showPopup = false">×</span>
+    <img class="modal-content"
+         [src]="popupPainting.imageLarge">
+    <div class="info">{{popupPainting.title}} - {{popupPainting.artistName}} - {{popupPainting.year}}</div>
+  </div>
+</div>

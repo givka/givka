@@ -21,6 +21,7 @@ import { SpinnerComponent } from './components/shared/spinner/spinner.component'
 import { MovieDetailsComponent } from './components/movies/movie-details/movie-details.component';
 import { MovieListComponent } from './components/movies/movie-details/movie-list/movie-list.component';
 import { ButtonComponent } from './components/shared/button/button.component';
+import { ArtComponent } from './components/art/art.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -36,6 +37,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   MovieDetailsComponent,
   MovieListComponent,
   ButtonComponent,
+  ArtComponent,
   ],
   imports: [
   BrowserModule,

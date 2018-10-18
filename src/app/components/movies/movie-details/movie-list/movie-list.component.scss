@@ -10,6 +10,7 @@ movie-list-component {
     overflow-x: scroll;
     padding: 10px;
     overflow-y: hidden;
+    align-content: baseline;
     .ratio-vote {
       height: 4px;
       margin-top: 1px;
