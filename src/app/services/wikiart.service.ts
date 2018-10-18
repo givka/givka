@@ -8,9 +8,17 @@ export class WikiartService {
 
   constructor(private http: HttpClient) { }
 
-  getPopularPaintings(page): any {
-    return this.getRequest('popular-paintings', page)
-      .then(data => data.Paintings.map(painting => new Painting(painting)));
+  getPopularPaintings(): any {
+    const array = [];
+    for (let page = 1; page < 10; page += 1) {
+      array.push(this.getRequest('popular-paintings', page));
+    }
+    return Promise.all(array)
+      .then((allResponses) => {
+        let results = allResponses.map(value => value.Paintings);
+        results = [].concat(...results);
+        return results.map(painting => new Painting(painting));
+      });
   }
 
   private getRequest(url: string, page: number = 1): any {
