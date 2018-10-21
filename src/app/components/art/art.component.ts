@@ -35,6 +35,7 @@ export class ArtComponent implements OnInit {
 
   onClickPainting(painting, $event) {
     this.showPopup = true;
+    this.popupLoading = true;
 
     this.popupPainting = painting;
     this.popupIndex = findIndex(this.paintings, painting);
