@@ -8,9 +8,9 @@ import { MovieDetails } from '../../factories/movie-details';
 
 import { TmdbService } from '../../services/tmdb.service';
 import { StorageService } from '../../services/storage.service';
-import { MovieService } from '../../services/movie.service';
 import { Background } from '../../factories/background';
 import { Utils } from '../../factories/utils';
+import { BroadcastService } from '../../services/broadcast.service';
 
 @Component({
   selector: 'movies-component',
@@ -40,12 +40,12 @@ export class MoviesComponent implements OnInit, OnDestroy {
   constructor(
     private tmdb: TmdbService,
     private storage: StorageService,
-    private movieService: MovieService,
+    private broadcast: BroadcastService,
   ) { }
 
   ngOnInit() {
     this.clickOnSeen();
-    this.subscription = this.movieService.getMovie()
+    this.subscription = this.broadcast.getMovie()
       .subscribe((subject) => {
         this.onClickPoster(subject.movie, subject.event);
       });

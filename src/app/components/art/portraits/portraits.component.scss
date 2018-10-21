@@ -1,0 +1,47 @@
+portraits-component {
+  display: inline-block;
+  line-height: 0;
+  column-count: 5;
+  column-gap: 0px;
+  .portrait {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    transition: 0.3s all ease;
+    border-radius: 3px;
+    overflow: hidden;
+    background: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+    &:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+      will-change: transform;
+    }
+    img {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  portraits-component {
+    column-count: 4;
+  }
+}
+
+@media (max-width: 1000px) {
+  portraits-component {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 800px) {
+  portraits-component {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 400px) {
+  portraits-component {
+    column-count: 1;
+  }
+}

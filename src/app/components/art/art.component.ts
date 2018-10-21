@@ -1,7 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component, OnInit, ViewEncapsulation, OnDestroy,
+} from '@angular/core';
 import { random, findIndex } from 'lodash';
 import { WikiartService } from '../../services/wikiart.service';
 import { Painting } from '../../factories/painting';
+import { Artist } from '../../factories/artist';
+import { BroadcastService } from '../../services/broadcast.service';
+import { ArtistDetails } from '../../factories/artistDetails';
 
 @Component({
   selector: 'art-component',
@@ -9,7 +14,7 @@ import { Painting } from '../../factories/painting';
   styleUrls: ['./art.component.scss'],
   encapsulation: ViewEncapsulation.None
   })
-export class ArtComponent implements OnInit {
+export class ArtComponent implements OnInit, OnDestroy {
   paintings: any
 
   showPopup: boolean = false;
@@ -22,40 +27,100 @@ export class ArtComponent implements OnInit {
 
   popupLoading: boolean = true;
 
-  constructor(private wikiart: WikiartService) { }
+  artistDetails: ArtistDetails
+
+  artists: Artist[]
+
+  tabSelected: string;
+
+  subscription: any;
+
+  constructor(
+    private wikiart: WikiartService,
+    private broadcast: BroadcastService,
+  ) { }
 
   ngOnInit() {
+    this.subscription = this.broadcast.getPortrait()
+      .subscribe((subject) => {
+        this.onClickPortrait(subject.portrait, subject.event);
+      });
+
+    this.onClickDiscover();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  onClickDiscover() {
     this.loading = true;
-    this.wikiart.getPopularPaintings()
+    this.tabSelected = 'discover';
+    this.wikiart.getMostViewedPaintings()
       .then((data) => {
         this.paintings = data;
       })
       .finally(() => { this.loading = false; });
   }
 
-  onClickPainting(painting, $event) {
-    this.showPopup = true;
-    this.popupLoading = true;
+  onClickArtists() {
+    this.loading = true;
+    this.tabSelected = 'artists';
+    this.wikiart.getPopularArtists()
+      .then((artists) => {
+        this.artists = artists;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
 
-    this.popupPainting = painting;
-    this.popupIndex = findIndex(this.paintings, painting);
+  onClickArtist(artistUrl) {
+    this.loading = true;
+    this.showPopup = false;
+    this.tabSelected = 'artist-details';
+    this.wikiart.getArtistDetails(artistUrl)
+      .then((artist) => {
+        console.log(artist);
+
+        this.artistDetails = artist;
+      })
+      .finally(() => { this.loading = false; });
+  }
+
+  onClickPortrait(portrait, $event) {
+    const paintings = this.tabSelected === 'artist-details'
+      ? this.artistDetails.paintings : this.paintings;
+
+    if (portrait instanceof Painting) {
+      this.showPopup = true;
+      this.popupLoading = true;
+
+      this.popupPainting = portrait;
+      this.popupIndex = findIndex(paintings, portrait);
+    } else {
+      this.onClickArtist(portrait.artistUrl);
+    }
   }
 
   popupChangePainting(index: number) {
+    const paintings = this.tabSelected === 'artist-details'
+      ? this.artistDetails.paintings : this.paintings;
+
     this.popupLoading = true;
     if (index > 0) {
-      if (this.popupIndex === this.paintings.length) {
+      if (this.popupIndex === paintings.length) {
         this.popupIndex = 0;
       } else {
         this.popupIndex++;
       }
     } else if (this.popupIndex === 0) {
-      this.popupIndex = this.paintings.length;
+      this.popupIndex = paintings.length;
     } else {
       this.popupIndex--;
     }
 
-    this.popupPainting = this.paintings[this.popupIndex];
+    this.popupPainting = paintings[this.popupIndex];
     console.log(this.popupPainting);
   }
 

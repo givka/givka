@@ -1,11 +1,11 @@
+import { Utils } from './utils';
+
 export class Painting {
   artistName: string;
 
   artistUrl: string;
 
-  imageSmall: string;
-
-  imageLarge: string;
+  image: string;
 
   title: string;
 
@@ -13,10 +13,9 @@ export class Painting {
 
   constructor(options) {
     this.artistName = options.artistName;
-    this.artistUrl = options.artistUrl;
-    this.imageSmall = options.image.concat('!Portrait.jpg');
-    this.imageLarge = options.image;
+    this.artistUrl = Utils.formatArtistUrl(options.artistName);
+    this.image = options.image.replace('!Large.jpg', '');
     this.title = options.title;
-    this.year = options.year;
+    this.year = options.year || options.completitionYear;
   }
 }

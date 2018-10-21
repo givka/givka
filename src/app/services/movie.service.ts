@@ -12,10 +12,6 @@ export class MovieService {
     this.subject.next({ movie, event });
   }
 
-  clearMovie() {
-    this.subject.next();
-  }
-
   getMovie(): Observable<any> {
     return this.subject.asObservable();
   }

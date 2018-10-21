@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { shuffle } from 'lodash';
 import { Painting } from '../factories/painting';
+import { Artist } from '../factories/artist';
+import { ArtistDetails } from '../factories/artistDetails';
 
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
@@ -8,17 +11,21 @@ export class WikiartService {
 
   constructor(private http: HttpClient) { }
 
-  getPopularPaintings(): any {
-    const array = [];
-    for (let page = 1; page < 10; page += 1) {
-      array.push(this.getRequest('popular-paintings', page));
-    }
-    return Promise.all(array)
-      .then((allResponses) => {
-        let results = allResponses.map(value => value.Paintings);
-        results = [].concat(...results);
-        return results.map(painting => new Painting(painting));
-      });
+  getMostViewedPaintings() {
+    return this.getRequest('App/Painting/MostViewedPaintings')
+      .then(result => shuffle(result.map(p => new Painting(p))));
+  }
+
+  getPopularArtists() {
+    return this.getRequest('app/api/popularartists')
+      .then(data => data.map(a => new Artist(a)));
+  }
+
+  getArtistDetails(artistUrl: string) {
+    return Promise.all([
+      this.getRequest(artistUrl),
+      this.getRequest(`App/Painting/PaintingsByArtist?artistUrl=${artistUrl}`),
+    ]).then(([details, paintings]) => new ArtistDetails(details, paintings));
   }
 
   private getRequest(url: string, page: number = 1): any {
@@ -29,6 +36,4 @@ export class WikiartService {
       },
     }).toPromise();
   }
-
-  // popular-paintings?json=2&page=1
 }

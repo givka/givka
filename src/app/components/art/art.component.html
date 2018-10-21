@@ -3,13 +3,24 @@
 </div>
 <div *ngIf="!loading">
 
-  <h1>Discover Paintings</h1>
-  <div class="paintings">
-    <div class="painting"
-         *ngFor="let painting of paintings"
-         (click)="onClickPainting(painting,$event)">
-      <img [src]="painting.imageSmall">
+  <div *ngIf="tabSelected==='discover'">
+    <h1>Discover Paintings</h1>
+    <portraits-component [portraits]="paintings"></portraits-component>
+  </div>
+
+  <div *ngIf="tabSelected==='artists'">
+    <h1>Discover Artists</h1>
+    <portraits-component [portraits]="artists"></portraits-component>
+  </div>
+
+  <div *ngIf="tabSelected==='artist-details'">
+    <h1>{{artistDetails.artistName}}</h1>
+
+    <div>
+      <img [src]="artistDetails.image + '!Portrait.jpg'">
+      <div>{{artistDetails.biography}}</div>
     </div>
+    <portraits-component [portraits]="artistDetails.paintings"></portraits-component>
   </div>
 
   <div class="modal"
@@ -31,21 +42,18 @@
          class="loading-wrapper">
       <div class="loading-img">
         <img class="modal-content"
-             [src]="popupPainting.imageLarge"
+             [src]="popupPainting.image"
              (load)="onImageLoad()">
 
       </div>
     </div>
 
     <div class="info">
-      <span [innerHtml]="popupPainting.title"></span>
-      <span>-</span>
-
-      <div class="ib link"
-           [innerHtml]="popupPainting.artistName"></div>
-
-      <span [innerHtml]="popupPainting.year"></span>
-
+      <div [innerHtml]="popupPainting.title"></div>
+      <div class="link"
+           [innerHtml]="popupPainting.artistName"
+           (click)="onClickArtist(popupPainting.artistUrl)"></div>
+      <div [innerHtml]="popupPainting.year"></div>
     </div>
 
   </div>

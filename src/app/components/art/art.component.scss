@@ -52,52 +52,10 @@ art-component {
     }
     .info {
       position: absolute;
-      bottom: 20px;
+      bottom: 10px;
       right: 0;
       left: 0;
       text-align: center;
-    }
-  }
-  .paintings {
-    display: inline-block;
-    line-height: 0;
-    column-count: 5;
-    column-gap: 0px;
-    .painting {
-      margin-right: 10px;
-      margin-bottom: 10px;
-      transition: 0.3s all ease;
-      border-radius: 3px;
-      overflow: hidden;
-      background: black;
-      &:hover {
-        transform: scale(1.05);
-        cursor: pointer;
-        will-change: transform;
-      }
-      img {
-        width: 100%;
-      }
-    }
-  }
-  @media (max-width: 1200px) {
-    .paintings {
-      column-count: 4;
-    }
-  }
-  @media (max-width: 1000px) {
-    .paintings {
-      column-count: 3;
-    }
-  }
-  @media (max-width: 800px) {
-    .paintings {
-      column-count: 2;
-    }
-  }
-  @media (max-width: 400px) {
-    .paintings {
-      column-count: 1;
     }
   }
 }
