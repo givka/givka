@@ -11,7 +11,6 @@ portraits-component {
     overflow: hidden;
     background: black;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
-    width: 100px;
     &:hover {
       transform: scale(1.05);
       cursor: pointer;
@@ -25,24 +24,24 @@ portraits-component {
 
 @media (max-width: 1200px) {
   portraits-component {
-    column-count: 4;
+    column-count: 8;
   }
 }
 
 @media (max-width: 1000px) {
   portraits-component {
-    column-count: 3;
+    column-count: 6;
   }
 }
 
 @media (max-width: 800px) {
   portraits-component {
-    column-count: 2;
+    column-count: 4;
   }
 }
 
 @media (max-width: 400px) {
   portraits-component {
-    column-count: 1;
+    column-count: 2;
   }
 }

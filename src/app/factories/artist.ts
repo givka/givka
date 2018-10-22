@@ -14,7 +14,7 @@ export class Artist {
 
   constructor(options) {
     this.artistName = options.artistName;
-    this.artistUrl = Utils.formatArtistUrl(options.artistName);
+    this.artistUrl = options.url || Utils.formatArtistUrl(options.artistName);
     this.image = options.image.replace('!Portrait.jpg', '');
     this.birthDate = options.birthDayAsString;
     this.deathDate = options.deathDayAsString;

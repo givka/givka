@@ -23,17 +23,15 @@ export class ArtComponent implements OnInit, OnDestroy {
 
   popupPainting: Painting;
 
-  popupIndex: number;
-
-  popupLoading: boolean = true;
-
   artistDetails: ArtistDetails
 
   artists: Artist[]
 
   tabSelected: string;
 
-  subscription: any;
+  subscriptionPortrait: any;
+
+  subscriptionArtistUrl
 
   constructor(
     private wikiart: WikiartService,
@@ -41,16 +39,27 @@ export class ArtComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.broadcast.getPortrait()
+    this.subscriptionPortrait = this.broadcast.getPortrait()
       .subscribe((subject) => {
         this.onClickPortrait(subject.portrait, subject.event);
       });
 
-    this.onClickDiscover();
+    this.subscriptionArtistUrl = this.broadcast.getArtistUrl()
+      .subscribe((subject) => {
+        this.onClickArtist(subject.artistUrl);
+      });
+
+    this.onClickArtists();
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptionPortrait.unsubscribe();
+    this.subscriptionArtistUrl.unsubscribe();
+  }
+
+  onCloseArtist() {
+    this.artistDetails = null;
+    this.onClickDiscover();
   }
 
   onClickDiscover() {
@@ -77,7 +86,6 @@ export class ArtComponent implements OnInit, OnDestroy {
 
   onClickArtist(artistUrl) {
     this.loading = true;
-
     this.showPopup = false;
     this.tabSelected = 'artist-details';
     this.wikiart.getArtistDetails(artistUrl)
@@ -91,48 +99,9 @@ export class ArtComponent implements OnInit, OnDestroy {
   onClickPortrait(portrait, $event) {
     if (portrait instanceof Painting) {
       this.showPopup = true;
-      this.popupLoading = true;
-
       this.popupPainting = portrait;
-      this.popupIndex = findIndex(this.paintings, portrait);
     } else {
       this.onClickArtist(portrait.artistUrl);
-    }
-  }
-
-  popupChangePainting(indexInc: number) {
-    this.popupLoading = true;
-    this.popupIndex += indexInc;
-    if (this.popupIndex < 0) {
-      this.popupIndex = this.paintings.length - 1;
-    } else if (this.popupIndex === this.paintings.length) {
-      this.popupIndex = 0;
-    }
-    this.popupPainting = this.paintings[this.popupIndex];
-  }
-
-  onImageLoad() {
-    this.popupLoading = false;
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  public handleKeyboardEvent(event: KeyboardEvent): void {
-    event.stopPropagation();
-
-    if (!this.showPopup) { return; }
-    switch (event.key) {
-      case 'ArrowRight':
-        this.popupChangePainting(1);
-        break;
-      case 'ArrowLeft':
-        this.popupChangePainting(-1);
-        break;
-      case 'ArrowDown':
-        this.onClickArtist(this.popupPainting.artistUrl);
-        break;
-
-      default:
-        break;
     }
   }
 }

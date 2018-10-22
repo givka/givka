@@ -36,4 +36,8 @@ export class WikiartService {
       },
     }).toPromise();
   }
+
+  private getWikiRequest(wikiUrl) {
+    return this.http.get(wikiUrl).toPromise();
+  }
 }

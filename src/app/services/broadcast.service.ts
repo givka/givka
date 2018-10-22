@@ -8,10 +8,20 @@ import { Movie } from '../factories/movie';
 export class BroadcastService {
   private portraitSubject = new Subject<any>();
 
+  private ArtistUrlSubject = new Subject<any>()
+
   private movieSubject = new Subject<any>();
 
   public sendPortrait(portrait, event) {
     this.portraitSubject.next({ portrait, event });
+  }
+
+  public sendArtistUrl(artistUrl) {
+    this.ArtistUrlSubject.next({ artistUrl });
+  }
+
+  getArtistUrl() {
+    return this.ArtistUrlSubject.asObservable();
   }
 
   getPortrait(): Observable<any> {

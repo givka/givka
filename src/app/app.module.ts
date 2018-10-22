@@ -24,6 +24,7 @@ import { ButtonComponent } from './components/shared/button/button.component';
 import { ArtComponent } from './components/art/art.component';
 import { ArtistDetailsComponent } from './components/art/artist-details/artist-details.component';
 import { PortraitsComponent } from './components/art/portraits/portraits.component';
+import { PopupArtComponent } from './components/art/popup-art/popup-art.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -42,6 +43,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ArtComponent,
   ArtistDetailsComponent,
   PortraitsComponent,
+  PopupArtComponent,
   ],
   imports: [
   BrowserModule,
