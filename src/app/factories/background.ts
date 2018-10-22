@@ -17,9 +17,7 @@ export class Background {
   }
 
   async addBackground(image) {
-    const bgImg = `https://image.tmdb.org/t/p/w300${image}`;
-
-    const blur = await this.blurBase64URI(bgImg, 3);
+    const blur = await this.blurBase64URI(image, 3);
 
     if (this.ruleAdded) {
       this.styleSheet.deleteRule(0);

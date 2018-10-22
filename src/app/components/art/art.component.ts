@@ -1,7 +1,7 @@
 import {
   Component, OnInit, ViewEncapsulation, OnDestroy, HostListener,
 } from '@angular/core';
-import { random, findIndex } from 'lodash';
+import { findIndex } from 'lodash';
 import { WikiartService } from '../../services/wikiart.service';
 import { Painting } from '../../factories/painting';
 import { Artist } from '../../factories/artist';
@@ -77,6 +77,7 @@ export class ArtComponent implements OnInit, OnDestroy {
 
   onClickArtist(artistUrl) {
     this.loading = true;
+
     this.showPopup = false;
     this.tabSelected = 'artist-details';
     this.wikiart.getArtistDetails(artistUrl)

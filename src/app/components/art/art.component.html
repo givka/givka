@@ -17,7 +17,7 @@
     <h1>{{artistDetails.artistName}}</h1>
 
     <div>
-      <img [src]="artistDetails.image + '!Portrait.jpg'">
+      <img [src]="artistDetails.image">
       <div>{{artistDetails.biography}}</div>
     </div>
     <portraits-component [portraits]="artistDetails.paintings"></portraits-component>

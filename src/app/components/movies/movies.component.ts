@@ -92,7 +92,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   goToMovieDetails(movie: Movie) {
     this.loading = true;
-    this.background.addBackground(movie.backdrop);
+    this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
 
     this.tmdb.getMovieDetails(movie.id)
       .then((movieDetails) => {
