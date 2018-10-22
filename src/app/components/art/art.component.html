@@ -33,14 +33,20 @@
     <span class="previous link"
           (click)="popupChangePainting(-1)">&lt;</span>
 
-    <div *ngIf="popupLoading">
-      <spinner-component></spinner-component>
-
-    </div>
-
-    <div [hidden]="popupLoading"
+    <div *ngIf="popupLoading"
          class="loading-wrapper">
       <div class="loading-img">
+        <img class="modal-content"
+             [src]="popupPainting.image + '!Portrait.jpg'"
+             style="filter: blur(10px); height: calc(100% - 150px);">
+
+      </div>
+    </div>
+
+    <div class="loading-wrapper"
+         [hidden]="popupLoading">
+      <div class="loading-img">
+
         <img class="modal-content"
              [src]="popupPainting.image"
              (load)="onImageLoad()">

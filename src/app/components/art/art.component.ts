@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, ViewEncapsulation, OnDestroy,
+  Component, OnInit, ViewEncapsulation, OnDestroy, HostListener,
 } from '@angular/core';
 import { random, findIndex } from 'lodash';
 import { WikiartService } from '../../services/wikiart.service';
@@ -81,50 +81,54 @@ export class ArtComponent implements OnInit, OnDestroy {
     this.tabSelected = 'artist-details';
     this.wikiart.getArtistDetails(artistUrl)
       .then((artist) => {
-        console.log(artist);
-
+        this.paintings = artist.paintings;
         this.artistDetails = artist;
       })
       .finally(() => { this.loading = false; });
   }
 
   onClickPortrait(portrait, $event) {
-    const paintings = this.tabSelected === 'artist-details'
-      ? this.artistDetails.paintings : this.paintings;
-
     if (portrait instanceof Painting) {
       this.showPopup = true;
       this.popupLoading = true;
 
       this.popupPainting = portrait;
-      this.popupIndex = findIndex(paintings, portrait);
+      this.popupIndex = findIndex(this.paintings, portrait);
     } else {
       this.onClickArtist(portrait.artistUrl);
     }
   }
 
-  popupChangePainting(index: number) {
-    const paintings = this.tabSelected === 'artist-details'
-      ? this.artistDetails.paintings : this.paintings;
-
+  popupChangePainting(indexInc: number) {
     this.popupLoading = true;
-    if (index > 0) {
-      if (this.popupIndex === paintings.length) {
-        this.popupIndex = 0;
-      } else {
-        this.popupIndex++;
-      }
-    } else if (this.popupIndex === 0) {
-      this.popupIndex = paintings.length;
-    } else {
-      this.popupIndex--;
+    this.popupIndex += indexInc;
+    if (this.popupIndex < 0) {
+      this.popupIndex = this.paintings.length - 1;
+    } else if (this.popupIndex === this.paintings.length) {
+      this.popupIndex = 0;
     }
-
-    this.popupPainting = paintings[this.popupIndex];
-    console.log(this.popupPainting);
+    this.popupPainting = this.paintings[this.popupIndex];
   }
 
   onImageLoad() {
     this.popupLoading = false;
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  public handleKeyboardEvent(event: KeyboardEvent): void {
+    event.stopPropagation();
+    console.log(event.key);
+    if (!this.showPopup) { return; }
+    switch (event.key) {
+      case 'ArrowRight':
+        this.popupChangePainting(1);
+        break;
+      case 'ArrowLeft':
+        this.popupChangePainting(-1);
+        break;
+
+      default:
+        break;
+    }
   }
 }

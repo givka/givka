@@ -1,6 +1,7 @@
 <div class="portrait"
      *ngFor="let portrait of portraits"
      (click)="onClickPortrait(portrait,$event)">
+
   <img [src]="portrait.image + '!Portrait.jpg'">
 
 </div>
