@@ -117,7 +117,7 @@ export class ArtComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent): void {
     event.stopPropagation();
-    console.log(event.key);
+
     if (!this.showPopup) { return; }
     switch (event.key) {
       case 'ArrowRight':
@@ -125,6 +125,9 @@ export class ArtComponent implements OnInit, OnDestroy {
         break;
       case 'ArrowLeft':
         this.popupChangePainting(-1);
+        break;
+      case 'ArrowDown':
+        this.onClickArtist(this.popupPainting.artistUrl);
         break;
 
       default:

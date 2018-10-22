@@ -33,12 +33,13 @@
     <span class="previous link"
           (click)="popupChangePainting(-1)">&lt;</span>
 
-    <div *ngIf="popupLoading"
-         class="loading-wrapper">
+    <div class="loading-wrapper"
+         *ngIf="popupLoading">
       <div class="loading-img">
         <img class="modal-content"
              [src]="popupPainting.image + '!Portrait.jpg'"
-             style="filter: blur(10px); height: calc(100% - 150px);">
+             style="filter: blur(10px);"
+             height="100%">
 
       </div>
     </div>

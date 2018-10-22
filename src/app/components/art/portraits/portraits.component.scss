@@ -1,7 +1,7 @@
 portraits-component {
   display: inline-block;
   line-height: 0;
-  column-count: 5;
+  column-count: 10;
   column-gap: 0px;
   .portrait {
     margin-right: 10px;
@@ -11,6 +11,7 @@ portraits-component {
     overflow: hidden;
     background: black;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+    width: 100px;
     &:hover {
       transform: scale(1.05);
       cursor: pointer;
