@@ -1,0 +1,39 @@
+<div *ngIf="loading">
+  <spinner-component></spinner-component>
+</div>
+<div *ngIf="!loading">
+
+  <div *ngIf="tabSelected==='discover'">
+    <h1>Discover Paintings</h1>
+    <portraits-component [portraits]="paintings"
+                         [type]="'painting'"></portraits-component>
+  </div>
+
+  <div *ngIf="tabSelected==='artists'">
+    <h1>Discover Artists</h1>
+    <portraits-component [portraits]="artists"
+                         [type]="'artist'"></portraits-component>
+  </div>
+
+  <div *ngIf="tabSelected==='artist-details'">
+
+    <div class="artist-info">
+      <span class="close link"
+            (click)="onCloseArtist()">×</span>
+      <img [src]="artistDetails.image">
+      <div class="additional-info">
+        <h1>{{artistDetails.artistName}}</h1>
+        <a [href]="artistDetails.wikipediaUrl"
+           target="_blank">Go to Wikipedia</a>
+      </div>
+    </div>
+    <portraits-component [portraits]="artistDetails.paintings"
+                         [type]="'portrait'"></portraits-component>
+  </div>
+
+  <popup-art-component *ngIf="showPopup"
+                       [paintings]="paintings"
+                       [painting]="popupPainting"
+                       (onClose)="showPopup=false"></popup-art-component>
+
+</div>

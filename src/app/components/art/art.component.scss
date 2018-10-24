@@ -1,0 +1,24 @@
+art-component {
+  .close {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .artist-info {
+    display: flex;
+    margin-bottom: 20px;
+    img {
+      max-height: 200px;
+      max-width: 300px;
+    }
+    .additional-info {
+      margin-left: 20px;
+      h1 {
+        margin-top: 0;
+      }
+    }
+  }
+}

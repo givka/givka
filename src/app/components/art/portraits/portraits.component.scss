@@ -1,0 +1,60 @@
+portraits-component {
+  display: inline-block;
+  column-count: 10;
+  column-gap: 10px;
+  .portrait {
+    position: relative;
+    margin-bottom: 10px;
+    transition: 0.3s all ease;
+    border-radius: 3px;
+    overflow: hidden;
+    background: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+    &:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+      will-change: transform;
+    }
+    .container {
+      line-height: 0;
+      img {
+        width: 100%;
+      }
+    }
+    .artist-name {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.75);
+      font-size: 12px;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  portraits-component {
+    column-count: 8;
+  }
+}
+
+@media (max-width: 1000px) {
+  portraits-component {
+    column-count: 6;
+  }
+}
+
+@media (max-width: 800px) {
+  portraits-component {
+    column-count: 4;
+  }
+}
+
+@media (max-width: 400px) {
+  portraits-component {
+    column-count: 2;
+  }
+}

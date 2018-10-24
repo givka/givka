@@ -1,0 +1,21 @@
+movie-details-component {
+  .movie-bar {
+    display: flex;
+    movie-component {
+      width: 250px;
+      height: 370px;
+      &:hover {
+        transform: scale(1);
+      }
+    }
+    .movie-description {
+      width: calc(100% - 250px);
+    }
+  }
+  .sub-title {
+    text-align: center;
+    margin: 20px;
+    margin-bottom: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+}
