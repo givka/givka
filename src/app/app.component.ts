@@ -1,23 +1,10 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-
-import { ElectronService } from './services/electron.service';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-component',
+  selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  styleUrls: ['./app.component.less']
+})
 export class AppComponent {
-  tabSelected: string = 'art';
-
-  constructor(public electronService: ElectronService) {
-  }
-
-  onClickTab(tab: string) {
-    this.tabSelected = null;
-    setTimeout(() => {
-      this.tabSelected = tab;
-    });
-  }
+  title = 'givka';
 }
