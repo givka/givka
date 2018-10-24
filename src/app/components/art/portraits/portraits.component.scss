@@ -1,10 +1,9 @@
 portraits-component {
   display: inline-block;
-  line-height: 0;
   column-count: 10;
-  column-gap: 0px;
+  column-gap: 10px;
   .portrait {
-    margin-right: 10px;
+    position: relative;
     margin-bottom: 10px;
     transition: 0.3s all ease;
     border-radius: 3px;
@@ -16,8 +15,22 @@ portraits-component {
       cursor: pointer;
       will-change: transform;
     }
-    img {
+    .container {
+      line-height: 0;
+      img {
+        width: 100%;
+      }
+    }
+    .artist-name {
+      position: absolute;
+      bottom: 0;
       width: 100%;
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.75);
+      font-size: 12px;
     }
   }
 }

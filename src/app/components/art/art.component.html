@@ -5,12 +5,14 @@
 
   <div *ngIf="tabSelected==='discover'">
     <h1>Discover Paintings</h1>
-    <portraits-component [portraits]="paintings"></portraits-component>
+    <portraits-component [portraits]="paintings"
+                         [type]="'painting'"></portraits-component>
   </div>
 
   <div *ngIf="tabSelected==='artists'">
     <h1>Discover Artists</h1>
-    <portraits-component [portraits]="artists"></portraits-component>
+    <portraits-component [portraits]="artists"
+                         [type]="'artist'"></portraits-component>
   </div>
 
   <div *ngIf="tabSelected==='artist-details'">
@@ -25,7 +27,8 @@
            target="_blank">Go to Wikipedia</a>
       </div>
     </div>
-    <portraits-component [portraits]="artistDetails.paintings"></portraits-component>
+    <portraits-component [portraits]="artistDetails.paintings"
+                         [type]="'portrait'"></portraits-component>
   </div>
 
   <popup-art-component *ngIf="showPopup"

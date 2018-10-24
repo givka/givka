@@ -14,6 +14,8 @@ import { BroadcastService } from '../../../services/broadcast.service';
 export class PortraitsComponent {
   @Input() portraits: Painting[] | Artist[]
 
+  @Input() type: string
+
   constructor(private broadcast: BroadcastService) { }
 
   onClickPortrait(portrait, $event) {

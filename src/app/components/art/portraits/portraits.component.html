@@ -1,7 +1,14 @@
 <div class="portrait"
      *ngFor="let portrait of portraits"
      (click)="onClickPortrait(portrait,$event)">
+  <div class="container">
 
-  <img [src]="portrait.image + '!PinterestSmall.jpg'">
+    <img [src]="portrait.image + '!PinterestSmall.jpg'">
+  </div>
 
+  <div class="artist-name"
+       *ngIf="type==='artist'"
+       title="{{portrait.artistName}}">
+    {{portrait.artistName}}
+  </div>
 </div>
