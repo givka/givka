@@ -5,12 +5,12 @@ import {
 import { Subscription } from 'rxjs';
 import { Movie } from '../../factories/movie';
 import { MovieDetails } from '../../factories/movie-details';
+import { Storage } from '../../factories/storage'
 
 import { TmdbService } from '../../services/tmdb.service';
-import { StorageService } from '../../services/storage.service';
-// import { Background } from '../../factories/background';
 import { Utils } from '../../factories/utils';
 import { BroadcastService } from '../../services/broadcast.service';
+import { Background } from 'src/app/factories/background';
 
 @Component({
   selector: 'movies-component',
@@ -31,7 +31,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  // background: Background = new Background();
+  background: Background = new Background();
 
   orderAsc = {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
@@ -39,7 +39,6 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   constructor(
     private tmdb: TmdbService,
-    private storage: StorageService,
     private broadcast: BroadcastService,
   ) { }
 
@@ -53,12 +52,12 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    // this.background.removeBackground();
+    this.background.removeBackground();
   }
 
   onCloseMovieDetails() {
     this.showMovieDetails = false;
-    // this.background.removeBackground();
+    this.background.removeBackground();
   }
 
   async clickOnDiscover() {
@@ -75,7 +74,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.onCloseMovieDetails();
 
-    const seen = await this.storage.readDB('movie');
+    const seen = await Storage.readDB('movie');
     console.log(seen)
     this.movies = Object.keys(seen)
       .map(movie => new Movie(seen[movie], seen));
@@ -85,7 +84,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   public onClickPoster(movie: Movie | MovieDetails, event) {
     if (event.ctrlKey || event.metaKey) {
       this.showMovieDetails ? this.movieDetails.toggleSeen(movie) : movie.toggleSeen(movie);
-      movie.seen ? this.storage.addKeyDB('movie', movie) : this.storage.deleteKeyDB('movie', movie);
+      movie.seen ? Storage.addKeyDB('movie', movie) : Storage.deleteKeyDB('movie', movie);
     } else {
       this.goToMovieDetails(movie);
     }
@@ -93,7 +92,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   goToMovieDetails(movie: Movie) {
     this.loading = true;
-    // this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
+    this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
 
     this.tmdb.getMovieDetails(movie.id)
       .then((movieDetails) => {

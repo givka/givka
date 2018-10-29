@@ -1,3 +1,5 @@
+import { random } from 'lodash'
+
 export class Background {
   styleSheet: any;
 
@@ -15,14 +17,13 @@ export class Background {
   }
 
   async addBackground(image) {
-    const blur = await this.blurBase64URI(image, 3);
 
     if (this.ruleAdded) {
       this.styleSheet.deleteRule(0);
     } else {
       this.ruleAdded = true;
     }
-    const background = `url(${blur})`;
+    const background = `url(${image})`;
     const rule = `.main-content::before {
     z-index: -1 !important;
     content: ' ' !important;
@@ -30,7 +31,8 @@ export class Background {
     background-image: ${background} !important;
     background-size: cover !important; 
     will-change: transform !important;
-    transform: scale(1) !important;
+    filter: blur(10px);
+    transform: scale(${random(1, 2, true)}) !important;
   }`;
     this.styleSheet.insertRule(rule, 0);
   }
@@ -42,20 +44,6 @@ export class Background {
     }
   }
 
-  private blurBase64URI(bgImg, pixels) {
 
-    return bgImg;
-    // return new Promise((resolve, reject) => {
-    //   Jimp.read(bgImg)
-    //     .then((image) => {
-    //       image.color([{ apply: 'shade', params: [50] }])
-    //         .blur(pixels)
-    //         .getBase64(Jimp.AUTO, (err, encoded) => {
-    //           resolve(encoded);
-    //           reject(err);
-    //         });
-    //     });
-    // });
-  }
 }
 

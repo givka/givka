@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { random } from 'lodash';
-import { StorageService } from './storage.service';
 
 import { Movie } from '../factories/movie';
 import { MovieDetails } from '../factories/movie-details';
+import { Storage } from '../factories/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +17,12 @@ export class TmdbService {
 
   private language: string = 'en-US';
 
-  constructor(private http: HttpClient, private storage: StorageService) { }
+  constructor(private http: HttpClient) { }
 
-  async getDiscover(list) {
+  getDiscover(list) {
     if (!list) { return null; }
 
-    const database = await this.storage.readDB('movie');
+    const database = Storage.readDB('movie');
 
     const url = `movie/${list}`;
     const PromiseArray = [];
@@ -46,7 +46,7 @@ export class TmdbService {
 
     const [movieData, watchedMovies] = await Promise.all([
       this.getRequest(`movie/${id}`, 'credits,images,videos,recommendations'),
-      this.storage.readDB('movie'),
+      Storage.readDB('movie'),
     ]);
 
     const movieDetails = new MovieDetails(movieData, watchedMovies);
