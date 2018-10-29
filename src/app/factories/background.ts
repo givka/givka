@@ -1,4 +1,4 @@
-import { random } from 'lodash'
+import { random } from 'lodash';
 
 export class Background {
   styleSheet: any;
@@ -17,7 +17,6 @@ export class Background {
   }
 
   async addBackground(image) {
-
     if (this.ruleAdded) {
       this.styleSheet.deleteRule(0);
     } else {
@@ -43,7 +42,5 @@ export class Background {
       this.ruleAdded = false;
     }
   }
-
-
 }
 

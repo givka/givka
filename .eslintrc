@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "airbnb-base"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "parser": "typescript-eslint-parser",
+  "globals": {
+    "angular": true,
+    "_": true,
+    "Jimp": true,
+    "moment": true
+  },
+  "rules": {
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-unused-vars": "off",
+    "import/no-unresolved": "off",
+    "no-undef": "off",
+    "no-useless-constructor": "off",
+    "no-empty-function": "off",
+    "no-param-reassign": "off",
+    "no-unused-expressions": "off",
+    "class-methods-use-this": "off",
+    "no-plusplus": "off"
+  }
+}
