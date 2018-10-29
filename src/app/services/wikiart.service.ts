@@ -7,7 +7,7 @@ import { ArtistDetails } from '../factories/artistDetails';
 
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
-  basicUrl: string = 'https://www.wikiart.org/en/'
+  basicUrl: string = 'https://cors-anywhere.herokuapp.com/https://www.wikiart.org/en/'
 
   constructor(private http: HttpClient) { }
 

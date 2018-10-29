@@ -7,6 +7,19 @@ art-component {
     font-weight: bold;
     transition: 0.3s;
   }
+  .test2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .test {
+      max-width: 80vw;
+      max-height: 80vh;
+      margin-bottom: 10px;
+      margin-right: 10px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+    }
+  }
   .artist-info {
     display: flex;
     margin-bottom: 20px;

@@ -27,8 +27,12 @@
            target="_blank">Go to Wikipedia</a>
       </div>
     </div>
-    <portraits-component [portraits]="artistDetails.paintings"
-                         [type]="'portrait'"></portraits-component>
+    <div class="test2">
+      <img *ngFor="let portrait of paintings"
+           [src]="portrait.image"
+           class="test">
+    </div>
+
   </div>
 
   <popup-art-component *ngIf="showPopup"
