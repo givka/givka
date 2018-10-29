@@ -34,6 +34,7 @@ app-component {
       top: 0;
       left: 0;
       background-color: black;
+      filter: blur(10px);
       background-image: url(../assets/bg.jpg);
       background-position: center center;
       background-size: cover;

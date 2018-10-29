@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "publish": "ng build --prod --base-href 'https://arthBarr.github.io/givka/' && ngh"
+    "upload": "ng build --prod --base-href 'https://arthBarr.github.io/givka/' && ngh"
   },
   "private": true,
   "dependencies": {
