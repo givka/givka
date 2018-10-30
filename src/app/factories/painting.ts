@@ -11,14 +11,21 @@ export class Painting {
 
   year: string;
 
-  height: number
+  height: number;
+
+  extension: string;
 
   constructor(options) {
     this.artistName = options.artistName;
     this.artistUrl = Utils.formatArtistUrl(options.artistName);
-    this.image = options.image.replace('!Large.jpg', '');
+    this.extension = this.getExtension(options.image);
+    this.image = options.image.replace(`!Large.${this.extension}`, '');
     this.title = options.title;
     this.year = options.year || options.completitionYear;
     this.height = options.height;
+  }
+
+  private getExtension(image: string) {
+    return image.split('.').pop();
   }
 }

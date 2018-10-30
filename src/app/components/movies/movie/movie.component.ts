@@ -7,7 +7,7 @@ import { BroadcastService } from '../../../services/broadcast.service';
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.scss'],
   encapsulation: ViewEncapsulation.None
-})
+  })
 
 export class MovieComponent {
   @Input() movie: Movie;

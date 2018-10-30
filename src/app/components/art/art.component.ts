@@ -15,7 +15,7 @@ import { ArtistDetails } from '../../factories/artistDetails';
   encapsulation: ViewEncapsulation.None
   })
 export class ArtComponent implements OnInit, OnDestroy {
-  paintings: any
+  items
 
   showPopup: boolean = false;
 
@@ -32,6 +32,8 @@ export class ArtComponent implements OnInit, OnDestroy {
   subscriptionPortrait: any;
 
   subscriptionArtistUrl
+
+  intervalId;
 
   constructor(
     private wikiart: WikiartService,
@@ -53,11 +55,13 @@ export class ArtComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.cancelArrayDelay();
     this.subscriptionPortrait.unsubscribe();
     this.subscriptionArtistUrl.unsubscribe();
   }
 
   onCloseArtist() {
+    this.cancelArrayDelay();
     this.artistDetails = null;
     this.onClickDiscover();
   }
@@ -65,9 +69,10 @@ export class ArtComponent implements OnInit, OnDestroy {
   onClickDiscover() {
     this.loading = true;
     this.tabSelected = 'discover';
+    this.cancelArrayDelay();
     this.wikiart.getMostViewedPaintings()
-      .then((data) => {
-        this.paintings = data;
+      .then((paintings) => {
+        this.arrayDelay(paintings);
       })
       .finally(() => { this.loading = false; });
   }
@@ -75,9 +80,10 @@ export class ArtComponent implements OnInit, OnDestroy {
   onClickArtists() {
     this.loading = true;
     this.tabSelected = 'artists';
+    this.cancelArrayDelay();
     this.wikiart.getPopularArtists()
       .then((artists) => {
-        this.artists = artists;
+        this.arrayDelay(artists);
       })
       .finally(() => {
         this.loading = false;
@@ -88,9 +94,10 @@ export class ArtComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.showPopup = false;
     this.tabSelected = 'artist-details';
+    this.cancelArrayDelay();
     this.wikiart.getArtistDetails(artistUrl)
       .then((artist) => {
-        this.paintings = artist.paintings;
+        this.arrayDelay(artist.paintings);
         this.artistDetails = artist;
       })
       .finally(() => { this.loading = false; });
@@ -103,5 +110,19 @@ export class ArtComponent implements OnInit, OnDestroy {
     } else {
       this.onClickArtist(portrait.artistUrl);
     }
+  }
+
+  private arrayDelay(array) {
+    this.items = [];
+    let i = 0;
+    this.intervalId = setInterval(() => {
+      if (i === array.length) { this.cancelArrayDelay(); } else {
+        this.items.push(array[i++]);
+      }
+    }, 50);
+  }
+
+  cancelArrayDelay() {
+    clearInterval(this.intervalId);
   }
 }

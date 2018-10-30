@@ -4,15 +4,40 @@
 <div *ngIf="!loading">
 
   <div *ngIf="tabSelected==='discover'">
+    <div class="buttons">
+      <button-component class="br"
+                        [title]="'Popular Artists'"
+                        (click)="onClickArtists()"></button-component>
+      <button-component [title]="'Popular Paintings'"
+                        (click)="onClickDiscover()"></button-component>
+    </div>
     <h1>Discover Paintings</h1>
-    <portraits-component [portraits]="paintings"
-                         [type]="'painting'"></portraits-component>
+    <div class="grid portrait-grid">
+      <portrait-component *ngFor="let painting of items"
+                          [image]="painting.image"
+                          (click)="onClickPortrait(painting)">
+      </portrait-component>
+    </div>
   </div>
 
   <div *ngIf="tabSelected==='artists'">
+    <div class="buttons">
+      <button-component class="br"
+                        [title]="'Popular Artists'"
+                        (click)="onClickArtists()"></button-component>
+      <button-component [title]="'Popular Paintings'"
+                        (click)="onClickDiscover()"></button-component>
+    </div>
     <h1>Discover Artists</h1>
-    <portraits-component [portraits]="artists"
-                         [type]="'artist'"></portraits-component>
+
+    <div class="grid portrait-grid">
+      <portrait-component *ngFor="let artist of items"
+                          [image]="artist.image"
+                          [title]="artist.artistName"
+                          (click)="onClickArtist(artist.artistUrl)">
+      </portrait-component>
+    </div>
+
   </div>
 
   <div *ngIf="tabSelected==='artist-details'">
@@ -20,23 +45,26 @@
     <div class="artist-info">
       <span class="close link"
             (click)="onCloseArtist()">×</span>
-      <img [src]="artistDetails.image">
+      <div class="artist-image">
+        <img [src]="artistDetails.image">
+      </div>
       <div class="additional-info">
         <h1>{{artistDetails.artistName}}</h1>
-        <a [href]="artistDetails.wikipediaUrl"
+        <a class="link"
+           [href]="artistDetails.wikipediaUrl"
            target="_blank">Go to Wikipedia</a>
       </div>
     </div>
-    <div class="test2">
-      <img *ngFor="let portrait of paintings"
-           [src]="portrait.image"
-           class="test">
+    <div class="grid portrait-grid">
+      <portrait-component *ngFor="let painting of items"
+                          [image]="painting.image"
+                          (click)="onClickPortrait(painting)">
+      </portrait-component>
     </div>
-
   </div>
 
   <popup-art-component *ngIf="showPopup"
-                       [paintings]="paintings"
+                       [paintings]="items"
                        [painting]="popupPainting"
                        (onClose)="showPopup=false"></popup-art-component>
 

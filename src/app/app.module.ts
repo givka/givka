@@ -14,6 +14,7 @@ import { ArtComponent } from './components/art/art.component';
 import { ArtistDetailsComponent } from './components/art/artist-details/artist-details.component';
 import { PortraitsComponent } from './components/art/portraits/portraits.component';
 import { PopupArtComponent } from './components/art/popup-art/popup-art.component';
+import { PortraitComponent } from './components/shared/portrait/portrait.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { PopupArtComponent } from './components/art/popup-art/popup-art.componen
     ArtistDetailsComponent,
     PortraitsComponent,
     PopupArtComponent,
+    PortraitComponent,
   ],
   imports: [
     BrowserModule,

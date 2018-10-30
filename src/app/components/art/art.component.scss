@@ -1,4 +1,17 @@
 art-component {
+  .portrait-grid {
+    portrait-component {
+      width: initial;
+      height: initial;
+      &:hover {
+        transform: scale(1.025);
+      }
+      img {
+        max-height: 300px;
+        width: initial;
+      }
+    }
+  }
   .close {
     position: absolute;
     top: 40px;
@@ -23,9 +36,11 @@ art-component {
   .artist-info {
     display: flex;
     margin-bottom: 20px;
-    img {
-      max-height: 200px;
-      max-width: 300px;
+    .artist-image {
+      width: 250px;
+      img {
+        width: 100%;
+      }
     }
     .additional-info {
       margin-left: 20px;

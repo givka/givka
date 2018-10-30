@@ -17,32 +17,29 @@
     <h1 *ngIf="type==='seen'">Collection Movies ({{movies.length}})</h1>
 
     <div class="buttons">
-      <div class="movies-buttons">
-        <button-component class="br"
-                          [title]="'Discover'"
-                          (click)="clickOnDiscover()"></button-component>
-        <button-component [title]="'Collection'"
-                          (click)="clickOnSeen()"></button-component>
-      </div>
-      <div class="movies-buttons float-right">
+      <button-component class="br"
+                        [title]="'Discover'"
+                        (click)="clickOnDiscover()"></button-component>
+      <button-component [title]="'Collection'"
+                        (click)="clickOnSeen()"></button-component>
+    </div>
+    <div class="buttons float-right">
 
-        <button-component class="br"
-                          [title]="'Title'"
-                          [orderAsc]="orderAsc.title"
-                          (click)="orderBy('title')"></button-component>
-        <button-component class="br"
-                          [title]="'Release Date'"
-                          [orderAsc]="orderAsc.releaseDate"
-                          (click)="orderBy('releaseDate')"></button-component>
-        <button-component class="br"
-                          [title]="'Vote Average'"
-                          [orderAsc]="orderAsc.voteAverage"
-                          (click)="orderBy('voteAverage')"></button-component>
-        <button-component [title]="'Vote Count'"
-                          [orderAsc]="orderAsc.voteCount"
-                          (click)="orderBy('voteCount')"></button-component>
-
-      </div>
+      <button-component class="br"
+                        [title]="'Title'"
+                        [orderAsc]="orderAsc.title"
+                        (click)="orderBy('title')"></button-component>
+      <button-component class="br"
+                        [title]="'Release Date'"
+                        [orderAsc]="orderAsc.releaseDate"
+                        (click)="orderBy('releaseDate')"></button-component>
+      <button-component class="br"
+                        [title]="'Vote Average'"
+                        [orderAsc]="orderAsc.voteAverage"
+                        (click)="orderBy('voteAverage')"></button-component>
+      <button-component [title]="'Vote Count'"
+                        [orderAsc]="orderAsc.voteCount"
+                        (click)="orderBy('voteCount')"></button-component>
 
     </div>
 

@@ -7,7 +7,7 @@ import { ArtistDetails } from '../factories/artistDetails';
 
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
-  basicUrl: string = 'https://cors-anywhere.herokuapp.com/https://www.wikiart.org/en/'
+  API: string = 'https://givka-api.herokuapp.com/https://www.wikiart.org/en/'
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +18,7 @@ export class WikiartService {
 
   getPopularArtists() {
     return this.getRequest('app/api/popularartists')
-      .then(data => data.map(a => new Artist(a)));
+      .then(data => shuffle(data.map(a => new Artist(a))));
   }
 
   getArtistDetails(artistUrl: string) {
@@ -29,7 +29,7 @@ export class WikiartService {
   }
 
   private getRequest(url: string, page: number = 1): any {
-    return this.http.get(this.basicUrl + url, {
+    return this.http.get(this.API + url, {
       params: {
         json: '2',
         page: page.toString(),

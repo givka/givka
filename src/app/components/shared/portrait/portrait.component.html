@@ -1,0 +1,10 @@
+<div class="image-container">
+  <img [src]="image ? image : '../../../../assets/no-profile.png'">
+</div>
+
+<div *ngIf="title"
+     class="image-title">
+  <div>
+    {{title}}
+  </div>
+</div>
