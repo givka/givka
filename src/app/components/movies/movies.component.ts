@@ -3,21 +3,21 @@ import {
 } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+import { Background } from '../../factories/background';
 import { Movie } from '../../factories/movie';
 import { MovieDetails } from '../../factories/movie-details';
-import { Storage } from '../../factories/storage'
+import { Storage } from '../../factories/storage';
 
 import { TmdbService } from '../../services/tmdb.service';
 import { Utils } from '../../factories/utils';
 import { BroadcastService } from '../../services/broadcast.service';
-import { Background } from 'src/app/factories/background';
 
 @Component({
   selector: 'movies-component',
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss'],
   encapsulation: ViewEncapsulation.None
-})
+  })
 export class MoviesComponent implements OnInit, OnDestroy {
   movies: Movie[];
 
@@ -60,12 +60,12 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.background.removeBackground();
   }
 
-  async clickOnDiscover() {
+  async clickOnDiscover(key) {
     this.type = 'discover';
     this.loading = true;
     this.onCloseMovieDetails();
 
-    this.movies = await this.tmdb.getDiscover('top_rated')
+    this.movies = await this.tmdb.getDiscover(key)
       .finally(() => { this.loading = false; });
   }
 
@@ -75,7 +75,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.onCloseMovieDetails();
 
     const seen = await Storage.readDB('movie');
-    console.log(seen)
+    console.log(seen);
     this.movies = Object.keys(seen)
       .map(movie => new Movie(seen[movie], seen));
     this.loading = false;

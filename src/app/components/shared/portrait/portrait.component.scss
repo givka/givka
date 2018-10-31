@@ -14,16 +14,14 @@ portrait-component {
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
-    font-size: 15px;
-    height: 25px;
+    font-size: 11px;
     div {
-      max-width: calc(100% - 10px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       position: absolute;
       bottom: 0;
       padding: 5px;
+      width: calc(100% - 10px);
+      text-align: center;
+      background: rgba(0, 0, 0, 0.5);
     }
   }
   &:hover {

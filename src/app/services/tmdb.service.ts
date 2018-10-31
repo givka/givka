@@ -9,7 +9,7 @@ import { Storage } from '../factories/storage';
 
 @Injectable({
   providedIn: 'root'
-})
+  })
 export class TmdbService {
   private apiKey: string = 'aa79a25e783821b082e1e241e41889db';
 
@@ -27,9 +27,7 @@ export class TmdbService {
     const url = `movie/${list}`;
     const PromiseArray = [];
 
-    const pageNumber = random(1, 100);
-
-    for (let i = pageNumber; i < pageNumber + 10; i += 1) {
+    for (let i = 1; i <= 10; i += 1) {
       PromiseArray.push(this.getRequest(url, null, i));
     }
     return Promise.all(PromiseArray)

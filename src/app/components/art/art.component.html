@@ -14,7 +14,7 @@
     <h1>Discover Paintings</h1>
     <div class="grid portrait-grid">
       <portrait-component *ngFor="let painting of items"
-                          [image]="painting.image"
+                          [image]="painting.image + '!PinterestSmall.' + painting.extension"
                           (click)="onClickPortrait(painting)">
       </portrait-component>
     </div>
@@ -32,7 +32,7 @@
 
     <div class="grid portrait-grid">
       <portrait-component *ngFor="let artist of items"
-                          [image]="artist.image"
+                          [image]="artist.image ? artist.image + '!PinterestSmall.' + artist.extension : artist.image"
                           [title]="artist.artistName"
                           (click)="onClickArtist(artist.artistUrl)">
       </portrait-component>
@@ -57,7 +57,7 @@
     </div>
     <div class="grid portrait-grid">
       <portrait-component *ngFor="let painting of items"
-                          [image]="painting.image"
+                          [image]="painting.image + '!PinterestSmall.' + painting.extension"
                           (click)="onClickPortrait(painting)">
       </portrait-component>
     </div>

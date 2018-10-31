@@ -18,8 +18,14 @@
 
     <div class="buttons">
       <button-component class="br"
-                        [title]="'Discover'"
-                        (click)="clickOnDiscover()"></button-component>
+                        [title]="'Upcoming'"
+                        (click)="clickOnDiscover('upcoming')"></button-component>
+      <button-component class="br"
+                        [title]="'Popular'"
+                        (click)="clickOnDiscover('popular')"></button-component>
+      <button-component class="br"
+                        [title]="'Top Rated'"
+                        (click)="clickOnDiscover('top_rated')"></button-component>
       <button-component [title]="'Collection'"
                         (click)="clickOnSeen()"></button-component>
     </div>
