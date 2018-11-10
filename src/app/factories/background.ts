@@ -16,7 +16,22 @@ export class Background {
     return styleEl.sheet;
   }
 
+  getImage(url) {
+    return new Promise(((resolve, reject) => {
+      const img = new Image();
+      img.onload = function () {
+        resolve(url);
+      };
+      img.onerror = function () {
+        reject(url);
+      };
+      img.src = url;
+    }));
+  }
+
   async addBackground(image) {
+    await this.getImage(image);
+
     if (this.ruleAdded) {
       this.styleSheet.deleteRule(0);
     } else {

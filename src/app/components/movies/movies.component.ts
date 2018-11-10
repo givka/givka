@@ -18,6 +18,7 @@ import { BroadcastService } from '../../services/broadcast.service';
   styleUrls: ['./movies.component.scss'],
   encapsulation: ViewEncapsulation.None
   })
+
 export class MoviesComponent implements OnInit, OnDestroy {
   movies: Movie[];
 

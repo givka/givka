@@ -34,6 +34,7 @@
     "no-param-reassign": "off",
     "no-unused-expressions": "off",
     "class-methods-use-this": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "func-names": "off"
   }
 }
