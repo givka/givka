@@ -28,11 +28,13 @@
     <movie-list-component [listName]="'Collection movies'"
                           [listMovies]="movie.collectionMovies"></movie-list-component>
   </div>
-  <div class="reco-movies">
+  <div class="reco-movies"
+       *ngIf="movie.recoMovies">
     <movie-list-component [listName]="'Similar movies'"
                           [listMovies]="movie.recoMovies"></movie-list-component>
   </div>
-  <div class="director-movies">
+  <div class="director-movies"
+       *ngIf="movie.directorMovies">
     <movie-list-component [listName]="'Director movies'"
                           [listMovies]="movie.directorMovies"></movie-list-component>
   </div>

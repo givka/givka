@@ -36,7 +36,7 @@ export class TmdbService {
         results = [].concat(...results);
         return Object.keys(results).map(key => results[key]);
       })
-      .then(data => data.map(m => new Movie(m, database)));
+      .then(data => data.map(m => new Movie(m, database)).filter(m => m.poster));
   }
 
   async getMovieDetails(id: number) {

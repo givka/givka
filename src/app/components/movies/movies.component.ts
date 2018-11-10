@@ -76,7 +76,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.onCloseMovieDetails();
 
     const seen = await Storage.readDB('movie');
-    console.log(seen);
+
     this.movies = Object.keys(seen)
       .map(movie => new Movie(seen[movie], seen));
     this.loading = false;
@@ -108,8 +108,6 @@ export class MoviesComponent implements OnInit, OnDestroy {
   orderBy(key) {
     const order = this.orderAsc[key] ? 'asc' : 'desc';
     this.orderAsc[key] = !this.orderAsc[key];
-
-    console.log(this.orderAsc);
 
     this.loading = true;
     this.movies = Utils.orderBy(this.movies, key, order);

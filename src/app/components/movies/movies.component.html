@@ -14,7 +14,10 @@
 
   <div *ngIf="!showMovieDetails">
     <h1 *ngIf="type==='discover'">Discover Movies</h1>
-    <h1 *ngIf="type==='seen'">Collection Movies ({{movies.length}})</h1>
+    <div *ngIf="type==='seen'">
+      <h1>Collection Movies</h1>
+      <h3>{{movies.length}} movie(s) seen</h3>
+    </div>
 
     <div class="buttons">
       <button-component class="br"
