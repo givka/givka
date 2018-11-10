@@ -10,18 +10,33 @@
     <div>{{movie.releaseDate}}</div>
     <div>{{movie.runtime}}</div>
     <div>{{movie.overview}}</div>
+    <div class="link ib">
+      <i class="fab fa-youtube"
+         style="margin-right: 5px;"></i>
+      <a class="link"
+         [href]="movie.trailer"
+         target="_blank">Watch trailer</a></div>
+
+    <!-- <div class="list"
+         *ngIf="movie.credits">
+      <div class="movie-image"
+           *ngFor="let credit of movie.credits">
+
+        <img [src]="credit.profile_path ? 'https://image.tmdb.org/t/p/w185' + credit.profile_path : 'assets/no-profile.png'">
+      </div>
+    </div> -->
   </div>
 
 </div>
 <div>
 
-  <!-- <div class="sub-title">Images</div>
-  <div class="movie-images">
+  <div class="sub-title">Images</div>
+  <div class="list">
     <div class="movie-image"
          *ngFor="let image of movie.images">
-      <img [src]="'https://image.tmdb.org/t/p/w780' + image.file_path">
+      <img [src]="'https://image.tmdb.org/t/p/w300' + image.file_path">
     </div>
-  </div> -->
+  </div>
 
   <div class="collection-movies"
        *ngIf="movie.collectionMovies">
@@ -38,14 +53,5 @@
     <movie-list-component [listName]="'Director movies'"
                           [listMovies]="movie.directorMovies"></movie-list-component>
   </div>
-
-  <!-- <div class="trailer">
-    <div class="sub-title">Trailer</div>
-
-    <iframe [src]="movie.trailer"
-            frameborder="0"
-            allowfullscreen></iframe>
-
-  </div> -->
 
 </div>

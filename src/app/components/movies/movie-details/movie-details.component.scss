@@ -18,4 +18,42 @@ movie-details-component {
     margin-bottom: 10px;
     font-family: 'IBM Plex Mono', monospace;
   }
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    height: 139px;
+    box-shadow: 0 0 10px #000;
+    flex-direction: column;
+    overflow-x: scroll;
+    padding: 10px;
+    overflow-y: hidden;
+    align-content: baseline;
+    .ratio-vote {
+      height: 4px;
+      margin-top: 1px;
+      margin-left: 3px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      position: relative;
+    }
+  }
+  .movie-image {
+    height: 139px;
+    transition: 0.2s ease;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    user-select: none;
+    &:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+    img {
+      height: 100%;
+      border-radius: 3px;
+      object-fit: cover;
+      box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
+    }
+  }
 }

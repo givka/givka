@@ -45,6 +45,8 @@ export class MovieDetails extends Movie {
     this.credits = MovieDetails.formatCredits(options.credits);
     this.recoMovies = MovieDetails.formatRecoMovies(options.recommendations, moviesSeen);
     this.directorId = this.credits && this.credits[0] && this.credits[0].job === 'Director' && this.credits[0].id;
+
+    console.log(this.credits);
   }
 
   async addDetails(director, collection, moviesSeen) {
@@ -88,7 +90,7 @@ export class MovieDetails extends Movie {
     if (!videos) { return null; }
     let trailers = videos.results.filter(t => t.type === 'Trailer');
     trailers = Utils.orderBy(trailers, 'size');
-    return `https://www.youtube.com/embed/${trailers[0].key}` || null;
+    return `https://www.youtube.com/watch?v=${trailers[0].key}` || null;
   }
 
   private static formatCredits(credits) {
