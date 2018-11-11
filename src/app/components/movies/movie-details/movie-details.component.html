@@ -34,7 +34,10 @@
   <div class="list">
     <div class="movie-image"
          *ngFor="let image of movie.images">
-      <img [src]="'https://image.tmdb.org/t/p/w300' + image.file_path">
+      <a [href]="'https://image.tmdb.org/t/p/original' + image.file_path"
+         target="_blank">
+        <img [src]="'https://image.tmdb.org/t/p/w300' + image.file_path">
+      </a>
     </div>
   </div>
 
