@@ -14,6 +14,7 @@ import { BroadcastService } from '../../services/broadcast.service';
 
 @Component({
   selector: 'movies-component',
+
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -24,11 +25,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   movieDetails: MovieDetails;
 
-  showMovieDetails: boolean = false;
+  showMovieDetails = false;
 
-  loading: boolean = true;
+  loading = true;
 
-  type: string = 'seen';
+  type = 'seen';
 
   subscription: Subscription;
 
@@ -92,6 +93,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   goToMovieDetails(movie: Movie) {
+    if (this.movieDetails && this.movieDetails.id === movie.id) { return; }
     this.loading = true;
     this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
 

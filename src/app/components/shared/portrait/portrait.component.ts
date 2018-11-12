@@ -13,6 +13,10 @@ export class PortraitComponent implements OnInit {
 
   @Input() title: string;
 
+  @Input() topTitle: string;
+
+  isHover = false;
+
   showImage = false;
 
   constructor() { }

@@ -5,30 +5,39 @@
                    [size]="500"></movie-component>
 
   <div class="movie-description">
-    <h1>{{movie.title}}</h1>
-    <div *ngIf="movie.title !== movie.originalTitle">({{movie.originalTitle}})</div>
-    <div>{{movie.releaseDate}}</div>
+    <div class="title-bar">
+      <span class="title">{{movie.title}}</span>
+      <span class="release-date"> {{movie.releaseDate}} </span>
+      <span class="original-title"
+            *ngIf="movie.title !== movie.originalTitle"> '{{movie.originalTitle}}' </span>
+      <span>Directed by </span>
+      <span class="link underline">{{movie.directorName}}</span>
+    </div>
+
     <div>{{movie.runtime}}</div>
     <div>{{movie.overview}}</div>
-    <div class="link ib">
+    <div class="link ib"
+         *ngIf="movie.trailer">
       <i class="fab fa-youtube"
          style="margin-right: 5px;"></i>
       <a class="link"
          [href]="movie.trailer"
          target="_blank">Watch trailer</a></div>
-
-    <!-- <div class="list"
-         *ngIf="movie.credits">
-      <div class="movie-image"
-           *ngFor="let credit of movie.credits">
-
-        <img [src]="credit.profile_path ? 'https://image.tmdb.org/t/p/w185' + credit.profile_path : 'assets/no-profile.png'">
-      </div>
-    </div> -->
   </div>
 
 </div>
 <div>
+  <div class="sub-title">Casting</div>
+  <div class="list credits"
+       *ngIf="movie.credits">
+    <portrait-component *ngFor="let credit of movie.credits"
+                        [image]="'https://image.tmdb.org/t/p/w185' + credit.profile_path"
+                        [title]="credit.name"
+                        [topTitle]="credit.role">
+
+    </portrait-component>
+
+  </div>
 
   <div class="sub-title">Images</div>
   <div class="list">
@@ -53,7 +62,7 @@
   </div>
   <div class="director-movies"
        *ngIf="movie.directorMovies">
-    <movie-list-component [listName]="'Director movies'"
+    <movie-list-component [listName]="movie.directorName+' movies'"
                           [listMovies]="movie.directorMovies"></movie-list-component>
   </div>
 

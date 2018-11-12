@@ -1,10 +1,21 @@
-<div class="image-container">
-  <img [src]="image ? image : 'assets/no-profile.png'">
-</div>
-
-<div *ngIf="title"
-     class="image-title">
-  <div>
-    {{title}}
+<div class="portrait"
+     (mouseover)="isHover = true"
+     (mouseleave)="isHover = false">
+  <div *ngIf="topTitle && isHover"
+       class="image-title">
+    <div class="top">
+      {{topTitle}}
+    </div>
   </div>
+  <div class="image-container">
+    <img [src]="image ? image : 'assets/no-profile.png'">
+  </div>
+
+  <div *ngIf="title"
+       class="image-title">
+    <div>
+      {{title}}
+    </div>
+  </div>
+
 </div>
