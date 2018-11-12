@@ -41,10 +41,7 @@ export class MovieDetails extends Movie {
     this.runtime = moment.utc().startOf('day').add(options.runtime, 'minutes').format('h[h] mm[min]');
     this.tagLine = options.tagline;
     this.voteCount = options.vote_count;
-
     this.releaseDate = moment(this.releaseDate, 'YYYY-MM-DD').format('YYYY');
-    const c = 1;
-
     this.images = this.formatImages(options.images);
     this.trailer = this.formatVideos(options.videos);
     this.credits = this.formatCredits(options.credits);
@@ -92,8 +89,10 @@ export class MovieDetails extends Movie {
   }
 
   private formatVideos(videos) {
-    if (!videos.results.length) { return null; }
-    let trailers = videos.results.filter(t => t.type === 'Trailer');
+    const { results } = videos;
+    if (!results.length) { return null; }
+    let trailers = results.filter(t => t.type === 'Trailer');
+    if (!trailers.length) { trailers = results; }
     trailers = Utils.orderBy(trailers, 'size');
     return `https://www.youtube.com/watch?v=${trailers[0].key}` || null;
   }
