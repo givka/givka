@@ -79,6 +79,7 @@ export class MovieDetails extends Movie {
   }
 
   private formatRecoMovies(movies, moviesSeen) {
+    if (movies.results.length) { return null; }
     return movies.results.map(m => new Movie(m, moviesSeen));
   }
 

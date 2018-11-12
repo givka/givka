@@ -39,6 +39,7 @@ export class Background {
     }
     const background = `url(${image})`;
     const rule = `.main-content::before {
+    filter: blur(10px) brightness(0.5)!important;
     background-image: ${background} !important;
     transform: scale(${random(1.1, 1.5, true)}) !important;
   }`;
