@@ -50,7 +50,7 @@ export class TmdbService {
     const movieDetails = new MovieDetails(movieData, watchedMovies);
 
     const [directorMovies, collectionMovies] = await Promise.all([
-      this.getPeople(movieDetails.directorId),
+      this.getPeople(movieDetails.director.id),
       this.getCollection(movieDetails.collection && movieDetails.collection.id),
     ]);
 

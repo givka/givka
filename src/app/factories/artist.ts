@@ -16,7 +16,6 @@ export class Artist {
 
   constructor(options) {
     this.artistName = options.artistName;
-
     this.artistUrl = options.url || Utils.formatArtistUrl(options.artistName);
     this.extension = options.image.split('.').pop();
     this.image = this.formatImage(options.image);

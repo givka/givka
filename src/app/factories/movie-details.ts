@@ -28,9 +28,7 @@ export class MovieDetails extends Movie {
 
   images: any[];
 
-  directorId: number;
-
-  directorName: string;
+  director;
 
   constructor(options, moviesSeen = {}) {
     super(options, moviesSeen);
@@ -46,8 +44,7 @@ export class MovieDetails extends Movie {
     this.trailer = this.formatVideos(options.videos);
     this.credits = this.formatCredits(options.credits);
     this.recoMovies = this.formatRecoMovies(options.recommendations, moviesSeen);
-    this.directorId = this.credits && this.credits[0] && this.credits[0].job === 'Director' && this.credits[0].id;
-    this.directorName = this.credits && this.credits[0] && this.credits[0].job === 'Director' && this.credits[0].name;
+    this.director = this.credits && this.credits[0] && this.credits[0].job === 'Director' && this.credits[0];
   }
 
   async addDetails(director, collection, moviesSeen) {
@@ -59,13 +56,14 @@ export class MovieDetails extends Movie {
     const directorMovies = director.movie_credits.crew
       .filter(movie => movie.job === 'Director')
       .map(m => new Movie(m, moviesSeen))
-      .filter(m => m.voteCount > 50);
+      .filter(m => m.poster);
     return Utils.orderBy(directorMovies, 'voteCount');
   }
 
   private formatCollectionMovies(collection, moviesSeen): Movie[] {
     if (!collection) { return null; }
-    const movies = collection.parts.map(m => new Movie(m, moviesSeen));
+    const movies = collection.parts.map(m => new Movie(m, moviesSeen))
+      .filter(m => m.poster);
     return Utils.orderBy(movies, 'releaseDate', 'asc');
   }
 

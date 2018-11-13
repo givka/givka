@@ -5,13 +5,13 @@ import { MovieDetails } from '../../../factories/movie-details';
 import { BroadcastService } from '../../../services/broadcast.service';
 
 @Component({
-  selector: 'movie-details-component',
-  templateUrl: './movie-details.component.html',
-  styleUrls: ['./movie-details.component.scss'],
+  selector: 'credit-details-component',
+  templateUrl: './credit-details.component.html',
+  styleUrls: ['./credit-details.component.scss'],
   encapsulation: ViewEncapsulation.None
   })
-export class MovieDetailsComponent implements OnInit {
-  @Input() movie: MovieDetails;
+export class CreditDetailsComponent implements OnInit {
+  @Input() credit
 
   constructor(private broadcast: BroadcastService) {
 

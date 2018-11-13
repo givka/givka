@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="!loading">
-  <div *ngIf="showMovieDetails">
+  <div *ngIf="tabSelected ==='movieDetails'">
     <div class="link close-movie-details"
          (click)="onCloseMovieDetails()">
       <i class="fas fa-times"></i>
@@ -12,7 +12,16 @@
     </movie-details-component>
   </div>
 
-  <div *ngIf="!showMovieDetails">
+  <div *ngIf="tabSelected ==='creditDetails'">
+    <div class="link close-movie-details"
+         (click)="onCloseMovieDetails()">
+      <i class="fas fa-times"></i>
+    </div>
+    <credit-details-component [credit]="creditDetails">
+    </credit-details-component>
+  </div>
+
+  <div *ngIf="tabSelected ==='movies'">
     <h1 *ngIf="type==='discover'">Discover Movies</h1>
     <div *ngIf="type==='seen'">
       <h1>Collection Movies</h1>

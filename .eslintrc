@@ -6,11 +6,14 @@
     "browser": true,
     "node": true
   },
+  "plugins": [
+    "typescript"
+  ],
+  "parser": "typescript-eslint-parser",
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module"
   },
-  "parser": "typescript-eslint-parser",
   "globals": {
     "angular": true,
     "_": true,

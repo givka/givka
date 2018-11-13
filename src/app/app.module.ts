@@ -8,6 +8,7 @@ import { MoviesComponent } from './components/movies/movies.component';
 import { MovieComponent } from './components/movies/movie/movie.component';
 import { SpinnerComponent } from './components/shared/spinner/spinner.component';
 import { MovieDetailsComponent } from './components/movies/movie-details/movie-details.component';
+import { CreditDetailsComponent } from './components/movies/credit-details/credit-details.component';
 import { MovieListComponent } from './components/movies/movie-details/movie-list/movie-list.component';
 import { ButtonComponent } from './components/shared/button/button.component';
 import { ArtComponent } from './components/art/art.component';
@@ -24,6 +25,7 @@ import { PortraitComponent } from './components/shared/portrait/portrait.compone
     MovieComponent,
     SpinnerComponent,
     MovieDetailsComponent,
+    CreditDetailsComponent,
     MovieListComponent,
     ButtonComponent,
     ArtComponent,

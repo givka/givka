@@ -7,6 +7,7 @@ import { Background } from '../../factories/background';
 import { Movie } from '../../factories/movie';
 import { MovieDetails } from '../../factories/movie-details';
 import { Storage } from '../../factories/storage';
+import { Credit } from '../../factories/credit';
 
 import { TmdbService } from '../../services/tmdb.service';
 import { Utils } from '../../factories/utils';
@@ -14,7 +15,6 @@ import { BroadcastService } from '../../services/broadcast.service';
 
 @Component({
   selector: 'movies-component',
-
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -23,9 +23,13 @@ import { BroadcastService } from '../../services/broadcast.service';
 export class MoviesComponent implements OnInit, OnDestroy {
   movies: Movie[];
 
+  tabSelected = 'movies'
+
   movieDetails: MovieDetails;
 
   showMovieDetails = false;
+
+  creditDetails
 
   loading = true;
 
@@ -48,7 +52,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.clickOnSeen();
     this.subscription = this.broadcast.getMovie()
       .subscribe((subject) => {
-        this.onClickPoster(subject.movie, subject.event);
+        if (subject.credit) {
+          this.onClickCredit(subject.credit, subject.event);
+        } else this.onClickPoster(subject.movie, subject.event);
       });
   }
 
@@ -57,12 +63,23 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.background.removeBackground();
   }
 
+  onClickCredit(credit, event) {
+    this.tabSelected = 'creditDetails';
+    this.loading = true;
+    this.tmdb.getPeople(credit.id)
+      .then((data) => { this.creditDetails = new Credit(data); })
+      .finally(() => { this.loading = false; });
+  }
+
   onCloseMovieDetails() {
+    this.tabSelected = 'movies';
+
     this.showMovieDetails = false;
     this.background.removeBackground();
   }
 
   async clickOnDiscover(key) {
+    this.tabSelected = 'movies';
     this.type = 'discover';
     this.loading = true;
     this.onCloseMovieDetails();
@@ -72,6 +89,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   async clickOnSeen() {
+    this.tabSelected = 'movies';
+
     this.type = 'seen';
     this.loading = true;
     this.onCloseMovieDetails();
@@ -94,6 +113,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   goToMovieDetails(movie: Movie) {
     if (this.movieDetails && this.movieDetails.id === movie.id) { return; }
+    this.tabSelected = 'movieDetails';
+
     this.loading = true;
     if (movie.backdrop) {
       this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);

@@ -28,6 +28,10 @@ export class BroadcastService {
     return this.portraitSubject.asObservable();
   }
 
+  public sendCredit(credit, event) {
+    this.movieSubject.next({ credit, event });
+  }
+
   public sendMovie(movie: Movie, event) {
     this.movieSubject.next({ movie, event });
   }

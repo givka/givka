@@ -11,7 +11,8 @@
       <span class="original-title"
             *ngIf="movie.title !== movie.originalTitle"> '{{movie.originalTitle}}' </span>
       <span>Directed by </span>
-      <span class="link underline">{{movie.directorName}}</span>
+      <span class="link underline"
+      (click)="onClickCredit(movie.director,$event)">{{movie.director.name}}</span>
     </div>
 
     <div>{{movie.runtime}}</div>
@@ -33,7 +34,9 @@
     <portrait-component *ngFor="let credit of movie.credits"
                         [image]="'https://image.tmdb.org/t/p/w185' + credit.profile_path"
                         [title]="credit.name"
-                        [topTitle]="credit.role">
+                        [topTitle]="credit.role"
+
+                        (click)="onClickCredit(credit,$event)">
 
     </portrait-component>
 
@@ -62,7 +65,7 @@
   </div>
   <div class="director-movies"
        *ngIf="movie.directorMovies">
-    <movie-list-component [listName]="movie.directorName+' movies'"
+    <movie-list-component [listName]="movie.director.name+' movies'"
                           [listMovies]="movie.directorMovies"></movie-list-component>
   </div>
 
