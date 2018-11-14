@@ -47,6 +47,10 @@ popup-art-component {
         max-width: calc(100% - 150px);
         max-height: calc(100% - 150px);
       }
+      .message {
+        position: absolute;
+        font-size: 40px;
+      }
     }
   }
   .info {

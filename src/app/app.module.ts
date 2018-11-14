@@ -24,7 +24,9 @@ const appRoutes: Routes = [
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'credit/:id', component: CreditDetailsComponent },
   { path: 'tv', component: MoviesComponent },
-  { path: 'art', component: ArtComponent },
+  { path: 'art/:list', component: ArtComponent },
+  { path: 'art', redirectTo: 'art/collection', pathMatch: 'full' },
+  { path: 'artist/:artistUrl', component: ArtistDetailsComponent },
   { path: '', redirectTo: 'movies/collection', pathMatch: 'full' },
 
 ];

@@ -6,6 +6,7 @@ import { Credit } from 'src/app/factories/credit';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'credit-details-component',
@@ -25,6 +26,7 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
     private routeActive: ActivatedRoute,
     private router: Router,
     private routingState: RoutingStateService,
+    private title: Title,
   ) {
 
   }
@@ -43,7 +45,10 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
   loadCreditDetails(id: number): void {
     this.loading = true;
     this.tmdb.getPeople(id)
-      .then((data) => { this.credit = new Credit(data); })
+      .then((credit) => {
+        this.credit = credit;
+        this.title.setTitle(credit.name);
+      })
       .finally(() => { this.loading = false; });
   }
 

@@ -33,20 +33,4 @@ art-component {
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
     }
   }
-  .artist-info {
-    display: flex;
-    margin-bottom: 20px;
-    .artist-image {
-      width: 250px;
-      img {
-        width: 100%;
-      }
-    }
-    .additional-info {
-      margin-left: 20px;
-      h1 {
-        margin-top: 0;
-      }
-    }
-  }
 }

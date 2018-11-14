@@ -3,6 +3,11 @@ app-component {
   h2,
   h3 {
     text-align: center;
+    font-family: "Oswald", sans-serif;
+  }
+  h1 {
+    font-size: 40px;
+    font-weight: 600;
   }
   .navigation-bar {
     z-index: 10;

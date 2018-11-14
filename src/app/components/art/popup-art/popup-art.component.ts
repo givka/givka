@@ -2,6 +2,8 @@ import {
   Component, OnInit, ViewEncapsulation, Input, HostListener, Output, EventEmitter,
 } from '@angular/core';
 import { findIndex } from 'lodash';
+import { Router } from '@angular/router';
+import { Storage } from 'src/app/factories/storage';
 import { Painting } from '../../../factories/painting';
 import { BroadcastService } from '../../../services/broadcast.service';
 
@@ -22,7 +24,9 @@ export class PopupArtComponent implements OnInit {
 
   index;
 
-  constructor(private broadcast: BroadcastService) { }
+  message: string;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.index = findIndex(this.paintings, this.painting);
@@ -34,6 +38,7 @@ export class PopupArtComponent implements OnInit {
 
   changePainting(indexInc: number) {
     this.loading = true;
+    this.message = null;
     this.index += indexInc;
     if (this.index < 0) {
       this.index = this.paintings.length - 1;
@@ -43,8 +48,14 @@ export class PopupArtComponent implements OnInit {
     this.painting = this.paintings[this.index];
   }
 
+  showMessage(message) {
+    this.message = message;
+    setTimeout(() => { this.message = null; }, 500);
+  }
+
   @HostListener('document:keydown', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent): void {
+    event.preventDefault();
     event.stopPropagation();
 
     switch (event.key) {
@@ -56,14 +67,26 @@ export class PopupArtComponent implements OnInit {
         break;
       case 'ArrowDown':
         this.onClickArtist(this.painting.artistUrl);
+        this.onClose.emit();
         break;
 
+      case 'ArrowUp':
+        this.painting.seen = !this.painting.seen;
+        if (this.painting.seen) {
+          Storage.addKeyDB('art', this.painting);
+          this.showMessage('Saved');
+        } else {
+          Storage.deleteKeyDB('art', this.painting);
+          this.showMessage('Removed');
+        }
+
+        break;
       default:
         break;
     }
   }
 
   onClickArtist(artistUrl) {
-    this.broadcast.sendArtistUrl(artistUrl);
+    this.router.navigate([`/artist/${artistUrl}`]);
   }
 }

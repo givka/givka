@@ -15,7 +15,12 @@ export class Painting {
 
   extension: string;
 
-  constructor(options) {
+  id: number;
+
+  seen: boolean;
+
+  constructor(options, paintingsSeen) {
+    this.id = options.contentId;
     this.artistName = options.artistName;
     this.artistUrl = Utils.formatArtistUrl(options.artistName);
     this.extension = this.getExtension(options.image);
@@ -23,6 +28,7 @@ export class Painting {
     this.title = options.title;
     this.year = options.year || options.completitionYear;
     this.height = options.height;
+    this.seen = !!paintingsSeen[this.id];
   }
 
   private getExtension(image: string) {

@@ -2,6 +2,7 @@ import * as moment from 'moment';
 
 import { Utils } from './utils';
 import { Movie } from './movie';
+import { Credit } from './credit';
 
 export class MovieDetails extends Movie {
   directorMovies: Movie[];
@@ -53,15 +54,7 @@ export class MovieDetails extends Movie {
 
   async addDetails(director, collection, moviesSeen) {
     this.collectionMovies = this.formatCollectionMovies(collection, moviesSeen);
-    this.directorMovies = this.formatDirectorMovies(director, moviesSeen);
-  }
-
-  private formatDirectorMovies(director, moviesSeen) {
-    const directorMovies = director.movie_credits.crew
-      .filter(movie => movie.job === 'Director')
-      .map(m => new Movie(m, moviesSeen))
-      .filter(m => m.poster);
-    return Utils.orderBy(directorMovies, 'voteCount');
+    this.directorMovies = director.directorMovies;
   }
 
   private formatCollectionMovies(collection, moviesSeen): Movie[] {

@@ -12,12 +12,15 @@ export class ArtistDetails extends Artist {
 
   careerEnd: number;
 
-  constructor(options, paintings = []) {
+  originalName: string;
+
+  constructor(options, paintings = [], paintingsSeen) {
     super(options);
     this.wikipediaUrl = options.wikipediaUrl;
     this.biography = options.biography;
     this.careerStart = options.activeYearsStart;
     this.careerEnd = options.activeYearsCompletion;
-    this.paintings = paintings.map(p => new Painting(p));
+    this.originalName = options.OriginalArtistName;
+    this.paintings = paintings.map(p => new Painting(p, paintingsSeen));
   }
 }

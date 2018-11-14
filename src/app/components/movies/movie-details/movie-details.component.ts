@@ -5,6 +5,8 @@ import { TmdbService } from 'src/app/services/tmdb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
+import { Title } from '@angular/platform-browser';
+import { Background } from 'src/app/factories/background';
 import { MovieDetails } from '../../../factories/movie-details';
 import { BroadcastService } from '../../../services/broadcast.service';
 
@@ -23,12 +25,15 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
 
   subMovie: Subscription;
 
+  background: Background = new Background();
+
   constructor(
     private broadcast: BroadcastService,
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
     private router: Router,
     private routingState: RoutingStateService,
+    private title: Title,
   ) {
   }
 
@@ -46,14 +51,16 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subRouter.unsubscribe();
     this.subMovie.unsubscribe();
+    this.background.removeBackground();
   }
 
   loadMovieDetails(id: number) {
     this.loading = true;
-
     this.tmdb.getMovieDetails(id)
       .then((movieDetails) => {
+        this.background.addBackground(`https://image.tmdb.org/t/p/w300${movieDetails.backdrop}`);
         this.movie = movieDetails;
+        this.title.setTitle(movieDetails.title);
       })
       .finally(() => {
         this.loading = false;

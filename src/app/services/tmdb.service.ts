@@ -6,6 +6,7 @@ import { random } from 'lodash';
 import { Movie } from '../factories/movie';
 import { MovieDetails } from '../factories/movie-details';
 import { Storage } from '../factories/storage';
+import { Credit } from '../factories/credit';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,9 @@ export class TmdbService {
 
   getPeople(id) {
     if (!id) { return null; }
-    return this.getRequest(`person/${id}`, 'movie_credits,images,tagged_images');
+    const moviesSeen = Storage.readDB('movie');
+    return this.getRequest(`person/${id}`, 'movie_credits,images,tagged_images')
+      .then(c => new Credit(c, moviesSeen));
   }
 
   private getRequest(url: string, addRequestAppend: string, page: number = 1) {

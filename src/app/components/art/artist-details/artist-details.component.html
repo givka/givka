@@ -1,3 +1,42 @@
-<p>
-  artist-details works!
-</p>
+<div *ngIf="loading">
+  <spinner-component></spinner-component>
+</div>
+
+<div *ngIf="!loading">
+
+  <div class="artist-info">
+    <span class="close link"
+          (click)="onCloseArtist()">×</span>
+    <div class="artist-image">
+      <portrait-component [image]="artist.image"></portrait-component>
+    </div>
+    <div class="additional-info">
+      <div class="title-bar">
+        <span class="title">{{artist.artistName}}</span>
+        <span> {{artist.birthDate}}</span>
+        <span *ngIf="artist.deathDate"> - {{artist.deathDate}} </span>
+
+      </div>
+
+      <div>
+        <a class="link"
+           [href]="artist.wikipediaUrl"
+           target="_blank"><i class="fab fa-wikipedia-w"
+             style="margin-right:5px;"></i>Go to Wikipedia</a>
+      </div>
+
+    </div>
+  </div>
+  <div class="grid portrait-grid">
+    <portrait-component *ngFor="let painting of paintings"
+                        [ngClass]="{'seen': painting.seen}"
+                        [image]="painting.image + '!PinterestSmall.' + painting.extension"
+                        (click)="onClickPortrait(painting,$event)">
+    </portrait-component>
+  </div>
+</div>
+
+<popup-art-component *ngIf="popupPainting"
+                     [painting]="popupPainting"
+                     [paintings]="artist.paintings"
+                     (onClose)="popupPainting=null"></popup-art-component>

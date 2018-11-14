@@ -4,6 +4,7 @@ import { shuffle } from 'lodash';
 import { Painting } from '../factories/painting';
 import { Artist } from '../factories/artist';
 import { ArtistDetails } from '../factories/artistDetails';
+import { Storage } from '../factories/storage';
 
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
@@ -12,8 +13,9 @@ export class WikiartService {
   constructor(private http: HttpClient) { }
 
   getMostViewedPaintings() {
+    const paintingsSeen = Storage.readDB('art');
     return this.getRequest('App/Painting/MostViewedPaintings')
-      .then(result => shuffle(result.map(p => new Painting(p))));
+      .then(result => shuffle(result.map(p => new Painting(p, paintingsSeen))));
   }
 
   getPopularArtists() {
@@ -22,10 +24,11 @@ export class WikiartService {
   }
 
   getArtistDetails(artistUrl: string) {
+    const paintingsSeen = Storage.readDB('art');
     return Promise.all([
       this.getRequest(artistUrl),
       this.getRequest(`App/Painting/PaintingsByArtist?artistUrl=${artistUrl}`),
-    ]).then(([details, paintings]) => new ArtistDetails(details, paintings));
+    ]).then(([details, paintings]) => new ArtistDetails(details, paintings, paintingsSeen));
   }
 
   private getRequest(url: string, page: number = 1): any {

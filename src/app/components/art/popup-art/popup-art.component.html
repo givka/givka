@@ -21,8 +21,11 @@
   <div class="loading-img">
 
     <img class="modal-content"
-         [src]="painting.image"
+         [src]="painting.image "
          (load)="onImageLoad()">
+
+    <div class="message fs-20 police-title"
+         *ngIf="message">{{message}}</div>
 
   </div>
 </div>

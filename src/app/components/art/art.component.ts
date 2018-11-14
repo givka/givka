@@ -2,6 +2,9 @@ import {
   Component, OnInit, ViewEncapsulation, OnDestroy, HostListener,
 } from '@angular/core';
 import { findIndex } from 'lodash';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { Storage } from 'src/app/factories/storage';
 import { WikiartService } from '../../services/wikiart.service';
 import { Painting } from '../../factories/painting';
 import { Artist } from '../../factories/artist';
@@ -17,98 +20,75 @@ import { ArtistDetails } from '../../factories/artistDetails';
 export class ArtComponent implements OnInit, OnDestroy {
   items
 
-  showPopup: boolean = false;
-
   loading: boolean = true;
 
   popupPainting: Painting;
 
-  artistDetails: ArtistDetails
-
-  artists: Artist[]
-
-  tabSelected: string;
-
-  subscriptionPortrait: any;
-
-  subscriptionArtistUrl
-
   intervalId;
+
+  subRouter
+
+  list
 
   constructor(
     private wikiart: WikiartService,
-    private broadcast: BroadcastService,
+    private router: Router,
+    private title: Title,
+    private activeRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.subscriptionPortrait = this.broadcast.getPortrait()
-      .subscribe((subject) => {
-        this.onClickPortrait(subject.portrait, subject.event);
-      });
-
-    this.subscriptionArtistUrl = this.broadcast.getArtistUrl()
-      .subscribe((subject) => {
-        this.onClickArtist(subject.artistUrl);
-      });
-
-    this.onClickArtists();
+    this.title.setTitle('Art');
+    this.subRouter = this.activeRoute.params.subscribe((routeParams) => {
+      const { list } = routeParams;
+      this.loadList(list);
+    });
   }
 
   ngOnDestroy() {
     this.cancelArrayDelay();
-    this.subscriptionPortrait.unsubscribe();
-    this.subscriptionArtistUrl.unsubscribe();
+    this.subRouter.unsubscribe();
   }
 
-  onCloseArtist() {
-    this.cancelArrayDelay();
-    this.artistDetails = null;
-    this.onClickDiscover();
-  }
-
-  onClickDiscover() {
+  loadList(list: string) {
+    const possibleLists = ['collection', 'artists', 'paintings'];
+    if (!possibleLists.includes(list)) {
+      this.router.navigate(['/art']);
+      return;
+    }
+    this.list = list;
     this.loading = true;
-    this.tabSelected = 'discover';
     this.cancelArrayDelay();
-    this.wikiart.getMostViewedPaintings()
-      .then((paintings) => {
-        this.arrayDelay(paintings);
-      })
-      .finally(() => { this.loading = false; });
+    if (list === 'collection') {
+      this.loadCollection();
+    } else {
+      this.loadDiscover(list);
+    }
   }
 
-  onClickArtists() {
-    this.loading = true;
-    this.tabSelected = 'artists';
-    this.cancelArrayDelay();
-    this.wikiart.getPopularArtists()
-      .then((artists) => {
-        this.arrayDelay(artists);
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+  loadCollection() {
+    const paintingsSeen = Storage.readDB('art');
+    this.items = Object.keys(paintingsSeen).map(key => paintingsSeen[key]);
+    this.loading = false;
+  }
+
+  loadDiscover(list) {
+    const promise = list === 'paintings' ? this.wikiart.getMostViewedPaintings() : this.wikiart.getPopularArtists();
+    promise.then((paintings) => {
+      this.arrayDelay(paintings);
+    }).finally(() => { this.loading = false; });
   }
 
   onClickArtist(artistUrl) {
-    this.loading = true;
-    this.showPopup = false;
-    this.tabSelected = 'artist-details';
-    this.cancelArrayDelay();
-    this.wikiart.getArtistDetails(artistUrl)
-      .then((artist) => {
-        this.arrayDelay(artist.paintings);
-        this.artistDetails = artist;
-      })
-      .finally(() => { this.loading = false; });
+    this.router.navigate([`/artist/${artistUrl}`]);
   }
 
-  onClickPortrait(portrait, $event) {
-    if (portrait instanceof Painting) {
-      this.showPopup = true;
-      this.popupPainting = portrait;
+  onClickPortrait(portrait, event) {
+    if (event.ctrlKey || event.metaKey) {
+      portrait.seen = !portrait.seen;
+      portrait.seen ? Storage.addKeyDB('art', portrait) : Storage.deleteKeyDB('art', portrait);
     } else {
-      this.onClickArtist(portrait.artistUrl);
+      this.popupPainting = portrait;
     }
   }
 
@@ -116,7 +96,9 @@ export class ArtComponent implements OnInit, OnDestroy {
     this.items = [];
     let i = 0;
     this.intervalId = setInterval(() => {
-      if (i === array.length) { this.cancelArrayDelay(); } else {
+      if (i === array.length) {
+        this.cancelArrayDelay();
+      } else {
         this.items.push(array[i++]);
       }
     }, 50);

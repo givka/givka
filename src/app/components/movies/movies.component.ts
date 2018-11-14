@@ -4,6 +4,7 @@ import {
 
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { Movie } from '../../factories/movie';
 import { MovieDetails } from '../../factories/movie-details';
 import { Storage } from '../../factories/storage';
@@ -37,9 +38,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
     private router: Router,
+    private title: Title,
   ) { }
 
   ngOnInit() {
+    this.title.setTitle('Movies');
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });

@@ -2,11 +2,19 @@ portrait-component {
   width: 100px;
   height: 150px;
   padding: 0 10px 10px 0;
+  transition: 0.3s all ease;
+  &.seen {
+    opacity: 0.1;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
   .portrait {
     border-radius: 3px;
     overflow: hidden;
     box-shadow: 0 0 10px black;
     transition: 0.3s all ease;
+
     .image-container {
       line-height: 0;
     }
@@ -33,6 +41,7 @@ portrait-component {
         }
       }
     }
+
     &:hover {
       transform: scale(1.05);
       cursor: pointer;

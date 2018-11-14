@@ -74,7 +74,7 @@
     </div>
 
     <div class="collection-movies"
-         *ngIf="movie.collectionMovies">
+         *ngIf="movie.collectionMovies.length">
       <movie-list-component [listName]="'Collection movies'"
                             [listMovies]="movie.collectionMovies"></movie-list-component>
     </div>
