@@ -3,72 +3,58 @@
 </div>
 
 <div *ngIf="!loading">
-  <div *ngIf="tabSelected ==='movieDetails'">
-    <div class="link close-movie-details"
-         (click)="onCloseMovieDetails()">
-      <i class="fas fa-times"></i>
-    </div>
-    <movie-details-component [movie]="movieDetails">
-    </movie-details-component>
+
+  <h1 *ngIf="list!=='collection'">Discover Movies</h1>
+  <div *ngIf="list==='collection'">
+    <h1>Collection Movies</h1>
+    <h3>{{movies.length}} movie(s) seen</h3>
   </div>
 
-  <div *ngIf="tabSelected ==='creditDetails'">
-    <div class="link close-movie-details"
-         (click)="onCloseMovieDetails()">
-      <i class="fas fa-times"></i>
-    </div>
-    <credit-details-component [credit]="creditDetails">
-    </credit-details-component>
+  <div class="buttons">
+    <button-component class="br"
+                      [title]="'Upcoming'"
+                      [routerLink]="['/movies/upcoming']"
+                      routerLinkActive="link-active"></button-component>
+    <button-component class="br"
+                      [title]="'Popular'"
+                      [routerLink]="['/movies/popular']"
+                      routerLinkActive="link-active"></button-component>
+    <button-component class="br"
+                      [title]="'Top Rated'"
+                      [routerLink]="['/movies/top_rated']"
+                      routerLinkActive="link-active"></button-component>
+    <button-component [title]="'Collection'"
+                      [routerLink]="['/movies/collection']"
+                      routerLinkActive="link-active"></button-component>
+  </div>
+  <div class="buttons float-right">
+
+    <button-component class="br"
+                      [title]="'Title'"
+                      [orderAsc]="orderAsc.title"
+                      (click)="orderBy('title')"></button-component>
+    <button-component class="br"
+                      [title]="'Release Date'"
+                      [orderAsc]="orderAsc.releaseDate"
+                      (click)="orderBy('releaseDate')"></button-component>
+    <button-component class="br"
+                      [title]="'Vote Average'"
+                      [orderAsc]="orderAsc.voteAverage"
+                      (click)="orderBy('voteAverage')"></button-component>
+    <button-component [title]="'Vote Count'"
+                      [orderAsc]="orderAsc.voteCount"
+                      (click)="orderBy('voteCount')"></button-component>
+
   </div>
 
-  <div *ngIf="tabSelected ==='movies'">
-    <h1 *ngIf="type==='discover'">Discover Movies</h1>
-    <div *ngIf="type==='seen'">
-      <h1>Collection Movies</h1>
-      <h3>{{movies.length}} movie(s) seen</h3>
-    </div>
+  <div *ngIf="movies"
+       class="movies">
+    <movie-component *ngFor="let posterMovie of movies"
+                     [movie]="posterMovie"
+                     [size]="185"
+                     [ngClass]="{'movie-seen' : (list !== 'collection' && posterMovie.seen) || (list === 'collection' && !posterMovie.seen)}">
+    </movie-component>
 
-    <div class="buttons">
-      <button-component class="br"
-                        [title]="'Upcoming'"
-                        (click)="clickOnDiscover('upcoming')"></button-component>
-      <button-component class="br"
-                        [title]="'Popular'"
-                        (click)="clickOnDiscover('popular')"></button-component>
-      <button-component class="br"
-                        [title]="'Top Rated'"
-                        (click)="clickOnDiscover('top_rated')"></button-component>
-      <button-component [title]="'Collection'"
-                        (click)="clickOnSeen()"></button-component>
-    </div>
-    <div class="buttons float-right">
-
-      <button-component class="br"
-                        [title]="'Title'"
-                        [orderAsc]="orderAsc.title"
-                        (click)="orderBy('title')"></button-component>
-      <button-component class="br"
-                        [title]="'Release Date'"
-                        [orderAsc]="orderAsc.releaseDate"
-                        (click)="orderBy('releaseDate')"></button-component>
-      <button-component class="br"
-                        [title]="'Vote Average'"
-                        [orderAsc]="orderAsc.voteAverage"
-                        (click)="orderBy('voteAverage')"></button-component>
-      <button-component [title]="'Vote Count'"
-                        [orderAsc]="orderAsc.voteCount"
-                        (click)="orderBy('voteCount')"></button-component>
-
-    </div>
-
-    <div *ngIf="movies"
-         class="movies">
-      <movie-component *ngFor="let posterMovie of movies"
-                       [movie]="posterMovie"
-                       [size]="185"
-                       [ngClass]="{'movie-seen' : (type === 'discover' && posterMovie.seen) || (type === 'seen' && !posterMovie.seen)}">
-      </movie-component>
-
-    </div>
   </div>
+
 </div>

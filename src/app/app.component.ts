@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { RoutingStateService } from './services/routing-state.service';
 
 @Component({
   selector: 'app-component',
@@ -6,17 +7,21 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
   })
-export class AppComponent {
+export class AppComponent implements OnInit {
   tabSelected: string = 'movies';
 
-  constructor() {
+  constructor(private routingState: RoutingStateService) {
 
   }
 
-  onClickTab(tab: string) {
-    this.tabSelected = null;
-    setTimeout(() => {
-      this.tabSelected = tab;
-    });
+  ngOnInit() {
+    this.routingState.loadRouting();
   }
+
+  // onClickTab(tab: string) {
+  //   this.tabSelected = null;
+  //   setTimeout(() => {
+  //     this.tabSelected = tab;
+  //   });
+  // }
 }

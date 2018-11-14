@@ -32,8 +32,8 @@ export class BroadcastService {
     this.movieSubject.next({ credit, event });
   }
 
-  public sendMovie(movie: Movie, event) {
-    this.movieSubject.next({ movie, event });
+  public sendMovie(movie: Movie) {
+    this.movieSubject.next({ movie });
   }
 
   getMovie(): Observable<any> {

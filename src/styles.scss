@@ -8,7 +8,7 @@ body {
   padding: 0;
   margin: 0;
   text-shadow: 2px 2px 8px #000000;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #f2f2f2;
   .ib {
     display: inline-block;
@@ -17,6 +17,7 @@ body {
     padding: 10px;
     font-size: 14px;
     user-select: none;
+    outline: none;
     &:hover {
       cursor: pointer;
       background-color: #ec3655;
@@ -25,18 +26,30 @@ body {
   }
   .link {
     user-select: none;
-    color: #f2f2f2;
+    color: inherit;
     text-decoration: none;
+
     &:hover {
       cursor: pointer;
       color: #ec3655;
     }
+  }
+
+  .link-active {
+    color: #ec3655;
   }
   .cap {
     text-transform: capitalize;
   }
   .float-right {
     float: right;
+  }
+
+  .police-title {
+    font-family: "Oswald", sans-serif;
+  }
+  .fs-20 {
+    font-size: 20px;
   }
 }
 

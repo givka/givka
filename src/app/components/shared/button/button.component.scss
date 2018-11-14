@@ -3,6 +3,7 @@ button-component {
   padding: 10px;
   font-size: 14px;
   user-select: none;
+  outline: none;
   &.br {
     border-right: 1px solid rgba(0, 0, 0, 0.5);
   }

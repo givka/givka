@@ -20,6 +20,8 @@ export class MovieDetails extends Movie {
 
   tagLine: string;
 
+  imdbId: string;
+
   popularity: string;
 
   trailer: string;
@@ -38,11 +40,13 @@ export class MovieDetails extends Movie {
     this.popularity = options.popularity;
     this.runtime = moment.utc().startOf('day').add(options.runtime, 'minutes').format('h[h] mm[min]');
     this.tagLine = options.tagline;
+    this.imdbId = options.imdb_id;
     this.voteCount = options.vote_count;
     this.releaseDate = moment(this.releaseDate, 'YYYY-MM-DD').format('YYYY');
     this.images = this.formatImages(options.images);
     this.trailer = this.formatVideos(options.videos);
     this.credits = this.formatCredits(options.credits);
+    // TODO: Take into consideration page 2 from recommendations
     this.recoMovies = this.formatRecoMovies(options.recommendations, moviesSeen);
     this.director = this.credits && this.credits[0] && this.credits[0].job === 'Director' && this.credits[0];
   }
@@ -61,7 +65,7 @@ export class MovieDetails extends Movie {
   }
 
   private formatCollectionMovies(collection, moviesSeen): Movie[] {
-    if (!collection) { return null; }
+    if (!collection) { return []; }
     const movies = collection.parts.map(m => new Movie(m, moviesSeen))
       .filter(m => m.poster);
     return Utils.orderBy(movies, 'releaseDate', 'asc');
@@ -74,7 +78,7 @@ export class MovieDetails extends Movie {
   }
 
   private formatRecoMovies(movies, moviesSeen) {
-    if (movies.results.length) { return null; }
+    if (!movies.results.length) { return null; }
     return movies.results.map(m => new Movie(m, moviesSeen));
   }
 

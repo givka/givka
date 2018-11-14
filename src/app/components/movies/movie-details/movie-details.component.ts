@@ -1,6 +1,10 @@
 import {
-  Component, Input, OnInit, ViewEncapsulation,
+  Component, OnInit, ViewEncapsulation, OnDestroy,
 } from '@angular/core';
+import { TmdbService } from 'src/app/services/tmdb.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { MovieDetails } from '../../../factories/movie-details';
 import { BroadcastService } from '../../../services/broadcast.service';
 
@@ -10,18 +14,57 @@ import { BroadcastService } from '../../../services/broadcast.service';
   styleUrls: ['./movie-details.component.scss'],
   encapsulation: ViewEncapsulation.None
   })
-export class MovieDetailsComponent implements OnInit {
-  @Input() movie: MovieDetails;
+export class MovieDetailsComponent implements OnInit, OnDestroy {
+  movie: MovieDetails;
 
-  constructor(private broadcast: BroadcastService) {
+  loading = true;
 
+  subRouter: Subscription;
+
+  subMovie: Subscription;
+
+  constructor(
+    private broadcast: BroadcastService,
+    private tmdb: TmdbService,
+    private routeActive: ActivatedRoute,
+    private router: Router,
+    private routingState: RoutingStateService,
+  ) {
   }
 
   ngOnInit() {
-    window.scrollTo(0, 0);
+    this.subRouter = this.routeActive.params.subscribe((routeParams) => {
+      const { id } = routeParams;
+      this.loadMovieDetails(+id);
+    });
+    this.subMovie = this.broadcast.getMovie()
+      .subscribe((subject) => {
+        this.movie.toggleSeen(subject.movie);
+      });
   }
 
-  onClickCredit(credit, event) {
-    this.broadcast.sendCredit(credit, event);
+  ngOnDestroy() {
+    this.subRouter.unsubscribe();
+    this.subMovie.unsubscribe();
+  }
+
+  loadMovieDetails(id: number) {
+    this.loading = true;
+
+    this.tmdb.getMovieDetails(id)
+      .then((movieDetails) => {
+        this.movie = movieDetails;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
+
+  onClickCredit(credit) {
+    this.router.navigate([`/credit/${credit.id}`]);
+  }
+
+  close() {
+    this.router.navigate([this.routingState.getMoviesLastUrl()]);
   }
 }

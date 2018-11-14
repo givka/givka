@@ -1,95 +1,11 @@
 movies-component {
-    .movies {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 10px;
-        margin-bottom: -10px;
-        margin-left: 10px;
-    }
-    .movie-bar {
-        display: flex;
-        movie-component {
-            width: 250px;
-            height: 370px;
-            &:hover {
-                transform: scale(1);
-                cursor: default;
-            }
-        }
-        .movie-description {
-            width: calc(100% - 250px);
-            .title-bar {
-                font-size: 20px;
-                .title {
-                    font-family: 'Oswald', sans-serif;
-                    font-size: 40px;
-                    font-weight: 600;
-                }
-                .original-title {
-                    margin-right: 7px;
-                    font-weight: 400;
-                    letter-spacing: 0;
-                    font-style: italic;
-                }
-                .underline {
-                    text-decoration: underline;
-                }
-            }
-            div {
-                margin: 10px
-            }
-        }
-    }
-    .sub-title {
-        text-align: center;
-        margin: 20px 20px 10px;
-        font-family: 'Oswald', sans-serif;
-    }
-    .list {
-        display: flex;
-        flex-wrap: wrap;
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.1);
-        height: 139px;
-        box-shadow: 0 0 10px #000;
-        flex-direction: column;
-        overflow-x: scroll;
-        padding: 10px;
-        overflow-y: hidden;
-        align-content: baseline;
-    }
-    .credits {
-        portrait-component {
-            width: initial;
-            height: 100%;
-            .portrait {
-                height: 100%;
-                .image-container {
-                    height: 100%;
-                    img {
-                        width: initial;
-                    }
-                }
-            }
-        }
-    }
-    .movie-image {
-        height: 139px;
-        transition: 0.2s ease;
-        padding-right: 10px;
-        padding-bottom: 10px;
-        user-select: none;
-        &:hover {
-            transform: scale(1.05);
-            cursor: pointer;
-        }
-        img {
-            height: 100%;
-            border-radius: 3px;
-            object-fit: cover;
-            box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
-        }
-    }
+  .movies {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: -10px;
+    margin-left: 10px;
+  }
 }

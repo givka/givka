@@ -1,22 +1,15 @@
 <div class="navigation-bar">
   <div class="ib tab"
-       (click)="onClickTab('movies')">Movies</div>
+       [routerLink]="['/movies']"
+       routerLinkActive="link-active">Movies</div>
   <div class="ib tab"
-       (click)="onClickTab('tv')">TV Shows</div>
+       [routerLink]="['/tv']"
+       routerLinkActive="link-active">TV Shows</div>
   <div class="ib tab"
-       (click)="onClickTab('art')">Art</div>
+       [routerLink]="['/art']"
+       routerLinkActive="link-active">Art</div>
 </div>
 
 <div class="main-content">
-
-  <div *ngIf="tabSelected === 'movies'">
-
-    <movies-component></movies-component>
-
-  </div>
-
-  <div *ngIf="tabSelected === 'art'">
-
-    <art-component></art-component>
-  </div>
+  <router-outlet></router-outlet>
 </div>

@@ -1,39 +1,51 @@
-<div class="movie-bar">
-<div class="profile">
-  <img [src]="'https://image.tmdb.org/t/p/original'+credit.profile">
+<div *ngIf="loading">
+  <spinner-component></spinner-component>
+</div>
+
+<div *ngIf="!loading">
+  <div class="close-movie-details link"
+       (click)="close()">
+    <i class="fas fa-times"></i>
   </div>
 
-  <div class="movie-description">
-    <div class="title-bar">
-      <span class="title">{{credit.name}}</span>
+  <div class="movie-bar">
+    <div class="profile">
+      <img [src]="'https://image.tmdb.org/t/p/original'+credit.profile">
     </div>
 
-    <div>{{credit.birthday}}</div>
-    <div>{{credit.deathday}}</div>
-    <div>{{credit.biography}}</div>
-</div>
-</div>
-<div>
-  <div class="sub-title">Images</div>
-  <div class="list">
-    <div class="movie-image"
-         *ngFor="let image of credit.images">
-      <a [href]="'https://image.tmdb.org/t/p/original' + image.file_path"
-         target="_blank">
-        <img [src]="'https://image.tmdb.org/t/p/w300' + image.file_path">
-      </a>
+    <div class="movie-description">
+      <div class="title-bar">
+        <span class="title">{{credit.name}}</span>
+      </div>
+
+      <div>{{credit.birthday}}</div>
+      <div>{{credit.deathday}}</div>
+      <div>{{credit.biography}}</div>
     </div>
   </div>
+  <div>
+    <div class="sub-title">Images</div>
+    <div class="list">
+      <div class="movie-image"
+           *ngFor="let image of credit.images">
+        <a [href]="'https://image.tmdb.org/t/p/original' + image.file_path"
+           target="_blank">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + image.file_path">
+        </a>
+      </div>
+    </div>
 
-  <div class="actor-movies"
-       *ngIf="credit.actorMovies">
-    <movie-list-component [listName]="'Actor movies'"
-                          [listMovies]="credit.actorMovies"></movie-list-component>
-  </div>
-  <div class="director-movies"
-       *ngIf="credit.directorMovies">
-    <movie-list-component [listName]="'Director movies'"
-                          [listMovies]="credit.directorMovies"></movie-list-component>
+    <div class="actor-movies"
+         *ngIf="credit.actorMovies">
+      <movie-list-component [listName]="'Actor movies'"
+                            [listMovies]="credit.actorMovies"></movie-list-component>
+    </div>
+    <div class="director-movies"
+         *ngIf="credit.directorMovies">
+      <movie-list-component [listName]="'Director movies'"
+                            [listMovies]="credit.directorMovies"></movie-list-component>
+    </div>
+
   </div>
 
 </div>

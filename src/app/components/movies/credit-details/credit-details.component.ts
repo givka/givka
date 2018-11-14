@@ -1,8 +1,11 @@
 import {
-  Component, Input, OnInit, ViewEncapsulation,
+  Component, Input, OnInit, ViewEncapsulation, OnDestroy,
 } from '@angular/core';
-import { MovieDetails } from '../../../factories/movie-details';
-import { BroadcastService } from '../../../services/broadcast.service';
+import { TmdbService } from 'src/app/services/tmdb.service';
+import { Credit } from 'src/app/factories/credit';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { RoutingStateService } from 'src/app/services/routing-state.service';
 
 @Component({
   selector: 'credit-details-component',
@@ -10,18 +13,41 @@ import { BroadcastService } from '../../../services/broadcast.service';
   styleUrls: ['./credit-details.component.scss'],
   encapsulation: ViewEncapsulation.None
   })
-export class CreditDetailsComponent implements OnInit {
-  @Input() credit
+export class CreditDetailsComponent implements OnInit, OnDestroy {
+  credit: Credit;
 
-  constructor(private broadcast: BroadcastService) {
+  loading = true;
+
+  subRouter: Subscription
+
+  constructor(
+    private tmdb: TmdbService,
+    private routeActive: ActivatedRoute,
+    private router: Router,
+    private routingState: RoutingStateService,
+  ) {
 
   }
 
   ngOnInit() {
-    window.scrollTo(0, 0);
+    this.subRouter = this.routeActive.params.subscribe((routeParams) => {
+      const { id } = routeParams;
+      this.loadCreditDetails(+id);
+    });
   }
 
-  onClickCredit(credit, event) {
-    this.broadcast.sendCredit(credit, event);
+  ngOnDestroy() {
+    this.subRouter.unsubscribe();
+  }
+
+  loadCreditDetails(id: number): void {
+    this.loading = true;
+    this.tmdb.getPeople(id)
+      .then((data) => { this.credit = new Credit(data); })
+      .finally(() => { this.loading = false; });
+  }
+
+  close() {
+    this.router.navigate([this.routingState.getPreviousUrl()]);
   }
 }
