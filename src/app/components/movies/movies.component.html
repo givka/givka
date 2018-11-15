@@ -2,14 +2,15 @@
   <spinner-component></spinner-component>
 </div>
 
+<h1 *ngIf="list==='upcoming'">Upcoming Movies</h1>
+<h1 *ngIf="list==='top_rated'">Top Rated Movies</h1>
+<h1 *ngIf="list==='popular'">Popular Movies</h1>
+<div *ngIf="list==='collection'">
+  <h1>Collection Movies</h1>
+  <h3>{{movies.length}} movie(s) seen</h3>
+</div>
+
 <div *ngIf="!loading">
-
-  <h1 *ngIf="list!=='collection'">Discover Movies</h1>
-  <div *ngIf="list==='collection'">
-    <h1>Collection Movies</h1>
-    <h3>{{movies.length}} movie(s) seen</h3>
-  </div>
-
   <div class="buttons">
     <button-component class="br"
                       [title]="'Upcoming'"

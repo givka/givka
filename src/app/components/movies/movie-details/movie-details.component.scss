@@ -50,6 +50,9 @@ movie-details-component {
     padding: 10px;
     overflow-y: hidden;
     align-content: baseline;
+    portrait-component {
+      height: 100%;
+    }
   }
 
   .movie-image {

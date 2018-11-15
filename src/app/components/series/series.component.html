@@ -2,14 +2,15 @@
   <spinner-component></spinner-component>
 </div>
 
+<h1 *ngIf="list==='on_the_air'">On The Air Series</h1>
+<h1 *ngIf="list==='popular'">Popular Series </h1>
+<h1 *ngIf="list==='top_rated'">Top Rated Series</h1>
+<div *ngIf="list==='collection'">
+  <h1>Collection series</h1>
+  <h3>{{series.length}} serie(s) seen</h3>
+</div>
+
 <div *ngIf="!loading">
-
-  <h1 *ngIf="list!=='collection'">Discover series</h1>
-  <div *ngIf="list==='collection'">
-    <h1>Collection series</h1>
-    <h3>{{series.length}} movie(s) seen</h3>
-  </div>
-
   <div class="buttons">
     <button-component class="br"
                       [title]="'On the Air'"

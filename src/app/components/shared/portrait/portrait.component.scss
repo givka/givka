@@ -10,12 +10,14 @@ portrait-component {
     }
   }
   .portrait {
+    height: 100%;
     border-radius: 3px;
     overflow: hidden;
     box-shadow: 0 0 10px black;
     transition: 0.3s all ease;
 
     .image-container {
+      height: 100%;
       line-height: 0;
     }
     .image-title {
