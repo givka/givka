@@ -17,11 +17,4 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.routingState.loadRouting();
   }
-
-  // onClickTab(tab: string) {
-  //   this.tabSelected = null;
-  //   setTimeout(() => {
-  //     this.tabSelected = tab;
-  //   });
-  // }
 }

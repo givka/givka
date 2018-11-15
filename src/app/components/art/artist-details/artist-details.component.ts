@@ -5,7 +5,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WikiartService } from 'src/app/services/wikiart.service';
-import { ArtistDetails } from 'src/app/factories/artistDetails';
+import { ArtistDetails } from 'src/app/factories/artist-details';
 import { Painting } from 'src/app/factories/painting';
 import { Title } from '@angular/platform-browser';
 import { Storage } from 'src/app/factories/storage';

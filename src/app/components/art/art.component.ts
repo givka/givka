@@ -9,7 +9,7 @@ import { WikiartService } from '../../services/wikiart.service';
 import { Painting } from '../../factories/painting';
 import { Artist } from '../../factories/artist';
 import { BroadcastService } from '../../services/broadcast.service';
-import { ArtistDetails } from '../../factories/artistDetails';
+import { ArtistDetails } from '../../factories/artist-details';
 
 @Component({
   selector: 'art-component',

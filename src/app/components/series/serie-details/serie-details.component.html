@@ -1,0 +1,79 @@
+<div *ngIf="loading">
+  <spinner-component></spinner-component>
+</div>
+<div *ngIf="!loading">
+  <div class="close-movie-details link"
+       (click)="close()">
+    <i class="fas fa-times"></i>
+  </div>
+  <div class="movie-bar">
+    <movie-component class="movie-details-poster"
+                     [movie]="serie"
+                     [size]="500"></movie-component>
+    <div class="movie-description">
+      <div class="title-bar">
+        <span class="title">{{serie.title}}</span>
+        <span class="release-date "> {{serie.releaseYear}} </span>
+        <span class="original-title"
+              *ngIf="serie.title !== serie.originalTitle"> '{{serie.originalTitle}}' </span>
+        <span>Created by </span>
+        <span class="link underline"
+              (click)="onClickCredit(serie.creator)"
+              style="margin-right:5px;">{{serie.creator.name}}</span>
+      </div>
+      <div>{{serie.overview}}</div>
+      <div class="link ib"
+           *ngIf="serie.trailer">
+        <i class="fab fa-youtube"
+           style="margin-right: 5px;"></i>
+        <a class="link"
+           [href]="serie.trailer"
+           target="_blank">Watch trailer</a></div>
+
+    </div>
+  </div>
+  <div>
+    <div class="sub-title">Casting</div>
+    <div class="list credits"
+         *ngIf="serie.credits">
+      <portrait-component *ngFor="let credit of serie.credits"
+                          [image]="'https://image.tmdb.org/t/p/w185' + credit.profile_path"
+                          [title]="credit.name"
+                          [topTitle]="credit.role"
+                          (click)="onClickCredit(credit)">
+
+      </portrait-component>
+    </div>
+    <div class="sub-title">Images</div>
+    <div class="list">
+      <div class="movie-image"
+           *ngFor="let image of serie.images">
+        <a [href]="'https://image.tmdb.org/t/p/original' + image"
+           target="_blank">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + image">
+        </a>
+      </div>
+    </div>
+    <div *ngIf="serie.seasons">
+      <div class="sub-title">Season(s)</div>
+      <div class="list">
+        <portrait-component *ngFor="let season of serie.seasons"
+                            (click)="onClickSeason(season, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+season.poster"
+                            [title]="season.name">
+        </portrait-component>
+      </div>
+    </div>
+    <div class="reco-movies"
+         *ngIf="serie.recoSeries">
+      <div class="sub-title">Similar series</div>
+      <div class="list">
+        <portrait-component *ngFor="let recoSerie of serie.recoSeries"
+                            (click)="onClickSerie(recoSerie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+recoSerie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && recoSerie.seen) || (list === 'collection' && !recoSerie.seen)}">
+        </portrait-component>
+      </div>
+    </div>
+  </div>
+</div>

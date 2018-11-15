@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { Title } from '@angular/platform-browser';
 import { Background } from 'src/app/factories/background';
+import { Storage } from 'src/app/factories/storage';
 import { MovieDetails } from '../../../factories/movie-details';
 import { BroadcastService } from '../../../services/broadcast.service';
 
@@ -23,12 +24,9 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
 
   subRouter: Subscription;
 
-  subMovie: Subscription;
-
   background: Background = new Background();
 
   constructor(
-    private broadcast: BroadcastService,
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
     private router: Router,
@@ -42,16 +40,20 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       const { id } = routeParams;
       this.loadMovieDetails(+id);
     });
-    this.subMovie = this.broadcast.getMovie()
-      .subscribe((subject) => {
-        this.movie.toggleSeen(subject.movie);
-      });
   }
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
-    this.subMovie.unsubscribe();
     this.background.removeBackground();
+  }
+
+  onClickMovie(movie: MovieDetails, event) {
+    if (event.ctrlKey || event.metaKey) {
+      this.movie.toggleListMoviesSeen(movie);
+      movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
+    } else {
+      this.router.navigate([`movie/${movie.id}`]);
+    }
   }
 
   loadMovieDetails(id: number) {

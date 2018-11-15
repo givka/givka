@@ -7,6 +7,8 @@ import { Movie } from '../factories/movie';
 import { MovieDetails } from '../factories/movie-details';
 import { Storage } from '../factories/storage';
 import { Credit } from '../factories/credit';
+import { Serie } from '../factories/serie';
+import { SerieDetails } from '../factories/serie-details';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +22,7 @@ export class TmdbService {
 
   constructor(private http: HttpClient) { }
 
-  getDiscover(list) {
-    if (!list) { return null; }
-
-    const database = Storage.readDB('movie');
-
-    const url = `movie/${list}`;
+  getMultiplePages(url) {
     const PromiseArray = [];
 
     for (let i = 1; i <= 10; i += 1) {
@@ -36,28 +33,45 @@ export class TmdbService {
         let results = allResponses.map(value => value.results);
         results = [].concat(...results);
         return Object.keys(results).map(key => results[key]);
-      })
+      });
+  }
+
+  getDiscoverSeries(list) {
+    const database = Storage.readDB('series');
+    return this.getMultiplePages(`tv/${list}`)
+      .then(data => data.map(m => new Serie(m, database)).filter(m => m.poster));
+  }
+
+  getDiscoverMovies(list) {
+    const database = Storage.readDB('movies');
+    return this.getMultiplePages(`movie/${list}`)
       .then(data => data.map(m => new Movie(m, database)).filter(m => m.poster));
   }
 
   async getMovieDetails(id: number) {
     if (!id) { return null; }
 
-    const [movieData, watchedMovies] = await Promise.all([
-      this.getRequest(`movie/${id}`, 'credits,images,videos,recommendations'),
-      Storage.readDB('movie'),
-    ]);
-
-    const movieDetails = new MovieDetails(movieData, watchedMovies);
+    const database = Storage.readDB('movies');
+    const movieData = await this.getRequest(`movie/${id}`, 'credits,images,videos,recommendations');
+    const movieDetails = new MovieDetails(movieData, database);
 
     const [directorMovies, collectionMovies] = await Promise.all([
       this.getPeople(movieDetails.director.id),
       this.getCollection(movieDetails.collection && movieDetails.collection.id),
     ]);
 
-    movieDetails.addDetails(directorMovies, collectionMovies, watchedMovies);
-
+    movieDetails.addDetails(directorMovies, collectionMovies, database);
     return movieDetails;
+  }
+
+  async getSerieDetails(id: number) {
+    if (!id) { return null; }
+
+    const database = Storage.readDB('series');
+    const serieData = await this.getRequest(`tv/${id}`, 'credits,images,videos,recommendations');
+    const serieDetails = new SerieDetails(serieData, database);
+
+    return serieDetails;
   }
 
   getCollection(id) {
@@ -67,9 +81,10 @@ export class TmdbService {
 
   getPeople(id) {
     if (!id) { return null; }
-    const moviesSeen = Storage.readDB('movie');
-    return this.getRequest(`person/${id}`, 'movie_credits,images,tagged_images')
-      .then(c => new Credit(c, moviesSeen));
+    const databaseMovies = Storage.readDB('movies');
+    const databaseSeries = Storage.readDB('series');
+    return this.getRequest(`person/${id}`, 'movie_credits,images,tagged_images,tv_credits')
+      .then(c => new Credit(c, databaseMovies, databaseSeries));
   }
 
   private getRequest(url: string, addRequestAppend: string, page: number = 1) {

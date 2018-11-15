@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { Title } from '@angular/platform-browser';
+import { Storage } from 'src/app/factories/storage';
 
 @Component({
   selector: 'credit-details-component',
@@ -50,6 +51,24 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
         this.title.setTitle(credit.name);
       })
       .finally(() => { this.loading = false; });
+  }
+
+  onClickSerie(serie, event) {
+    if (event.ctrlKey || event.metaKey) {
+      serie.toggleSeen(serie);
+      serie.seen ? Storage.addKeyDB('series', serie) : Storage.deleteKeyDB('series', serie);
+    } else {
+      this.router.navigate([`serie/${serie.id}`]);
+    }
+  }
+
+  onClickMovie(movie, event) {
+    if (event.ctrlKey || event.metaKey) {
+      movie.toggleSeen(movie);
+      movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
+    } else {
+      this.router.navigate([`movie/${movie.id}`]);
+    }
   }
 
   close() {

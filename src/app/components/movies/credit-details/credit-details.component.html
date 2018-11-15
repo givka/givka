@@ -28,22 +28,57 @@
     <div class="list">
       <div class="movie-image"
            *ngFor="let image of credit.images">
-        <a [href]="'https://image.tmdb.org/t/p/original' + image.file_path"
+        <a [href]="'https://image.tmdb.org/t/p/original' + image"
            target="_blank">
-          <img [src]="'https://image.tmdb.org/t/p/w300' + image.file_path">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + image">
         </a>
       </div>
     </div>
 
     <div class="actor-movies"
          *ngIf="credit.actorMovies">
-      <movie-list-component [listName]="'Actor movies'"
-                            [listMovies]="credit.actorMovies"></movie-list-component>
+      <div class="sub-title">Actor movies</div>
+      <div class="list">
+        <portrait-component *ngFor="let actorMovie of credit.actorMovies"
+                            (click)="onClickMovie(actorMovie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+actorMovie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && actorMovie.seen) || (list === 'collection' && !actorMovie.seen)}">
+        </portrait-component>
+      </div>
     </div>
+
+    <div *ngIf="credit.actorSeries">
+      <div class="sub-title">Actor series</div>
+      <div class="list">
+        <portrait-component *ngFor="let actorSerie of credit.actorSeries"
+                            (click)="onClickSerie(actorSerie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+actorSerie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && actorSerie.seen) || (list === 'collection' && !actorSerie.seen)}">
+        </portrait-component>
+      </div>
+    </div>
+
     <div class="director-movies"
          *ngIf="credit.directorMovies">
-      <movie-list-component [listName]="'Director movies'"
-                            [listMovies]="credit.directorMovies"></movie-list-component>
+      <div class="sub-title">Director movies</div>
+      <div class="list">
+        <portrait-component *ngFor="let directorMovie of credit.directorMovies"
+                            (click)="onClickMovie(directorMovie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+directorMovie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && directorMovie.seen) || (list === 'collection' && !directorMovie.seen)}">
+        </portrait-component>
+      </div>
+    </div>
+
+    <div *ngIf="credit.directorMovies">
+      <div class="sub-title">Creator series</div>
+      <div class="list">
+        <portrait-component *ngFor="let creatorSerie of credit.creatorSeries"
+                            (click)="onClickSerie(creatorSerie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+creatorSerie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && creatorSerie.seen) || (list === 'collection' && !creatorSerie.seen)}">
+        </portrait-component>
+      </div>
     </div>
 
   </div>

@@ -66,29 +66,46 @@
     <div class="list">
       <div class="movie-image"
            *ngFor="let image of movie.images">
-        <a [href]="'https://image.tmdb.org/t/p/original' + image.file_path"
+        <a [href]="'https://image.tmdb.org/t/p/original' + image"
            target="_blank">
-          <img [src]="'https://image.tmdb.org/t/p/w300' + image.file_path">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + image">
         </a>
       </div>
     </div>
 
     <div class="collection-movies"
          *ngIf="movie.collectionMovies.length">
-      <movie-list-component [listName]="'Collection movies'"
-                            [listMovies]="movie.collectionMovies"></movie-list-component>
+      <div class="sub-title">Collection movies</div>
+      <div class="list">
+        <portrait-component *ngFor="let collectionMovie of movie.collectionMovies"
+                            (click)="onClickMovie(collectionMovie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+collectionMovie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && collectionMovie.seen) || (list === 'collection' && !collectionMovie.seen)}">
+        </portrait-component>
+      </div>
     </div>
     <div class="reco-movies"
          *ngIf="movie.recoMovies">
-      <movie-list-component [listName]="'Similar movies'"
-                            [listMovies]="movie.recoMovies"></movie-list-component>
+      <div class="sub-title">Similar movies</div>
+      <div class="list">
+        <portrait-component *ngFor="let recoMovie of movie.recoMovies"
+                            (click)="onClickMovie(recoMovie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+recoMovie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && recoMovie.seen) || (list === 'collection' && !recoMovie.seen)}">
+        </portrait-component>
+      </div>
     </div>
     <div class="director-movies"
          *ngIf="movie.directorMovies">
-      <movie-list-component [listName]="movie.director.name+' movies'"
-                            [listMovies]="movie.directorMovies"></movie-list-component>
+      <div class="sub-title">{{movie.director.name}} movies</div>
+      <div class="list">
+        <portrait-component *ngFor="let directorMovie of movie.directorMovies"
+                            (click)="onClickMovie(directorMovie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+directorMovie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && directorMovie.seen) || (list === 'collection' && !directorMovie.seen)}">
+        </portrait-component>
+      </div>
     </div>
-
   </div>
 
 </div>

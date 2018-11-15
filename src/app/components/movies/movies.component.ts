@@ -28,8 +28,6 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   list: string;
 
-  lists = ['upcoming', 'top_rated', 'popular', 'collection']
-
   orderAsc = {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
   };
@@ -53,7 +51,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   loadList(list: string) {
-    if (!this.lists.includes(list)) {
+    const possibleLists = ['upcoming', 'top_rated', 'popular', 'collection'];
+    if (!possibleLists.includes(list)) {
       this.router.navigate(['movies']);
       return;
     }
@@ -61,21 +60,29 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.list = list;
     this.loading = true;
     if (list === 'collection') {
-      const seen = Storage.readDB('movie');
+      const seen = Storage.readDB('movies');
       this.movies = Object.keys(seen)
         .map(movie => new Movie(seen[movie], seen));
       this.loading = false;
     } else {
-      this.tmdb.getDiscover(list)
+      this.tmdb.getDiscoverMovies(list)
         .then((movies) => { this.movies = movies; })
         .finally(() => { this.loading = false; });
+    }
+  }
+
+  onClickMovie(movie: Movie, event) {
+    if (event.ctrlKey || event.metaKey) {
+      movie.toggleSeen();
+      movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
+    } else {
+      this.router.navigate([`movie/${movie.id}`]);
     }
   }
 
   orderBy(key) {
     const order = this.orderAsc[key] ? 'asc' : 'desc';
     this.orderAsc[key] = !this.orderAsc[key];
-
     this.loading = true;
     this.movies = Utils.orderBy(this.movies, key, order);
     this.loading = false;

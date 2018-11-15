@@ -27,7 +27,7 @@ export class MovieComponent {
     if (event.ctrlKey || event.metaKey) {
       const isFromMovieDetails = this.router.url.includes('movie/');
       isFromMovieDetails ? this.broadcast.sendMovie(movie) : movie.toggleSeen(movie);
-      movie.seen ? Storage.addKeyDB('movie', movie) : Storage.deleteKeyDB('movie', movie);
+      movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
     } else {
       this.router.navigate([`movie/${movie.id}`]);
     }

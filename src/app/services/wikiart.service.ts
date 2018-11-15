@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { shuffle } from 'lodash';
 import { Painting } from '../factories/painting';
 import { Artist } from '../factories/artist';
-import { ArtistDetails } from '../factories/artistDetails';
+import { ArtistDetails } from '../factories/artist-details';
 import { Storage } from '../factories/storage';
 
 @Injectable({ providedIn: 'root' })

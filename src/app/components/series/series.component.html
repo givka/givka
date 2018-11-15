@@ -4,27 +4,27 @@
 
 <div *ngIf="!loading">
 
-  <h1 *ngIf="list!=='collection'">Discover Movies</h1>
+  <h1 *ngIf="list!=='collection'">Discover series</h1>
   <div *ngIf="list==='collection'">
-    <h1>Collection Movies</h1>
-    <h3>{{movies.length}} movie(s) seen</h3>
+    <h1>Collection series</h1>
+    <h3>{{series.length}} movie(s) seen</h3>
   </div>
 
   <div class="buttons">
     <button-component class="br"
-                      [title]="'Upcoming'"
-                      [routerLink]="['/movies/upcoming']"
+                      [title]="'On the Air'"
+                      [routerLink]="['/series/on_the_air']"
                       routerLinkActive="link-active"></button-component>
     <button-component class="br"
                       [title]="'Popular'"
-                      [routerLink]="['/movies/popular']"
+                      [routerLink]="['/series/popular']"
                       routerLinkActive="link-active"></button-component>
     <button-component class="br"
                       [title]="'Top Rated'"
-                      [routerLink]="['/movies/top_rated']"
+                      [routerLink]="['/series/top_rated']"
                       routerLinkActive="link-active"></button-component>
     <button-component [title]="'Collection'"
-                      [routerLink]="['/movies/collection']"
+                      [routerLink]="['/series/collection']"
                       routerLinkActive="link-active"></button-component>
   </div>
   <div class="buttons float-right">
@@ -46,13 +46,12 @@
                       (click)="orderBy('voteCount')"></button-component>
 
   </div>
-
-  <div *ngIf="movies"
+  <div *ngIf="series"
        class="grid">
-    <portrait-component *ngFor="let movie of movies"
-                        (click)="onClickMovie(movie, $event)"
-                        [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
-                        [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+    <portrait-component *ngFor="let serie of series"
+                        (click)="onClickSerie(serie, $event)"
+                        [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
+                        [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
     </portrait-component>
 
   </div>
