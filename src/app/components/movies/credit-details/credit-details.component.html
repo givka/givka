@@ -2,18 +2,17 @@
   <spinner-component></spinner-component>
 </div>
 
-<div *ngIf="!loading">
+<div *ngIf="!loading"
+     class="details">
   <div class="close-movie-details link"
        (click)="close()">
     <i class="fas fa-times"></i>
   </div>
 
-  <div class="movie-bar">
-    <div class="profile">
-      <img [src]="'https://image.tmdb.org/t/p/original'+credit.profile">
-    </div>
+  <div class="details-bar">
+    <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + credit.profile"></portrait-component>
 
-    <div class="movie-description">
+    <div class="description">
       <div class="title-bar">
         <span class="title">{{credit.name}}</span>
       </div>
@@ -26,7 +25,7 @@
   <div>
     <div class="sub-title">Images</div>
     <div class="list">
-      <div class="movie-image"
+      <div class="image"
            *ngFor="let image of credit.images">
         <a [href]="'https://image.tmdb.org/t/p/original' + image"
            target="_blank">

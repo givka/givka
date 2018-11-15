@@ -2,20 +2,21 @@
   <spinner-component></spinner-component>
 </div>
 
-<div *ngIf="!loading">
+<div *ngIf="!loading"
+     class="details">
+  <div class="close-movie-details link"
+       (click)="onCloseArtist()">
+    <i class="fas fa-times"></i>
+  </div>
 
-  <div class="artist-info">
-    <span class="close link"
-          (click)="onCloseArtist()">×</span>
-    <div class="artist-image">
-      <portrait-component [image]="artist.image"></portrait-component>
-    </div>
-    <div class="additional-info">
+  <div class="details-bar">
+    <portrait-component [image]="artist.image"></portrait-component>
+    <div class="description">
       <div class="title-bar">
         <span class="title">{{artist.artistName}}</span>
-        <span> {{artist.birthDate}}</span>
-        <span *ngIf="artist.deathDate"> - {{artist.deathDate}} </span>
-
+        <span class="release-date"> {{artist.birthDate}}</span>
+        <span class="release-date"
+              *ngIf="artist.deathDate"> - {{artist.deathDate}} </span>
       </div>
 
       <div>

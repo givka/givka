@@ -1,16 +1,15 @@
 <div *ngIf="loading">
   <spinner-component></spinner-component>
 </div>
-<div *ngIf="!loading">
+<div *ngIf="!loading"
+     class="details">
   <div class="close-movie-details link"
        (click)="close()">
     <i class="fas fa-times"></i>
   </div>
-  <div class="movie-bar">
-    <movie-component class="movie-details-poster"
-                     [movie]="serie"
-                     [size]="500"></movie-component>
-    <div class="movie-description">
+  <div class="details-bar">
+    <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + serie.poster"></portrait-component>
+    <div class="description">
       <div class="title-bar">
         <span class="title">{{serie.title}}</span>
         <span class="release-date "> {{serie.releaseYear}} </span>
@@ -46,7 +45,7 @@
     </div>
     <div class="sub-title">Images</div>
     <div class="list">
-      <div class="movie-image"
+      <div class="image"
            *ngFor="let image of serie.images">
         <a [href]="'https://image.tmdb.org/t/p/original' + image"
            target="_blank">

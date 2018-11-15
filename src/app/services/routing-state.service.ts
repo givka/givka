@@ -35,4 +35,8 @@ export class RoutingStateService {
   public getSeriesLastUrl() {
     return findLast(this.history, url => url.includes('series/')) || '/series';
   }
+
+  public getArtLastUrl() {
+    return findLast(this.history, url => url.includes('art/')) || '/art';
+  }
 }

@@ -9,6 +9,7 @@ import { ArtistDetails } from 'src/app/factories/artist-details';
 import { Painting } from 'src/app/factories/painting';
 import { Title } from '@angular/platform-browser';
 import { Storage } from 'src/app/factories/storage';
+import { RoutingStateService } from 'src/app/services/routing-state.service';
 
 @Component({
   selector: 'artist-details-component',
@@ -34,6 +35,7 @@ export class ArtistDetailsComponent implements OnInit {
     private router: Router,
     private wikiart: WikiartService,
     private title: Title,
+    private routingState: RoutingStateService,
   ) {
   }
 
@@ -87,6 +89,6 @@ export class ArtistDetailsComponent implements OnInit {
   }
 
   onCloseArtist() {
-    this.router.navigate(['/art']);
+    this.router.navigate([this.routingState.getArtLastUrl()]);
   }
 }
