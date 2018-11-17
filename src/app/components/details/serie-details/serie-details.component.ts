@@ -49,7 +49,10 @@ export class SerieDetailsComponent implements OnInit {
     this.loading = true;
     this.tmdb.getSerieDetails(id)
       .then((serieDetails) => {
-        this.background.addBackground(`https://image.tmdb.org/t/p/w300${serieDetails.backdrop}`);
+        if (serieDetails.backdrop) {
+          this.background.addBackground(`https://image.tmdb.org/t/p/w300${serieDetails.backdrop}`);
+        }
+
         this.serie = serieDetails;
         this.title.setTitle(serieDetails.title);
       })

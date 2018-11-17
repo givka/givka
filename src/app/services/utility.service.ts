@@ -43,7 +43,7 @@ export class UtilityService {
       call();
       item.seen ? Storage.addKeyDB(dbKey, item) : Storage.deleteKeyDB(dbKey, item);
     } else {
-      this.background.addBackground(`https://image.tmdb.org/t/p/w300${item.backdrop}`);
+      if (item.backdrop) { this.background.addBackground(`https://image.tmdb.org/t/p/w300${item.backdrop}`); }
       this.router.navigate([`${url}/${item.id}`]);
     }
   }
