@@ -56,7 +56,7 @@
     <div *ngIf="series"
          class="grid">
       <portrait-component *ngFor="let serie of series"
-                          (click)="onClickSerie(serie, $event)"
+                          (click)="utility.onClickSerie(serie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
       </portrait-component>

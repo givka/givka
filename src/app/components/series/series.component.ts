@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { Movie } from 'src/app/factories/movie';
 
 import { BackgroundService } from 'src/app/services/background.service';
+import { UtilityService } from 'src/app/services/utility.service';
 import { Storage } from '../../factories/storage';
 
 @Component({
@@ -37,6 +38,7 @@ export class TvComponent implements OnInit {
     private router: Router,
     private title: Title,
     private background: BackgroundService,
+    public utility: UtilityService,
   ) { }
 
   ngOnInit() {
@@ -81,15 +83,5 @@ export class TvComponent implements OnInit {
     this.loading = true;
     this.series = Utils.orderBy(this.series, key, order);
     this.loading = false;
-  }
-
-  onClickSerie(serie, event) {
-    if (event.ctrlKey || event.metaKey) {
-      serie.toggleSeen(serie);
-      serie.seen ? Storage.addKeyDB('series', serie) : Storage.deleteKeyDB('series', serie);
-    } else {
-      this.background.addBackground(`https://image.tmdb.org/t/p/w300${serie.backdrop}`);
-      this.router.navigate([`serie/${serie.id}`]);
-    }
   }
 }

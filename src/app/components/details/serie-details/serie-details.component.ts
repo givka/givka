@@ -8,6 +8,7 @@ import { Storage } from 'src/app/factories/storage';
 import { SerieDetails } from 'src/app/factories/serie-details';
 import { Serie } from 'src/app/factories/serie';
 import { BackgroundService } from 'src/app/services/background.service';
+import { UtilityService } from 'src/app/services/utility.service';
 
 @Component({
   selector: 'serie-details-component',
@@ -29,6 +30,7 @@ export class SerieDetailsComponent implements OnInit {
     private routingState: RoutingStateService,
     private title: Title,
     private background: BackgroundService,
+    public utility : UtilityService,
   ) { }
 
   ngOnInit() {
@@ -40,21 +42,9 @@ export class SerieDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
-    // this.background.removeBackground();
-  }
-
-  onClickSerie(serie: Serie, event: KeyboardEvent) {
-    if (event.ctrlKey || event.metaKey) {
-      this.serie.toggleListSeriesSeen(serie);
-      serie.seen ? Storage.addKeyDB('series', serie) : Storage.deleteKeyDB('series', serie);
-    } else {
-      this.background.addBackground(`https://image.tmdb.org/t/p/w300${serie.backdrop}`);
-      this.router.navigate([`serie/${serie.id}`]);
-    }
   }
 
   onClickSeason(season, event) {
-    console.log(season);
   }
 
   loadSerieDetails(id: number) {

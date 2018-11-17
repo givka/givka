@@ -75,7 +75,7 @@
       <div class="sub-title">Collection movies</div>
       <div class="list">
         <portrait-component *ngFor="let collectionMovie of movie.collectionMovies"
-                            (click)="onClickMovie(collectionMovie, $event)"
+                            (click)="utility.onClickMovieDetails(collectionMovie, movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+collectionMovie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && collectionMovie.seen) || (list === 'collection' && !collectionMovie.seen)}">
         </portrait-component>
@@ -86,7 +86,7 @@
       <div class="sub-title">Similar movies</div>
       <div class="list">
         <portrait-component *ngFor="let recoMovie of movie.recoMovies"
-                            (click)="onClickMovie(recoMovie, $event)"
+                            (click)="utility.onClickMovieDetails(recoMovie, movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+recoMovie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && recoMovie.seen) || (list === 'collection' && !recoMovie.seen)}">
         </portrait-component>
@@ -97,7 +97,7 @@
       <div class="sub-title">{{movie.director.name}} movies</div>
       <div class="list">
         <portrait-component *ngFor="let directorMovie of movie.directorMovies"
-                            (click)="onClickMovie(directorMovie, $event)"
+                            (click)="utility.onClickMovieDetails(directorMovie, movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+directorMovie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && directorMovie.seen) || (list === 'collection' && !directorMovie.seen)}">
         </portrait-component>

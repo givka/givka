@@ -8,6 +8,7 @@ import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { Title } from '@angular/platform-browser';
 import { Storage } from 'src/app/factories/storage';
 import { BackgroundService } from 'src/app/services/background.service';
+import { UtilityService } from 'src/app/services/utility.service';
 import { MovieDetails } from '../../../factories/movie-details';
 import { BroadcastService } from '../../../services/broadcast.service';
 
@@ -31,6 +32,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     private routingState: RoutingStateService,
     private title: Title,
     private background: BackgroundService,
+    public utility : UtilityService,
   ) {
   }
 
@@ -44,16 +46,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subRouter.unsubscribe();
     // this.background.removeBackground();
-  }
-
-  onClickMovie(movie: MovieDetails, event) {
-    if (event.ctrlKey || event.metaKey) {
-      this.movie.toggleListMoviesSeen(movie);
-      movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
-    } else {
-      this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
-      this.router.navigate([`movie/${movie.id}`]);
-    }
   }
 
   loadMovieDetails(id: number) {

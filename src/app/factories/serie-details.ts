@@ -24,7 +24,7 @@ export class SerieDetails extends TmdbDetails {
     this.recoSeries = this.formatRecoSeries(options.recommendations, database);
   }
 
-  public toggleListSeriesSeen(serie: Serie) {
+  public toggleListSeen(serie: Serie) {
     [].concat(this, this.recoSeries)
       .filter(s => s && s.id === serie.id)
       .forEach((s) => { s.seen = !s.seen; });

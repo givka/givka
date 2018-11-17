@@ -68,7 +68,7 @@
       <div class="sub-title">Similar series</div>
       <div class="list">
         <portrait-component *ngFor="let recoSerie of serie.recoSeries"
-                            (click)="onClickSerie(recoSerie, $event)"
+                            (click)="utility.onClickSerieDetails(recoSerie,serie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+recoSerie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && recoSerie.seen) || (list === 'collection' && !recoSerie.seen)}">
         </portrait-component>

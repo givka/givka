@@ -48,7 +48,7 @@ export class MovieDetails extends TmdbDetails {
     return Utils.orderBy(movies, 'releaseDate', 'asc');
   }
 
-  public toggleListMoviesSeen(movie: Movie) {
+  public toggleListSeen(movie: Movie) {
     [].concat(this, this.directorMovies, this.collectionMovies, this.recoMovies)
       .filter(m => m && m.id === movie.id)
       .forEach((m) => { m.seen = !m.seen; });

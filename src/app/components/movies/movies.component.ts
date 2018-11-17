@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { BackgroundService } from 'src/app/services/background.service';
+import { UtilityService } from 'src/app/services/utility.service';
 import { Movie } from '../../factories/movie';
 import { MovieDetails } from '../../factories/movie-details';
 import { Storage } from '../../factories/storage';
@@ -41,6 +42,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     private router: Router,
     private title: Title,
     private background: BackgroundService,
+    public utility : UtilityService,
   ) { }
 
   ngOnInit() {
@@ -77,16 +79,6 @@ export class MoviesComponent implements OnInit, OnDestroy {
       this.tmdb.getDiscoverMovies(list)
         .then((movies) => { this.movies = movies; })
         .finally(() => { this.loading = false; });
-    }
-  }
-
-  onClickMovie(movie: Movie, event) {
-    if (event.ctrlKey || event.metaKey) {
-      movie.toggleSeen();
-      movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
-    } else {
-      this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
-      this.router.navigate([`movie/${movie.id}`]);
     }
   }
 

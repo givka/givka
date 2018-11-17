@@ -56,7 +56,7 @@
     <div *ngIf="movies"
          class="grid">
       <portrait-component *ngFor="let movie of movies"
-                          (click)="onClickMovie(movie, $event)"
+                          (click)="utility.onClickMovie(movie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
       </portrait-component>

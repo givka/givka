@@ -76,7 +76,8 @@ export class ArtComponent implements OnInit, OnDestroy {
   }
 
   loadDiscover(list) {
-    const promise = list === 'paintings' ? this.wikiart.getMostViewedPaintings() : this.wikiart.getPopularArtists();
+    const promise = list === 'paintings' ? this.wikiart.getMostViewedPaintings()
+      : this.wikiart.getPopularArtists();
     promise.then((paintings) => {
       this.arrayDelay(paintings);
     }).finally(() => { this.loading = false; });
