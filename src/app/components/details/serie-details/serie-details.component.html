@@ -36,24 +36,27 @@
     <div class="list credits"
          *ngIf="serie.credits">
       <portrait-component *ngFor="let credit of serie.credits"
-                          [image]="'https://image.tmdb.org/t/p/w185' + credit.profile"
+                          [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : null"
                           [title]="credit.name"
                           [topTitle]="credit.role"
                           (click)="utility.onClickCredit(credit)">
 
       </portrait-component>
     </div>
-    <div class="sub-title">Images</div>
-    <div class="list">
-      <div class="image"
-           *ngFor="let image of serie.images">
-        <a [href]="'https://image.tmdb.org/t/p/original' + image"
-           target="_blank">
-          <img [src]="'https://image.tmdb.org/t/p/w300' + image">
-        </a>
+    <div *ngIf="serie.images.length">
+      <div class="sub-title">Images</div>
+      <div class="list">
+        <div class="image"
+             *ngFor="let image of serie.images">
+          <a [href]="'https://image.tmdb.org/t/p/original' + image"
+             target="_blank">
+            <img [src]="'https://image.tmdb.org/t/p/w300' + image">
+          </a>
+        </div>
       </div>
+
     </div>
-    <div *ngIf="serie.seasons">
+    <div *ngIf="serie.seasons.length">
       <div class="sub-title">Season(s)</div>
       <div class="list">
         <portrait-component *ngFor="let season of serie.seasons"
@@ -64,7 +67,7 @@
       </div>
     </div>
     <div class="reco-movies"
-         *ngIf="serie.recoSeries">
+         *ngIf="serie.recoSeries.length">
       <div class="sub-title">Similar series</div>
       <div class="list">
         <portrait-component *ngFor="let recoSerie of serie.recoSeries"

@@ -15,7 +15,7 @@
     <div class="description">
       <div class="title-bar">
         <span class="title">{{movie.title}}</span>
-        <span class="release-date "> {{movie.releaseDate}} </span>
+        <span class="release-date "> {{movie.releaseYear}} </span>
         <span class="original-title"
               *ngIf="movie.title !== movie.originalTitle"> '{{movie.originalTitle}}' </span>
         <span>Directed by </span>
@@ -48,9 +48,9 @@
   <div>
     <div class="sub-title">Casting</div>
     <div class="list credits"
-         *ngIf="movie.credits">
+         *ngIf="movie.credits.length">
       <portrait-component *ngFor="let credit of movie.credits"
-                          [image]="'https://image.tmdb.org/t/p/w185' + credit.profile"
+                          [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : null"
                           [title]="credit.name"
                           [topTitle]="credit.role"
                           (click)="utility.onClickCredit(credit)">
@@ -59,15 +59,18 @@
 
     </div>
 
-    <div class="sub-title">Images</div>
-    <div class="list">
-      <div class="image"
-           *ngFor="let image of movie.images">
-        <a [href]="'https://image.tmdb.org/t/p/original' + image"
-           target="_blank">
-          <img [src]="'https://image.tmdb.org/t/p/w300' + image">
-        </a>
+    <div *ngIf="movie.images.length">
+      <div class="sub-title">Images</div>
+      <div class="list">
+        <div class="image"
+             *ngFor="let image of movie.images">
+          <a [href]="'https://image.tmdb.org/t/p/original' + image"
+             target="_blank">
+            <img [src]="'https://image.tmdb.org/t/p/w300' + image">
+          </a>
+        </div>
       </div>
+
     </div>
 
     <div class="collection-movies"
@@ -82,7 +85,7 @@
       </div>
     </div>
     <div class="reco-movies"
-         *ngIf="movie.recoMovies">
+         *ngIf="movie.recoMovies.length">
       <div class="sub-title">Similar movies</div>
       <div class="list">
         <portrait-component *ngFor="let recoMovie of movie.recoMovies"
@@ -93,7 +96,7 @@
       </div>
     </div>
     <div class="director-movies"
-         *ngIf="movie.directorMovies">
+         *ngIf="movie.directorMovies.length">
       <div class="sub-title">{{movie.director.name}} movies</div>
       <div class="list">
         <portrait-component *ngFor="let directorMovie of movie.directorMovies"

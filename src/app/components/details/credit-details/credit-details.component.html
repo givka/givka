@@ -10,7 +10,7 @@
   </div>
 
   <div class="details-bar">
-    <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + credit.profile"></portrait-component>
+    <portrait-component [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : null"></portrait-component>
 
     <div class="description">
       <div class="title-bar">
@@ -22,7 +22,7 @@
       <div>{{credit.biography}}</div>
     </div>
   </div>
-  <div>
+  <div *ngIf="credit.images.length">
     <div class="sub-title">Images</div>
     <div class="list">
       <div class="image"
@@ -35,7 +35,7 @@
     </div>
 
     <div class="actor-movies"
-         *ngIf="credit.actorMovies">
+         *ngIf="credit.actorMovies.length">
       <div class="sub-title">Actor movies</div>
       <div class="list">
         <portrait-component *ngFor="let actorMovie of credit.actorMovies"
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div *ngIf="credit.actorSeries">
+    <div *ngIf="credit.actorSeries.length">
       <div class="sub-title">Actor series</div>
       <div class="list">
         <portrait-component *ngFor="let actorSerie of credit.actorSeries"
@@ -58,7 +58,7 @@
     </div>
 
     <div class="director-movies"
-         *ngIf="credit.directorMovies">
+         *ngIf="credit.directorMovies.length">
       <div class="sub-title">Director movies</div>
       <div class="list">
         <portrait-component *ngFor="let directorMovie of credit.directorMovies"
@@ -69,7 +69,7 @@
       </div>
     </div>
 
-    <div *ngIf="credit.directorMovies">
+    <div *ngIf="credit.creatorSeries.length">
       <div class="sub-title">Creator series</div>
       <div class="list">
         <portrait-component *ngFor="let creatorSerie of credit.creatorSeries"

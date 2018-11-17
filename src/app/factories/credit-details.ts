@@ -45,7 +45,6 @@ export class CreditDetails extends Credit {
   }
 
   private formatMovies(movies, database) {
-    if (!movies.length) return null;
     const moviesFormatted = movies.map(m => new Movie(m, database))
       .filter(m => m.poster && m.voteCount && m.backdrop);
     return Utils.orderBy(moviesFormatted, 'voteCount');
@@ -57,7 +56,6 @@ export class CreditDetails extends Credit {
   }
 
   private formatSeries(series, database) {
-    if (!series.length) return null;
     const seriesFormatted = series.map(m => new Serie(m, database))
       .filter(m => m.poster && m.voteCount && m.backdrop);
     return Utils.orderBy(seriesFormatted, 'voteCount');

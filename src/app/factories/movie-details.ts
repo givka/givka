@@ -34,6 +34,8 @@ export class MovieDetails extends TmdbDetails {
 
     // TODO: Take into consideration page 2 from recommendations
     this.recoMovies = this.formatRecoMovies(options.recommendations, moviesSeen);
+
+    console.log(this);
   }
 
   async addDetails(director, collection, moviesSeen) {
@@ -55,7 +57,6 @@ export class MovieDetails extends TmdbDetails {
   }
 
   private formatRecoMovies(movies, moviesSeen) {
-    if (!movies.results.length) { return null; }
     return movies.results.map(m => new Movie(m, moviesSeen));
   }
 }
