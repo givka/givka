@@ -6,11 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { Title } from '@angular/platform-browser';
-import { Storage } from 'src/app/factories/storage';
 import { BackgroundService } from 'src/app/services/background.service';
 import { UtilityService } from 'src/app/services/utility.service';
 import { MovieDetails } from '../../../factories/movie-details';
-import { BroadcastService } from '../../../services/broadcast.service';
 
 @Component({
   selector: 'movie-details-component',
@@ -45,7 +43,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
-    // this.background.removeBackground();
   }
 
   loadMovieDetails(id: number) {
@@ -59,10 +56,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       .finally(() => {
         this.loading = false;
       });
-  }
-
-  onClickCredit(credit) {
-    this.router.navigate([`/credit/${credit.id}`]);
   }
 
   close() {

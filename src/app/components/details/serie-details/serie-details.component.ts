@@ -4,9 +4,7 @@ import { TmdbService } from 'src/app/services/tmdb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { Title } from '@angular/platform-browser';
-import { Storage } from 'src/app/factories/storage';
 import { SerieDetails } from 'src/app/factories/serie-details';
-import { Serie } from 'src/app/factories/serie';
 import { BackgroundService } from 'src/app/services/background.service';
 import { UtilityService } from 'src/app/services/utility.service';
 
@@ -58,10 +56,6 @@ export class SerieDetailsComponent implements OnInit {
       .finally(() => {
         this.loading = false;
       });
-  }
-
-  onClickCredit(credit) {
-    this.router.navigate([`/credit/${credit.id}`]);
   }
 
   close() {

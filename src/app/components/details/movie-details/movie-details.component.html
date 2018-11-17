@@ -20,7 +20,7 @@
               *ngIf="movie.title !== movie.originalTitle"> '{{movie.originalTitle}}' </span>
         <span>Directed by </span>
         <span class="link underline"
-              (click)="onClickCredit(movie.director)">{{movie.director.name}}</span>
+              (click)="utility.onClickCredit(movie.director)">{{movie.director.name}}</span>
       </div>
       <div class="police-title fs-20">{{movie.tagLine}}</div>
       <div>{{movie.runtime}}</div>
@@ -53,7 +53,7 @@
                           [image]="'https://image.tmdb.org/t/p/w185' + credit.profile"
                           [title]="credit.name"
                           [topTitle]="credit.role"
-                          (click)="onClickCredit(credit)">
+                          (click)="utility.onClickCredit(credit)">
 
       </portrait-component>
 

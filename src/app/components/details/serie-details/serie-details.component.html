@@ -17,7 +17,7 @@
               *ngIf="serie.title !== serie.originalTitle"> '{{serie.originalTitle}}' </span>
         <span>Created by </span>
         <span class="link underline"
-              (click)="onClickCredit(serie.creator)"
+              (click)="utility.onClickCredit(serie.creator)"
               style="margin-right:5px;">{{serie.creator.name}}</span>
       </div>
       <div>{{serie.overview}}</div>
@@ -39,7 +39,7 @@
                           [image]="'https://image.tmdb.org/t/p/w185' + credit.profile"
                           [title]="credit.name"
                           [topTitle]="credit.role"
-                          (click)="onClickCredit(credit)">
+                          (click)="utility.onClickCredit(credit)">
 
       </portrait-component>
     </div>

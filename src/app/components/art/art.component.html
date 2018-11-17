@@ -1,53 +1,60 @@
-<div *ngIf="loading">
-  <spinner-component></spinner-component>
-</div>
+<search-component (onActivity)="checkActivity($event)"
+                  [type]="'paintings'"
+                  [placeholder]="'Search Paintings...'"></search-component>
 
-<h1 *ngIf="list === 'paintings'">Discover Paintings</h1>
-<h1 *ngIf="list === 'artists'">Discover Artists</h1>
-<div *ngIf="list === 'collection'">
-  <h1>Collection Art</h1>
-  <h3>{{items.length}} painting(s) saved</h3>
-</div>
-<div *ngIf="!loading">
-  <div class="buttons">
-    <button-component class="br"
-                      [title]="'Popular Artists'"
-                      routerLink="/art/artists"
-                      routerLinkActive="link-active"></button-component>
-    <button-component class="br"
-                      [title]="'Popular Paintings'"
-                      routerLink="/art/paintings"
-                      routerLinkActive="link-active"></button-component>
-    <button-component [title]="'Collection'"
-                      routerLink="/art/collection"
-                      routerLinkActive="link-active"></button-component>
+<div *ngIf="!isSearching">
+  <div *ngIf="loading">
+    <spinner-component></spinner-component>
   </div>
 
-  <div class="grid portrait-grid"
-       *ngIf="list==='artists'">
+  <h1 *ngIf="list === 'paintings'">Discover Paintings</h1>
+  <h1 *ngIf="list === 'artists'">Discover Artists</h1>
+  <div *ngIf="list === 'collection'">
+    <h1>Collection Art</h1>
+    <h3>{{items.length}} painting(s) saved</h3>
+  </div>
+  <div *ngIf="!loading">
+    <div class="buttons">
+      <button-component class="br"
+                        [title]="'Popular Artists'"
+                        routerLink="/art/artists"
+                        routerLinkActive="link-active"></button-component>
+      <button-component class="br"
+                        [title]="'Popular Paintings'"
+                        routerLink="/art/paintings"
+                        routerLinkActive="link-active"></button-component>
+      <button-component [title]="'Collection'"
+                        routerLink="/art/collection"
+                        routerLinkActive="link-active"></button-component>
+    </div>
 
-    <portrait-component *ngFor="let artist of items"
-                        [image]="artist.image ? artist.image + '!PinterestSmall.' + artist.extension : null"
-                        (click)="onClickArtist(artist.artistUrl, $event)"
-                        [title]="artist.artistName">
-    </portrait-component>
+    <div class="grid portrait-grid"
+         *ngIf="list==='artists'">
+
+      <portrait-component *ngFor="let artist of items"
+                          [image]="artist.image ? artist.image + '!PinterestSmall.' + artist.extension : null"
+                          (click)="onClickArtist(artist.artistUrl, $event)"
+                          [title]="artist.artistName">
+      </portrait-component>
+
+    </div>
+
+    <div class="grid portrait-grid"
+         *ngIf="list!=='artists'">
+
+      <portrait-component *ngFor="let painting of items"
+                          [ngClass]="{'seen' : (list !== 'collection' && painting.seen) || (list === 'collection' && !painting.seen)}"
+                          [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
+                          (click)="onClickPortrait(painting, $event)">
+      </portrait-component>
+
+    </div>
+
+    <popup-art-component *ngIf="popupPainting"
+                         [paintings]="items"
+                         [painting]="popupPainting"
+                         (onClose)="popupPainting = null"></popup-art-component>
 
   </div>
-
-  <div class="grid portrait-grid"
-       *ngIf="list!=='artists'">
-
-    <portrait-component *ngFor="let painting of items"
-                        [ngClass]="{'seen' : (list !== 'collection' && painting.seen) || (list === 'collection' && !painting.seen)}"
-                        [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
-                        (click)="onClickPortrait(painting, $event)">
-    </portrait-component>
-
-  </div>
-
-  <popup-art-component *ngIf="popupPainting"
-                       [paintings]="items"
-                       [painting]="popupPainting"
-                       (onClose)="popupPainting = null"></popup-art-component>
 
 </div>

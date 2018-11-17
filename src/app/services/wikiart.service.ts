@@ -18,6 +18,12 @@ export class WikiartService {
       .then(result => shuffle(result.map(p => new Painting(p, paintingsSeen))));
   }
 
+  getSearch(query: string) {
+    const paintingsSeen = Storage.readDB('art');
+    return this.getRequest(`search/${query}/1`)
+      .then(result => result.map(p => new Painting(p, paintingsSeen)));
+  }
+
   getPopularArtists() {
     return this.getRequest('app/api/popularartists')
       .then(data => shuffle(data.map(a => new Artist(a))));

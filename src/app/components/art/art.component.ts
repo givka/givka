@@ -1,16 +1,12 @@
 import {
   Component, OnInit, ViewEncapsulation, OnDestroy, HostListener,
 } from '@angular/core';
-import { findIndex } from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Storage } from 'src/app/factories/storage';
 import { BackgroundService } from 'src/app/services/background.service';
 import { WikiartService } from '../../services/wikiart.service';
 import { Painting } from '../../factories/painting';
-import { Artist } from '../../factories/artist';
-import { BroadcastService } from '../../services/broadcast.service';
-import { ArtistDetails } from '../../factories/artist-details';
 
 @Component({
   selector: 'art-component',
@@ -30,6 +26,8 @@ export class ArtComponent implements OnInit, OnDestroy {
   subRouter
 
   list
+
+  isSearching
 
   constructor(
     private wikiart: WikiartService,
@@ -51,6 +49,10 @@ export class ArtComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.cancelArrayDelay();
     this.subRouter.unsubscribe();
+  }
+
+  checkActivity(status) {
+    this.isSearching = status;
   }
 
   loadList(list: string) {

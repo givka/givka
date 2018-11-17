@@ -6,6 +6,7 @@ import { Storage } from '../factories/storage';
 import { Serie } from '../factories/serie';
 import { MovieDetails } from '../factories/movie-details';
 import { SerieDetails } from '../factories/serie-details';
+import { Credit } from '../factories/credit';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,10 @@ export class UtilityService {
 
   public onClickMovieDetails(movie: Movie, movieDetails: MovieDetails, event: KeyboardEvent) {
     this.onClickTmdb(movie, event, 'movies', 'movie', () => movieDetails.toggleListSeen(movie));
+  }
+
+  public onClickCredit(credit: Credit) {
+    this.router.navigate([`/credit/${credit.id}`]);
   }
 
   private onClickTmdb(item: Movie | Serie, event: KeyboardEvent,

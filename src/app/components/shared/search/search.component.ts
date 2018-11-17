@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, ViewEncapsulation, Output, EventEmitter, Input,
+  Component, OnInit, ViewEncapsulation, Output, EventEmitter, Input, OnDestroy,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -10,6 +10,9 @@ import { Serie } from 'src/app/factories/serie';
 import { Router } from '@angular/router';
 import { Storage } from 'src/app/factories/storage';
 import { CreditDetails } from 'src/app/factories/credit-details';
+import { Painting } from 'src/app/factories/painting';
+import { UtilityService } from 'src/app/services/utility.service';
+import { WikiartService } from 'src/app/services/wikiart.service';
 
 @Component({
   selector: 'search-component',
@@ -17,7 +20,7 @@ import { CreditDetails } from 'src/app/factories/credit-details';
   styleUrls: ['./search.component.scss'],
   encapsulation: ViewEncapsulation.None
   })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   @Output() onActivity: EventEmitter<boolean> = new EventEmitter();
 
   @Input() type: string;
@@ -30,15 +33,22 @@ export class SearchComponent implements OnInit {
 
   debounceQuery = new Subject<string>();
 
-  credits: Credit[]
+  credits: Credit[]= []
 
-  movies: Movie[]
+  movies: Movie[]= []
 
-  series: Serie[]
+  series: Serie[]= []
+
+  paintings: Painting[]
+
+  popupPainting : Painting;
+
+  intervalId;
 
   constructor(
     private tmdb: TmdbService,
-    private router: Router,
+    private wikiart: WikiartService,
+    private utility: UtilityService,
   ) { }
 
   ngOnInit() {
@@ -46,6 +56,10 @@ export class SearchComponent implements OnInit {
       .subscribe((query) => {
         this.searchItems(query);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.cancelArrayDelay();
   }
 
   onChange() {
@@ -60,6 +74,7 @@ export class SearchComponent implements OnInit {
       this.credits = [];
       this.movies = [];
       this.series = [];
+      this.paintings = [];
       return;
     }
 
@@ -67,7 +82,16 @@ export class SearchComponent implements OnInit {
       this.searchTmdb(query, 'tv');
     } else if (this.type === 'series') {
       this.searchTmdb(query, 'movie');
+    } else if (this.type === 'paintings') {
+      this.searchWikiArt(query);
     }
+  }
+
+  searchWikiArt(query: string) {
+    this.cancelArrayDelay();
+    this.wikiart.getSearch(query.trim())
+      .then((result) => { this.arrayDelay(result); })
+      .finally(() => { this.loading = false; });
   }
 
   searchTmdb(query, toExclude: string) {
@@ -76,40 +100,45 @@ export class SearchComponent implements OnInit {
         this.credits = result.credits;
         this.movies = result.movies;
         this.series = result.series;
-        console.log(result);
       })
       .finally(() => { this.loading = false; });
   }
 
   onClickItem(item, event) {
     if (item instanceof Movie) {
-      this.onClickMovie(item, event);
+      this.utility.onClickMovie(item, event);
     } else if (item instanceof Serie) {
-      this.onClickSerie(item, event);
+      this.utility.onClickSerie(item, event);
     } else if (item instanceof Credit) {
-      this.onClickCredit(item);
+      this.utility.onClickCredit(item);
+    } else if (item instanceof Painting) {
+      this.onClickPortrait(item, event);
     }
   }
 
-  onClickCredit(credit) {
-    this.router.navigate([`/credit/${credit.id}`]);
-  }
-
-  onClickMovie(movie: Movie, event) {
+  onClickPortrait(portrait, event) {
     if (event.ctrlKey || event.metaKey) {
-      movie.toggleSeen();
-      movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
+      portrait.seen = !portrait.seen;
+      portrait.seen ? Storage.addKeyDB('art', portrait) : Storage.deleteKeyDB('art', portrait);
     } else {
-      this.router.navigate([`movie/${movie.id}`]);
+      this.popupPainting = portrait;
     }
   }
 
-  onClickSerie(serie: Serie, event: KeyboardEvent) {
-    if (event.ctrlKey || event.metaKey) {
-      serie.toggleSeen();
-      serie.seen ? Storage.addKeyDB('series', serie) : Storage.deleteKeyDB('series', serie);
-    } else {
-      this.router.navigate([`serie/${serie.id}`]);
-    }
+  private arrayDelay(paintings: Painting[]) {
+    this.paintings = [];
+    let i = 0;
+    console.log(paintings);
+    this.intervalId = setInterval(() => {
+      if (i === paintings.length) {
+        this.cancelArrayDelay();
+      } else {
+        this.paintings.push(paintings[i++]);
+      }
+    }, 50);
+  }
+
+  cancelArrayDelay() {
+    clearInterval(this.intervalId);
   }
 }

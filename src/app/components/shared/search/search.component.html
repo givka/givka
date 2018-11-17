@@ -4,7 +4,9 @@
        (ngModelChange)='onChange()'>
 
 <div *ngIf="search !== ''">
-  <h1>Searching Movies</h1>
+  <h1 *ngIf="type === 'movies'">Searching Movies</h1>
+  <h1 *ngIf="type === 'series'">Searching TV Series</h1>
+  <h1 *ngIf="type === 'paintings'">Searching Paintings</h1>
 
   <div *ngIf="loading">
     <spinner-component></spinner-component>
@@ -47,6 +49,23 @@
 
       </div>
     </div>
+
+    <div *ngIf="paintings.length">
+      <h3>Paintings</h3>
+      <div class="grid portrait-grid">
+        <portrait-component *ngFor="let painting of paintings"
+                            [ngClass]="{'seen' :painting.seen}"
+                            [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
+                            (click)="onClickItem(painting, $event)">
+        </portrait-component>
+
+      </div>
+    </div>
+
+    <popup-art-component *ngIf="popupPainting"
+                         [paintings]="paintings"
+                         [painting]="popupPainting"
+                         (onClose)="popupPainting = null"></popup-art-component>
 
   </div>
 
