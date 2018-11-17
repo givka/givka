@@ -1,24 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
+
 import { AppComponent } from './app.component';
-
 import { MoviesComponent } from './components/movies/movies.component';
-import { MovieComponent } from './components/movies/movie/movie.component';
 import { SpinnerComponent } from './components/shared/spinner/spinner.component';
-import { MovieDetailsComponent } from './components/movies/movie-details/movie-details.component';
-import { CreditDetailsComponent } from './components/movies/credit-details/credit-details.component';
-
+import { MovieDetailsComponent } from './components/details/movie-details/movie-details.component';
+import { CreditDetailsComponent } from './components/details/credit-details/credit-details.component';
 import { ButtonComponent } from './components/shared/button/button.component';
 import { ArtComponent } from './components/art/art.component';
-import { ArtistDetailsComponent } from './components/art/artist-details/artist-details.component';
-import { PortraitsComponent } from './components/art/portraits/portraits.component';
+import { ArtistDetailsComponent } from './components/details/artist-details/artist-details.component';
 import { PopupArtComponent } from './components/art/popup-art/popup-art.component';
 import { PortraitComponent } from './components/shared/portrait/portrait.component';
 import { TvComponent } from './components/series/series.component';
-import { SerieDetailsComponent } from './components/series/serie-details/serie-details.component';
+import { SerieDetailsComponent } from './components/details/serie-details/serie-details.component';
+import { SearchComponent } from './components/shared/search/search.component';
 
 const appRoutes: Routes = [
   { path: 'movies/:list', component: MoviesComponent },
@@ -32,31 +30,29 @@ const appRoutes: Routes = [
   { path: 'art', redirectTo: 'art/collection', pathMatch: 'full' },
   { path: 'artist/:artistUrl', component: ArtistDetailsComponent },
   { path: '', redirectTo: 'movies/collection', pathMatch: 'full' },
-
 ];
 
 @NgModule({
   declarations: [
   AppComponent,
   MoviesComponent,
-  MovieComponent,
   SpinnerComponent,
   MovieDetailsComponent,
   CreditDetailsComponent,
   ButtonComponent,
   ArtComponent,
   ArtistDetailsComponent,
-  PortraitsComponent,
   PopupArtComponent,
   PortraitComponent,
   TvComponent,
   SerieDetailsComponent,
+  SearchComponent,
   ],
   imports: [
   BrowserModule,
   HttpClientModule,
-  RouterModule.forRoot(appRoutes)
-
+  RouterModule.forRoot(appRoutes),
+  FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

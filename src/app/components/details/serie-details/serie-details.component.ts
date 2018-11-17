@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Background } from 'src/app/factories/background';
 import { TmdbService } from 'src/app/services/tmdb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
@@ -8,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { Storage } from 'src/app/factories/storage';
 import { SerieDetails } from 'src/app/factories/serie-details';
 import { Serie } from 'src/app/factories/serie';
+import { BackgroundService } from 'src/app/services/background.service';
 
 @Component({
   selector: 'serie-details-component',
@@ -22,16 +22,14 @@ export class SerieDetailsComponent implements OnInit {
 
   subRouter: Subscription;
 
-  background: Background = new Background();
-
   constructor(
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
     private router: Router,
     private routingState: RoutingStateService,
     private title: Title,
-  ) {
-  }
+    private background: BackgroundService,
+  ) { }
 
   ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
@@ -42,7 +40,7 @@ export class SerieDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
-    this.background.removeBackground();
+    // this.background.removeBackground();
   }
 
   onClickSerie(serie: Serie, event: KeyboardEvent) {
@@ -50,6 +48,7 @@ export class SerieDetailsComponent implements OnInit {
       this.serie.toggleListSeriesSeen(serie);
       serie.seen ? Storage.addKeyDB('series', serie) : Storage.deleteKeyDB('series', serie);
     } else {
+      this.background.addBackground(`https://image.tmdb.org/t/p/w300${serie.backdrop}`);
       this.router.navigate([`serie/${serie.id}`]);
     }
   }

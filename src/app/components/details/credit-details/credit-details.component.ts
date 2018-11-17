@@ -2,7 +2,7 @@ import {
   Component, Input, OnInit, ViewEncapsulation, OnDestroy,
 } from '@angular/core';
 import { TmdbService } from 'src/app/services/tmdb.service';
-import { Credit } from 'src/app/factories/credit';
+import { CreditDetails } from 'src/app/factories/credit-details';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
@@ -16,7 +16,7 @@ import { Storage } from 'src/app/factories/storage';
   encapsulation: ViewEncapsulation.None
   })
 export class CreditDetailsComponent implements OnInit, OnDestroy {
-  credit: Credit;
+  credit: CreditDetails;
 
   loading = true;
 

@@ -6,9 +6,10 @@ import { random } from 'lodash';
 import { Movie } from '../factories/movie';
 import { MovieDetails } from '../factories/movie-details';
 import { Storage } from '../factories/storage';
-import { Credit } from '../factories/credit';
+import { CreditDetails } from '../factories/credit-details';
 import { Serie } from '../factories/serie';
 import { SerieDetails } from '../factories/serie-details';
+import { Credit } from '../factories/credit';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,29 @@ export class TmdbService {
     return movieDetails;
   }
 
+  getSearch(query, toExclude: string) {
+    const databaseMovies = Storage.readDB('movies');
+    const databaseSeries = Storage.readDB('series');
+    return this.getMultiplePages(`search/multi?query=${query}`)
+      .then((data) => {
+        data = data
+          .filter(r => r.media_type !== toExclude)
+          .map(r => (r.media_type === 'movie' ? new Movie(r, databaseMovies)
+            : (r.media_type === 'tv' ? new Serie(r, databaseSeries) : new Credit(r))))
+          .filter(r => (r instanceof Credit && r.profile)
+           || (r instanceof Movie && r.poster)
+           || (r instanceof Serie && r.poster));
+
+        console.log(data, toExclude);
+
+        return {
+          credits: data.filter(r => r instanceof Credit),
+          movies: data.filter(r => r instanceof Movie),
+          series: data.filter(r => r instanceof Serie),
+        };
+      });
+  }
+
   async getSerieDetails(id: number) {
     if (!id) { return null; }
 
@@ -84,10 +108,10 @@ export class TmdbService {
     const databaseMovies = Storage.readDB('movies');
     const databaseSeries = Storage.readDB('series');
     return this.getRequest(`person/${id}`, 'movie_credits,images,tagged_images,tv_credits')
-      .then(c => new Credit(c, databaseMovies, databaseSeries));
+      .then(c => new CreditDetails(c, databaseMovies, databaseSeries));
   }
 
-  private getRequest(url: string, addRequestAppend: string, page: number = 1) {
+  private getRequest(url: string, addRequestAppend: string = null, page: number = 1) {
     return this.http.get(this.basicUrl + url, {
       params: {
         language: this.language,

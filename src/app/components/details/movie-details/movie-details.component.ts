@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { Title } from '@angular/platform-browser';
-import { Background } from 'src/app/factories/background';
 import { Storage } from 'src/app/factories/storage';
+import { BackgroundService } from 'src/app/services/background.service';
 import { MovieDetails } from '../../../factories/movie-details';
 import { BroadcastService } from '../../../services/broadcast.service';
 
@@ -24,14 +24,13 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
 
   subRouter: Subscription;
 
-  background: Background = new Background();
-
   constructor(
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
     private router: Router,
     private routingState: RoutingStateService,
     private title: Title,
+    private background: BackgroundService,
   ) {
   }
 
@@ -44,7 +43,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
-    this.background.removeBackground();
+    // this.background.removeBackground();
   }
 
   onClickMovie(movie: MovieDetails, event) {
@@ -52,6 +51,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       this.movie.toggleListMoviesSeen(movie);
       movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
     } else {
+      this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
       this.router.navigate([`movie/${movie.id}`]);
     }
   }

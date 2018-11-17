@@ -5,6 +5,7 @@ import {
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { BackgroundService } from 'src/app/services/background.service';
 import { Movie } from '../../factories/movie';
 import { MovieDetails } from '../../factories/movie-details';
 import { Storage } from '../../factories/storage';
@@ -32,15 +33,19 @@ export class MoviesComponent implements OnInit, OnDestroy {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
   };
 
+  isSearching = false
+
   constructor(
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
     private router: Router,
     private title: Title,
+    private background: BackgroundService,
   ) { }
 
   ngOnInit() {
     this.title.setTitle('Movies');
+    this.background.removeBackground();
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });
@@ -48,6 +53,10 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
+  }
+
+  checkActivity(status) {
+    this.isSearching = status;
   }
 
   loadList(list: string) {
@@ -76,6 +85,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
       movie.toggleSeen();
       movie.seen ? Storage.addKeyDB('movies', movie) : Storage.deleteKeyDB('movies', movie);
     } else {
+      this.background.addBackground(`https://image.tmdb.org/t/p/w300${movie.backdrop}`);
       this.router.navigate([`movie/${movie.id}`]);
     }
   }

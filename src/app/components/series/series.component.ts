@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Movie } from 'src/app/factories/movie';
 
+import { BackgroundService } from 'src/app/services/background.service';
 import { Storage } from '../../factories/storage';
 
 @Component({
@@ -28,15 +29,19 @@ export class TvComponent implements OnInit {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
   }
 
+  isSearching = false;
+
   constructor(
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
     private router: Router,
     private title: Title,
+    private background: BackgroundService,
   ) { }
 
   ngOnInit() {
     this.title.setTitle('TV Series');
+    this.background.removeBackground();
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });
@@ -44,6 +49,10 @@ export class TvComponent implements OnInit {
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
+  }
+
+  checkActivity(status) {
+    this.isSearching = status;
   }
 
   loadList(list: string) {
@@ -79,6 +88,7 @@ export class TvComponent implements OnInit {
       serie.toggleSeen(serie);
       serie.seen ? Storage.addKeyDB('series', serie) : Storage.deleteKeyDB('series', serie);
     } else {
+      this.background.addBackground(`https://image.tmdb.org/t/p/w300${serie.backdrop}`);
       this.router.navigate([`serie/${serie.id}`]);
     }
   }

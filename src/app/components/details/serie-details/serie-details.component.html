@@ -36,7 +36,7 @@
     <div class="list credits"
          *ngIf="serie.credits">
       <portrait-component *ngFor="let credit of serie.credits"
-                          [image]="'https://image.tmdb.org/t/p/w185' + credit.profile_path"
+                          [image]="'https://image.tmdb.org/t/p/w185' + credit.profile"
                           [title]="credit.name"
                           [topTitle]="credit.role"
                           (click)="onClickCredit(credit)">

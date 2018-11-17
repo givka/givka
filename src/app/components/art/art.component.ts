@@ -5,6 +5,7 @@ import { findIndex } from 'lodash';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Storage } from 'src/app/factories/storage';
+import { BackgroundService } from 'src/app/services/background.service';
 import { WikiartService } from '../../services/wikiart.service';
 import { Painting } from '../../factories/painting';
 import { Artist } from '../../factories/artist';
@@ -35,10 +36,12 @@ export class ArtComponent implements OnInit, OnDestroy {
     private router: Router,
     private title: Title,
     private activeRoute: ActivatedRoute,
+    private background: BackgroundService,
   ) { }
 
   ngOnInit() {
     this.title.setTitle('Art');
+    this.background.removeBackground();
     this.subRouter = this.activeRoute.params.subscribe((routeParams) => {
       const { list } = routeParams;
       this.loadList(list);

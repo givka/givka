@@ -30,11 +30,10 @@ export class MovieDetails extends TmdbDetails {
     this.imdbId = options.imdb_id;
     this.voteCount = options.vote_count;
     this.runtime = moment.utc().startOf('day').add(options.runtime, 'minutes').format('h[h] mm[min]');
+    [this.director] = this.credits;
 
     // TODO: Take into consideration page 2 from recommendations
     this.recoMovies = this.formatRecoMovies(options.recommendations, moviesSeen);
-
-    this.director = this.credits && this.credits[0] && this.credits[0].job === 'Director' && this.credits[0];
   }
 
   async addDetails(director, collection, moviesSeen) {

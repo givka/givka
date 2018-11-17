@@ -1,0 +1,53 @@
+<input type="text"
+       placeholder="{{placeholder}}"
+       [(ngModel)]="search"
+       (ngModelChange)='onChange()'>
+
+<div *ngIf="search !== ''">
+  <h1>Searching Movies</h1>
+
+  <div *ngIf="loading">
+    <spinner-component></spinner-component>
+  </div>
+
+  <div *ngIf="!loading">
+
+    <div *ngIf="movies.length">
+      <h3>Movies</h3>
+      <div class="grid">
+        <portrait-component *ngFor="let movie of movies"
+                            (click)="onClickItem(movie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+ movie.poster"
+                            [ngClass]="{'seen':movie.seen}">
+        </portrait-component>
+
+      </div>
+    </div>
+
+    <div *ngIf="series.length">
+      <h3>TV Series</h3>
+      <div class="grid">
+        <portrait-component *ngFor="let serie of series"
+                            (click)="onClickItem(serie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+ serie.poster"
+                            [ngClass]="{'seen':serie.seen}">
+        </portrait-component>
+
+      </div>
+    </div>
+
+    <div *ngIf="credits.length">
+      <h3>Credits</h3>
+      <div class="grid">
+        <portrait-component *ngFor="let credit of credits"
+                            (click)="onClickItem(credit, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+ credit.profile"
+                            [title]="credit.name">
+        </portrait-component>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

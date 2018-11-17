@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import { Tmdb } from './tmdb';
 import { Utils } from './utils';
+import { Credit } from './credit';
 
 export class TmdbDetails extends Tmdb {
   public originalTitle: string;
@@ -42,10 +43,7 @@ export class TmdbDetails extends Tmdb {
     directors = directors.filter(crew => crew.job === 'Director');
     actors = actors.filter((cast, index) => cast.profile_path)
       .filter((cast, index) => index < 20);
-    return directors.concat(actors).map((credit) => {
-      credit.role = credit.job || credit.character;
-      return credit;
-    });
+    return directors.concat(actors).map(c => new Credit(c));
   }
 
   private formatImages(images) {

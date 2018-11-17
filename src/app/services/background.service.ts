@@ -1,9 +1,15 @@
+import { Injectable } from '@angular/core';
 import { random } from 'lodash';
 
-export class Background {
-  styleSheet: any;
+@Injectable({
+  providedIn: 'root'
+  })
+export class BackgroundService {
+  private styleSheet: any;
 
-  ruleAdded: boolean;
+  private ruleAdded: boolean;
+
+  private background : string;
 
   constructor() {
     this.styleSheet = this.initStyleSheet();
@@ -16,7 +22,7 @@ export class Background {
     return styleEl.sheet;
   }
 
-  getImage(url) {
+  private getImage(url) {
     return new Promise(((resolve, reject) => {
       const img = new Image();
       img.onload = function () {
@@ -29,7 +35,10 @@ export class Background {
     }));
   }
 
-  async addBackground(image) {
+  public async addBackground(image) {
+    if (image === this.background) { return; }
+
+    this.background = image;
     await this.getImage(image);
 
     if (this.ruleAdded) {
@@ -41,15 +50,15 @@ export class Background {
     const rule = `.main-content::before {
     filter: blur(10px) brightness(0.5)!important;
     background-image: ${background} !important;
-    transform: scale(${random(1.1, 1.5, true)}) !important;
-  }`;
+    transform: scale(${random(1.1, 1.5, true)}) !important;}`;
     this.styleSheet.insertRule(rule, 0);
   }
 
-  removeBackground() {
+  public removeBackground() {
     if (this.ruleAdded) {
       this.styleSheet.deleteRule(0);
       this.ruleAdded = false;
+      this.background = null;
     }
   }
 }

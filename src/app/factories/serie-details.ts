@@ -15,10 +15,11 @@ export class SerieDetails extends TmdbDetails {
 
   constructor(options, database) {
     super(options, database);
+
     this.numberOfSeasons = options.number_of_seasons;
     this.numberOfEpisodes = options.number_of_episodes;
     this.seasons = this.formatSeasons(options.seasons);
-    [this.creator] = options.created_by.map((creator) => { creator.role = 'Creator'; return creator; });
+    this.creator = options.created_by.map((creator) => { creator.role = 'Creator'; return creator; })[0] || this.credits[0];
     this.credits = [this.creator].concat(this.credits);
     this.recoSeries = this.formatRecoSeries(options.recommendations, database);
   }
