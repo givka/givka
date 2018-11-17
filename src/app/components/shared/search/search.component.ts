@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   series: Serie[]= []
 
-  paintings: Painting[]
+  paintings: Painting[]=[]
 
   popupPainting : Painting;
 
