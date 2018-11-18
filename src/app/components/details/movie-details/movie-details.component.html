@@ -42,6 +42,9 @@
            [href]="'https://www.imdb.com/title/'+ movie.imdbId"
            target="_blank">Go to IMDb</a></div>
 
+      <rating-component [voteAverage]="movie.voteAverage"
+                        [voteCount]="movie.voteCount"></rating-component>
+
     </div>
 
   </div>
