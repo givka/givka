@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Movie } from './movie';
 import { Utils } from './utils';
 import { Serie } from './serie';
@@ -24,12 +25,15 @@ export class CreditDetails extends Credit {
 
   birthPlace: string;
 
+  age:number
+
   constructor(options, databaseMovies = {}, databaseSeries = {}) {
     super(options);
-
     this.biography = options.biography;
-    this.birthday = options.birthday;
-    this.deathday = options.deathday;
+    this.birthday = options.birthday ? moment(options.birthday, 'YYYY-MM-DD').format('ll') : null;
+    this.deathday = options.deathday ? moment(options.deathday, 'YYYY-MM-DD').format('ll') : null;
+    this.age = this.formatAge(options.birthday, options.deathday);
+
     this.knownFor = options.known_for_department;
     this.birthPlace = options.place_of_birth;
     this.images = this.formatImages(options.images, options.tagged_images);
@@ -37,6 +41,15 @@ export class CreditDetails extends Credit {
     this.directorMovies = this.formatDirectorMovies(options.movie_credits.crew, databaseMovies);
     this.actorSeries = this.formatSeries(options.tv_credits.cast, databaseSeries);
     this.creatorSeries = this.formatCreatorSeries(options.tv_credits.crew, databaseSeries);
+  }
+
+  private formatAge(birthday, deathday) {
+    if (deathday && birthday) {
+      return moment(deathday, 'YYYY-MM-DD').diff(moment(birthday, 'YYYY-MM-DD'), 'year');
+    } if (birthday) {
+      return moment().diff(moment(birthday, 'YYYY-MM-DD'), 'year');
+    }
+    return null;
   }
 
   private formatDirectorMovies(movies, database) {

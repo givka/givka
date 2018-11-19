@@ -17,8 +17,15 @@
         <span class="title">{{credit.name}}</span>
       </div>
 
-      <div>{{credit.birthday}}</div>
-      <div>{{credit.deathday}}</div>
+      <div *ngIf="credit.birthday">
+        <span>Born on {{credit.birthday}}</span>
+        <span *ngIf="!credit.deathday"> ({{credit.age}} y/o)</span>
+      </div>
+      <div *ngIf="credit.deathday">
+        <span>Died on {{credit.deathday}}</span>
+        <span> ({{credit.age}} y/o)</span>
+      </div>
+
       <div>{{credit.biography}}</div>
     </div>
   </div>
