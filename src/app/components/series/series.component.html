@@ -53,6 +53,12 @@
                         (click)="orderBy('voteCount')"></button-component>
 
     </div>
+
+    <div *ngIf="list === 'collection' && series.length < 10"
+         class="instructions">
+      Discover or Search TV Series and Cmd+Click or Ctrl+Click on a poster to add it to the collection.
+    </div>
+
     <div *ngIf="series"
          class="grid">
       <portrait-component *ngFor="let serie of series"

@@ -39,6 +39,11 @@
 
     </div>
 
+    <div *ngIf="list === 'collection' && items.length < 10"
+         class="instructions">
+      Discover or Search paintings and Cmd+Click or Ctrl+Click on a poster to add it to the collection.
+    </div>
+
     <div class="grid portrait-grid"
          *ngIf="list!=='artists'">
 

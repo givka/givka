@@ -9,6 +9,7 @@
   <div *ngIf="list==='collection'">
     <h1>Collection Movies</h1>
     <h3>{{movies.length}} movie(s) seen</h3>
+
   </div>
 
   <div *ngIf="loading">
@@ -16,6 +17,7 @@
   </div>
 
   <div *ngIf="!loading">
+
     <div class="buttons">
       <button-component class="br"
                         [title]="'Upcoming'"
@@ -33,8 +35,8 @@
                         [routerLink]="['/movies/collection']"
                         routerLinkActive="link-active"></button-component>
     </div>
-    <div class="buttons float-right">
 
+    <div class="buttons float-right">
       <button-component class="br"
                         [title]="'Title'"
                         [orderAsc]="orderAsc.title"
@@ -51,6 +53,11 @@
                         [orderAsc]="orderAsc.voteCount"
                         (click)="orderBy('voteCount')"></button-component>
 
+    </div>
+
+    <div *ngIf="list === 'collection' && movies.length < 10"
+         class="instructions">
+      Discover or Search Movies and Cmd+Click or Ctrl+Click on a poster to add it to the collection.
     </div>
 
     <div *ngIf="movies"
