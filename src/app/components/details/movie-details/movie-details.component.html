@@ -23,6 +23,7 @@
               (click)="utility.onClickCredit(movie.director)">{{movie.director.name}}</span>
       </div>
       <div class="police-title fs-20">{{movie.tagLine}}</div>
+      <div>{{movie.releaseDate | date : 'MMMM d, y'}}</div>
       <div>{{movie.runtime}}</div>
       <div>{{movie.overview}}</div>
 

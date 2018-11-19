@@ -20,6 +20,7 @@
               (click)="utility.onClickCredit(serie.creator)"
               style="margin-right:5px;">{{serie.creator.name}}</span>
       </div>
+      <div>{{serie.releaseDate | date : 'MMMM d, y'}}</div>
       <div>{{serie.overview}}</div>
       <div class="link ib"
            *ngIf="serie.trailer">

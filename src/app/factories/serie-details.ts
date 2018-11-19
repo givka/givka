@@ -16,7 +16,6 @@ export class SerieDetails extends TmdbDetails {
 
   constructor(options, database) {
     super(options, database);
-
     this.numberOfSeasons = options.number_of_seasons;
     this.numberOfEpisodes = options.number_of_episodes;
     this.seasons = this.formatSeasons(options.seasons);
