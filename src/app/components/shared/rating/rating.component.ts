@@ -13,18 +13,18 @@ export class RatingComponent implements OnInit {
 
   @Input() voteCount: number;
 
+  nbrOfStars = 5;
+
   stars = [];
 
   constructor() { }
 
   ngOnInit() {
-    this.stars = Array.from(Array(10))
+    this.stars = Array.from(Array(this.nbrOfStars))
       .map((star, index) => {
-        const starRating = index + 1;
-        if (starRating <= this.voteAverage) return 'fas fa-star';
-        if ((starRating - this.voteAverage > 0.25) && (starRating - this.voteAverage < 0.75)) {
-          return 'fas fa-star-half-alt';
-        }
+        const starRating = index + 1 - this.voteAverage / 2;
+        if (starRating <= 0) return 'fas fa-star';
+        if (starRating <= 0.5) { return 'fas fa-star-half-alt'; }
         return 'far fa-star';
       });
   }
