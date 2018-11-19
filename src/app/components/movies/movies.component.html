@@ -2,8 +2,7 @@
                   [type]="'movies'"
                   [placeholder]="'Search Movies...'"></search-component>
 
-<div *ngIf="!isSearching"
-     style="height: 100vh">
+<div *ngIf="!isSearching">
   <h1 *ngIf="list==='upcoming'">Upcoming Movies</h1>
   <h1 *ngIf="list==='top_rated'">Top Rated Movies</h1>
   <h1 *ngIf="list==='popular'">Popular Movies</h1>

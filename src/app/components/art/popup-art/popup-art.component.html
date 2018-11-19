@@ -1,9 +1,13 @@
 <span class="close link"
       (click)="onClose.emit()">×</span>
 <span class="next link"
-      (click)="changePainting(1)">&gt;</span>
+      (click)="changePainting(1)">
+  <i class="fas fa-caret-right"></i>
+</span>
 <span class="previous link"
-      (click)="changePainting(-1)">&lt;</span>
+      (click)="changePainting(-1)">
+  <i class="fas fa-caret-left"></i>
+</span>
 
 <div class="loading-wrapper"
      *ngIf="loading">

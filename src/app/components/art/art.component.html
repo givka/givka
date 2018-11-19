@@ -2,8 +2,7 @@
                   [type]="'paintings'"
                   [placeholder]="'Search Paintings...'"></search-component>
 
-<div *ngIf="!isSearching"
-     style="height: 100vh">
+<div *ngIf="!isSearching">
   <div *ngIf="loading">
     <spinner-component></spinner-component>
   </div>

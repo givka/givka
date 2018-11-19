@@ -43,7 +43,7 @@
       <div class="grid">
         <portrait-component *ngFor="let credit of credits"
                             (click)="onClickItem(credit, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+ credit.profile"
+                            [image]=" credit.profile ? 'https://image.tmdb.org/t/p/w185'+ credit.profile : 'no_credit'"
                             [title]="credit.name">
         </portrait-component>
 

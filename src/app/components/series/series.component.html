@@ -2,8 +2,7 @@
                   [type]="'series'"
                   [placeholder]="'Search TV Series...'"></search-component>
 
-<div *ngIf="!isSearching"
-     style="height: 100vh">
+<div *ngIf="!isSearching">
 
   <div *ngIf="loading">
     <spinner-component></spinner-component>

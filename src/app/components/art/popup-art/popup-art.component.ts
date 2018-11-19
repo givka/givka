@@ -5,7 +5,6 @@ import { findIndex } from 'lodash';
 import { Router } from '@angular/router';
 import { Storage } from 'src/app/factories/storage';
 import { Painting } from '../../../factories/painting';
-import { BroadcastService } from '../../../services/broadcast.service';
 
 @Component({
   selector: 'popup-art-component',

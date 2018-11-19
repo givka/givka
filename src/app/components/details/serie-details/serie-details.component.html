@@ -39,7 +39,7 @@
     <div class="list credits"
          *ngIf="serie.credits">
       <portrait-component *ngFor="let credit of serie.credits"
-                          [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : null"
+                          [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
                           [title]="credit.name"
                           [topTitle]="credit.role"
                           (click)="utility.onClickCredit(credit)">
@@ -64,7 +64,7 @@
       <div class="list">
         <portrait-component *ngFor="let season of serie.seasons"
                             (click)="onClickSeason(season, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+season.poster"
+                            [image]="season.poster?'https://image.tmdb.org/t/p/w185'+season.poster:null"
                             [title]="season.name">
         </portrait-component>
       </div>
