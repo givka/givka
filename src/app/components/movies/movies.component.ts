@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, ViewEncapsulation, OnDestroy,
+  Component, OnInit, ViewEncapsulation, OnDestroy, HostListener,
 } from '@angular/core';
 
 import { Subscription } from 'rxjs';
@@ -8,7 +8,6 @@ import { Title } from '@angular/platform-browser';
 import { BackgroundService } from 'src/app/services/background.service';
 import { UtilityService } from 'src/app/services/utility.service';
 import { Movie } from '../../factories/movie';
-import { MovieDetails } from '../../factories/movie-details';
 import { Storage } from '../../factories/storage';
 
 import { TmdbService } from '../../services/tmdb.service';
@@ -34,7 +33,13 @@ export class MoviesComponent implements OnInit, OnDestroy {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
   };
 
-  isSearching = false
+  isSearching = false;
+
+  loadingAdd = false;
+
+  offsetPages = 5;
+
+  nbrPages = 5;
 
   constructor(
     private tmdb: TmdbService,
@@ -55,6 +60,27 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subRouter.unsubscribe();
+  }
+
+  @HostListener("window:scroll", ["$event"])
+  onWindowScroll() {
+    const max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const pos = document.documentElement.scrollTop;
+
+    if (this.list !== 'collection' && !this.loadingAdd && pos === max) {
+      this.addMovies();
+    }
+  }
+
+  addMovies() {
+    this.loadingAdd = true;
+
+    this.tmdb.getDiscoverMovies(this.list, this.offsetPages, this.nbrPages)
+      .then((result) => {
+        this.offsetPages += this.nbrPages;
+        this.movies = this.movies.concat(result);
+      })
+      .finally(() => { this.loadingAdd = false; });
   }
 
   checkActivity(status) {

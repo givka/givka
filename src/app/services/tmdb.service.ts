@@ -23,10 +23,10 @@ export class TmdbService {
 
   constructor(private http: HttpClient) { }
 
-  getMultiplePages(url) {
+  getMultiplePages(url, offsetPages = 0, nbrOfPages = 5) {
     const PromiseArray = [];
 
-    for (let i = 1; i <= 10; i += 1) {
+    for (let i = 1 + offsetPages; i <= nbrOfPages + offsetPages; i += 1) {
       PromiseArray.push(this.getRequest(url, null, i));
     }
     return Promise.all(PromiseArray)
@@ -37,15 +37,15 @@ export class TmdbService {
       });
   }
 
-  getDiscoverSeries(list) {
+  getDiscoverSeries(list, offsetPages = 0, nbrOfPages = 5) {
     const database = Storage.readDB('series');
-    return this.getMultiplePages(`tv/${list}`)
+    return this.getMultiplePages(`tv/${list}`, offsetPages, nbrOfPages)
       .then(data => data.map(m => new Serie(m, database)).filter(m => m.poster));
   }
 
-  getDiscoverMovies(list) {
+  getDiscoverMovies(list, offsetPages = 0, nbrOfPages = 5) {
     const database = Storage.readDB('movies');
-    return this.getMultiplePages(`movie/${list}`)
+    return this.getMultiplePages(`movie/${list}`, offsetPages, nbrOfPages)
       .then(data => data.map(m => new Movie(m, database)).filter(m => m.poster));
   }
 

@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component, OnInit, ViewEncapsulation, HostListener,
+} from '@angular/core';
 import { TmdbService } from 'src/app/services/tmdb.service';
 import { Serie } from 'src/app/factories/serie';
 import { Utils } from 'src/app/factories/utils';
@@ -32,6 +34,12 @@ export class TvComponent implements OnInit {
 
   isSearching = false;
 
+  loadingAdd=false
+
+  offsetPages = 5;
+
+  nbrPages = 5;
+
   constructor(
     private tmdb: TmdbService,
     private routeActive: ActivatedRoute,
@@ -55,6 +63,29 @@ export class TvComponent implements OnInit {
 
   checkActivity(status) {
     this.isSearching = status;
+  }
+
+  @HostListener("window:scroll", ["$event"])
+  onWindowScroll() {
+    const max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const pos = document.documentElement.scrollTop;
+
+    if (this.list !== 'collection' && !this.loadingAdd && pos === max) {
+      this.addSeries();
+    }
+  }
+
+  addSeries() {
+    this.loadingAdd = true;
+
+    this.tmdb.getDiscoverSeries(this.list, this.offsetPages, this.nbrPages)
+      .then((result) => {
+        this.offsetPages += this.nbrPages;
+        this.series = this.series.concat(result);
+      })
+      .finally(() => {
+        setTimeout(() => { this.loadingAdd = false; }, 500);
+      });
   }
 
   loadList(list: string) {
