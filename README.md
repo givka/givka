@@ -1,5 +1,12 @@
 # Givka 
-![Givka icon](./src/favicon.ico)
+
+<img src="./src/favicon.ico" width="64" height="64" />
+
+Discover movies, TV series and paintings and manage them.
+
+<img src="https://thumbs.gfycat.com/DigitalDevotedDogfish-size_restricted.gif" />
+
+Made with Angular.
 
 Optimised for Google Chrome.
 
