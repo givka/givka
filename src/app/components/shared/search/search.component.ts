@@ -18,8 +18,8 @@ import { WikiartService } from 'src/app/services/wikiart.service';
   selector: 'search-component',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class SearchComponent implements OnInit, OnDestroy {
   @Output() onActivity: EventEmitter<boolean> = new EventEmitter();
 
@@ -33,13 +33,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   debounceQuery = new Subject<string>();
 
-  credits: Credit[]= []
+  credits: Credit[] = [];
 
-  movies: Movie[]= []
+  movies: Movie[] = [];
 
-  series: Serie[]= []
+  series: Serie[] = [];
 
-  paintings: Painting[]=[]
+  paintings: Painting[] = [];
 
   popupPainting : Painting;
 
@@ -96,7 +96,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   searchTmdb(query, toExclude: string) {
     this.tmdb.getSearch(query, toExclude)
-      .then((result) => {
+      .then((result: any) => {
         this.credits = result.credits;
         this.movies = result.movies;
         this.series = result.series;
@@ -128,14 +128,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   private arrayDelay(paintings: Painting[]) {
     this.paintings = [];
     let i = 0;
-    console.log(paintings);
     this.intervalId = setInterval(() => {
       if (i === paintings.length) {
         this.cancelArrayDelay();
       } else {
         this.paintings.push(paintings[i++]);
       }
-    }, 50);
+    },                            50);
   }
 
   cancelArrayDelay() {

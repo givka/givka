@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { random } from 'lodash';
-
 import { Movie } from '../factories/movie';
 import { MovieDetails } from '../factories/movie-details';
 import { Storage } from '../factories/storage';
@@ -10,43 +8,45 @@ import { CreditDetails } from '../factories/credit-details';
 import { Serie } from '../factories/serie';
 import { SerieDetails } from '../factories/serie-details';
 import { Credit } from '../factories/credit';
+import { SerieResult, MovieResult } from '../types/tmdb';
 
 @Injectable({
-  providedIn: 'root'
-  })
+  providedIn: 'root',
+})
+
 export class TmdbService {
-  private apiKey: string = 'aa79a25e783821b082e1e241e41889db';
+  private readonly apiKey: string = 'aa79a25e783821b082e1e241e41889db';
 
-  private basicUrl: string = 'https://api.themoviedb.org/3/';
+  private readonly basicUrl: string = 'https://api.themoviedb.org/3/';
 
-  private language: string = 'en-US';
+  private readonly language: string = 'en-US';
 
   constructor(private http: HttpClient) { }
 
-  getMultiplePages(url, offsetPages = 0, nbrOfPages = 5) {
-    const PromiseArray = [];
+  getMultiplePages(url: string, offsetPages = 0, nbrOfPages = 5) {
+    const promises = Array.from(Array(nbrOfPages))
+    .map((value, index) => this.getRequest(url, '', index + 1 + offsetPages));
 
-    for (let i = 1 + offsetPages; i <= nbrOfPages + offsetPages; i += 1) {
-      PromiseArray.push(this.getRequest(url, null, i));
-    }
-    return Promise.all(PromiseArray)
+    return Promise.all(promises)
       .then((allResponses) => {
-        let results = allResponses.map(value => value.results);
+        let results = allResponses.map((value: any) => value.results);
         results = [].concat(...results);
-        return Object.keys(results).map(key => results[key]);
+        return Object.keys(results).map((key: string) => results[parseInt(key, 10)]);
       });
   }
 
-  getDiscoverSeries(list, offsetPages = 0, nbrOfPages = 5) {
+  getDiscoverSeries(list: string, offsetPages = 0, nbrOfPages = 5) {
     const database = Storage.readDB('series');
     return this.getMultiplePages(`tv/${list}`, offsetPages, nbrOfPages)
-      .then(data => data.map(m => new Serie(m, database)).filter(m => m.poster));
+      .then((results: SerieResult[]) => results
+        .map(result => new Serie().fromServer(result, database)).filter(serie => serie.poster));
   }
 
-  getDiscoverMovies(list, offsetPages = 0, nbrOfPages = 5) {
+  getDiscoverMovies(list: string, offsetPages = 0, nbrOfPages = 5) {
     const database = Storage.readDB('movies');
     return this.getMultiplePages(`movie/${list}`, offsetPages, nbrOfPages)
-      .then(data => data.map(m => new Movie(m, database)).filter(m => m.poster));
+      .then((results: MovieResult[]) => results
+        .map(result => new Movie().fromServer(result, database)).filter(movie => movie.poster));
   }
 
   async getMovieDetails(id: number) {
@@ -58,32 +58,33 @@ export class TmdbService {
 
     const [directorMovies, collectionMovies] = await Promise.all([
       this.getPeople(movieDetails.director.id),
-      this.getCollection(movieDetails.collection && movieDetails.collection.id),
+      movieDetails.collection
+      ? this.getCollection(movieDetails.collection && movieDetails.collection.id)
+      : null,
     ]);
 
     movieDetails.addDetails(directorMovies, collectionMovies, database);
     return movieDetails;
   }
 
-  getSearch(query, toExclude: string) {
+  getSearch(query: string, toExclude: string) {
     const databaseMovies = Storage.readDB('movies');
     const databaseSeries = Storage.readDB('series');
     return this.getMultiplePages(`search/multi?query=${query}`)
       .then((data) => {
-        data = data
+
+        const results = data
           .filter(r => r.media_type !== toExclude)
-          .map(r => (r.media_type === 'movie' ? new Movie(r, databaseMovies)
-            : (r.media_type === 'tv' ? new Serie(r, databaseSeries) : new Credit(r))))
+          .map(r => (r.media_type === 'movie' ? new Movie().fromServer(r, databaseMovies)
+            : (r.media_type === 'tv' ? new Serie().fromServer(r, databaseSeries) : new Credit(r))))
           .filter(r => (r instanceof Credit && r.profile)
            || (r instanceof Movie && r.poster)
            || (r instanceof Serie && r.poster));
 
-        console.log(data, toExclude);
-
         return {
-          credits: data.filter(r => r instanceof Credit),
-          movies: data.filter(r => r instanceof Movie),
-          series: data.filter(r => r instanceof Serie),
+          credits: results.filter(r => r instanceof Credit),
+          movies: results.filter(r => r instanceof Movie),
+          series: results.filter(r => r instanceof Serie),
         };
       });
   }
@@ -98,12 +99,11 @@ export class TmdbService {
     return serieDetails;
   }
 
-  getCollection(id) {
-    if (!id) { return null; }
-    return this.getRequest(`collection/${id}`, 'images');
+  getCollection(id: number) {
+    return this.getRequest(`collection/${id}`);
   }
 
-  getPeople(id) {
+  getPeople(id: number) {
     if (!id) { return null; }
     const databaseMovies = Storage.readDB('movies');
     const databaseSeries = Storage.readDB('series');
@@ -111,7 +111,7 @@ export class TmdbService {
       .then(c => new CreditDetails(c, databaseMovies, databaseSeries));
   }
 
-  private getRequest(url: string, addRequestAppend: string = null, page: number = 1) {
+  private getRequest(url: string, addRequestAppend = '', page: number = 1) : Promise<any> {
     return this.http.get(this.basicUrl + url, {
       params: {
         language: this.language,

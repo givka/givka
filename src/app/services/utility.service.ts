@@ -9,8 +9,9 @@ import { SerieDetails } from '../factories/serie-details';
 import { Credit } from '../factories/credit';
 
 @Injectable({
-  providedIn: 'root'
-  })
+  providedIn: 'root',
+})
+
 export class UtilityService {
   constructor(
    private background :BackgroundService,
@@ -38,12 +39,14 @@ export class UtilityService {
   }
 
   private onClickTmdb(item: Movie | Serie, event: KeyboardEvent,
-    dbKey: string, url: string, call: Function) {
+                      dbKey: string, url: string, call: Function) {
     if (event.ctrlKey || event.metaKey) {
       call();
       item.seen ? Storage.addKeyDB(dbKey, item) : Storage.deleteKeyDB(dbKey, item);
     } else {
-      if (item.backdrop) { this.background.addBackground(`https://image.tmdb.org/t/p/w300${item.backdrop}`); }
+      if (item.backdrop) {
+        this.background.addBackground(`https://image.tmdb.org/t/p/w300${item.backdrop}`);
+      }
       this.router.navigate([`${url}/${item.id}`]);
     }
   }

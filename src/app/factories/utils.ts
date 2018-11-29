@@ -1,8 +1,8 @@
 import { orderBy } from 'lodash';
 
 export class Utils {
-  static orderBy(array, key, order = 'desc') {
-    return orderBy(array, param => param[key], order);
+  static orderBy<T extends object>(array: T, key: string, order = 'desc') {
+    return orderBy(array, (param: any) => param[key], order === 'desc' ? 'desc' :'asc') as T;
   }
 
   static formatArtistUrl(artistName: string) {

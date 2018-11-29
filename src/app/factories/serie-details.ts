@@ -46,6 +46,6 @@ export class SerieDetails extends TmdbDetails {
   }
 
   private formatRecoSeries(recoSeries, database) {
-    return recoSeries.results.map(serie => new Serie(serie, database));
+    return recoSeries.results.map(serie => new Serie().fromServer(serie, database));
   }
 }

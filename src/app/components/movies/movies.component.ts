@@ -17,8 +17,8 @@ import { Utils } from '../../factories/utils';
   selector: 'movies-component',
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 
 export class MoviesComponent implements OnInit, OnDestroy {
   movies: Movie[];
@@ -62,7 +62,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.subRouter.unsubscribe();
   }
 
-  @HostListener("window:scroll", ["$event"])
+  @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     const max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const pos = document.documentElement.scrollTop;
@@ -99,7 +99,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     if (list === 'collection') {
       const seen = Storage.readDB('movies');
       this.movies = Object.keys(seen)
-        .map(movie => new Movie(seen[movie], seen));
+        .map(movie => new Movie().fromStorage(seen[movie], seen));
       this.loading = false;
     } else {
       this.tmdb.getDiscoverMovies(list)

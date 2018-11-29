@@ -17,24 +17,24 @@ import { Storage } from '../../factories/storage';
   selector: 'series-component',
   templateUrl: './series.component.html',
   styleUrls: ['./series.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class TvComponent implements OnInit {
-  series: Serie[]
+  series: Serie[];
 
-  loading
+  loading;
 
-  list
+  list;
 
-  subRouter: Subscription
+  subRouter: Subscription;
 
   orderAsc = {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
-  }
+  };
 
   isSearching = false;
 
-  loadingAdd=false
+  loadingAdd = false;
 
   offsetPages = 5;
 
@@ -65,7 +65,7 @@ export class TvComponent implements OnInit {
     this.isSearching = status;
   }
 
-  @HostListener("window:scroll", ["$event"])
+  @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     const max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const pos = document.documentElement.scrollTop;
@@ -99,7 +99,7 @@ export class TvComponent implements OnInit {
     if (list === 'collection') {
       const seen = Storage.readDB('series');
       this.series = Object.keys(seen)
-        .map(movie => new Serie(seen[movie], seen));
+        .map(serieId => new Serie().fromStorage(seen[serieId], seen));
       this.loading = false;
     } else {
       this.tmdb.getDiscoverSeries(list)

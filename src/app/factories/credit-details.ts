@@ -25,7 +25,7 @@ export class CreditDetails extends Credit {
 
   birthPlace: string;
 
-  age:number
+  age:number;
 
   constructor(options, databaseMovies = {}, databaseSeries = {}) {
     super(options);
@@ -58,7 +58,7 @@ export class CreditDetails extends Credit {
   }
 
   private formatMovies(movies, database) {
-    const moviesFormatted = movies.map(m => new Movie(m, database))
+    const moviesFormatted = movies.map(m => new Movie().fromServer(m, database))
       .filter(m => m.poster && m.voteCount && m.backdrop);
     return Utils.orderBy(moviesFormatted, 'voteCount');
   }
@@ -69,7 +69,7 @@ export class CreditDetails extends Credit {
   }
 
   private formatSeries(series, database) {
-    const seriesFormatted = series.map(m => new Serie(m, database))
+    const seriesFormatted = series.map(m => new Serie().fromServer(m, database))
       .filter(m => m.poster && m.voteCount && m.backdrop);
     return Utils.orderBy(seriesFormatted, 'voteCount');
   }

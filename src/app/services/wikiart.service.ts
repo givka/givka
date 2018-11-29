@@ -8,7 +8,7 @@ import { Storage } from '../factories/storage';
 
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
-  API: string = 'https://givka-api.herokuapp.com/https://www.wikiart.org/en/'
+  API: string = 'https://givka-api.herokuapp.com/https://www.wikiart.org/en/';
 
   constructor(private http: HttpClient) { }
 
