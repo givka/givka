@@ -14,8 +14,11 @@ export class SerieDetails extends TmdbDetails {
 
   public creator;
 
+  public originalTitle;
+
   constructor(options, database) {
     super(options, database);
+    this.originalTitle = options.original_name;
     this.numberOfSeasons = options.number_of_seasons;
     this.numberOfEpisodes = options.number_of_episodes;
     this.seasons = this.formatSeasons(options.seasons);
@@ -25,7 +28,7 @@ export class SerieDetails extends TmdbDetails {
   }
 
   private formatCreator(creators) {
-    const creator = new Credit(creators[0]) || this.credits[0];
+    const creator = new Credit().fromCast(creators[0]) || this.credits[0];
     creator.role = 'Creator';
     return creator;
   }

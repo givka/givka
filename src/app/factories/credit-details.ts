@@ -28,7 +28,8 @@ export class CreditDetails extends Credit {
   age:number;
 
   constructor(options, databaseMovies = {}, databaseSeries = {}) {
-    super(options);
+    super();
+    super.fromDetails(options);
     this.biography = options.biography;
     this.birthday = options.birthday ? moment(options.birthday, 'YYYY-MM-DD').format('ll') : null;
     this.deathday = options.deathday ? moment(options.deathday, 'YYYY-MM-DD').format('ll') : null;

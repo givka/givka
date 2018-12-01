@@ -2,9 +2,11 @@ import * as moment from 'moment';
 import { Tmdb } from './tmdb';
 import { Utils } from './utils';
 import { Credit } from './credit';
+import { MovieDetailsResult } from '../types/tmdb';
+import { DataBaseMovie } from '../types/database';
 
 export class TmdbDetails extends Tmdb {
-  public originalTitle: string;
+  public originalTitle!: string;
 
   public releaseYear: string;
 
@@ -14,40 +16,41 @@ export class TmdbDetails extends Tmdb {
 
   public credits: Credit[];
 
-  public images: any[];
+  public images: string[];
 
-  constructor(options, database) {
-    super(options, database);
-    this.originalTitle = options.original_title || options.original_name;
+  constructor(options : MovieDetailsResult, database: DataBaseMovie) {
+    super();
+    super.formatServer(options, database);
     this.overview = options.overview;
-    this.releaseYear = moment(this.releaseDate, 'YYYY-MM-DD').format('YYYY');
-    this.trailer = this.formatVideos(options.videos);
-    this.credits = this.formatCredits(options.credits);
-    this.images = this.formatImages(options.images);
+    this.releaseYear = moment(options.release_date, 'YYYY-MM-DD').format('YYYY');
+    this.trailer = this.formatVideos(options);
+    this.credits = this.formatCredits(options);
+    this.images = this.formatImages(options);
   }
 
-  private formatVideos(videos) {
-    const { results } = videos;
+  private formatVideos(options : MovieDetailsResult) {
+    const { results } = options.videos;
     let trailers = results.filter(t => t.type === 'Trailer');
     if (!trailers.length) { trailers = results; }
     trailers = Utils.orderBy(trailers, 'size');
-    return trailers[0] ? `https://www.youtube.com/watch?v=${trailers[0].key}` : `https://www.youtube.com/results?search_query=${this.title}+${this.releaseYear}`;
+    return trailers[0]
+    ? `https://www.youtube.com/watch?v=${trailers[0].key}`
+    : `https://www.youtube.com/results?search_query=${this.title}+${this.releaseYear}`;
   }
 
-  private formatCredits(credits) {
-    let directors = credits.crew;
-    let actors = credits.cast;
-    directors = directors.filter(crew => crew.job === 'Director');
-    actors = actors.filter((cast, index) => cast.profile_path)
-      .filter((cast, index) => index < 20);
-    return directors.concat(actors).map(c => new Credit(c));
+  private formatCredits(options : MovieDetailsResult) {
+    const directors = options.credits.crew
+    .filter(crew => crew.job === 'Director')
+    .map(c => new Credit().fromCrew(c));
+
+    const actors = options.credits.cast.map(c => new Credit().fromCast(c));
+
+    return Array.prototype.concat(directors, actors)
+    .filter((credit, index) => index < 20);
   }
 
-  private formatImages(images) {
-    // images = images.backdrops.concat(images.posters);
-    images = images.backdrops;
-    images = Utils.orderBy(images, 'vote_count');
-
-    return images.map(image => image.file_path);
+  private formatImages(options : MovieDetailsResult) {
+    return  Utils.orderBy(options.images.backdrops, 'vote_count')
+    .map(image => image.file_path);
   }
 }

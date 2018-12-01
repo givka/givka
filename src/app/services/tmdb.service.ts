@@ -57,9 +57,11 @@ export class TmdbService {
     const movieDetails = new MovieDetails(movieData, database);
 
     const [directorMovies, collectionMovies] = await Promise.all([
-      this.getPeople(movieDetails.director.id),
+      movieDetails.director ?
+      this.getPeople(movieDetails.director.id)
+      : null,
       movieDetails.collection
-      ? this.getCollection(movieDetails.collection && movieDetails.collection.id)
+      ? this.getCollection(movieDetails.collection.id)
       : null,
     ]);
 
@@ -75,8 +77,11 @@ export class TmdbService {
 
         const results = data
           .filter(r => r.media_type !== toExclude)
-          .map(r => (r.media_type === 'movie' ? new Movie().fromServer(r, databaseMovies)
-            : (r.media_type === 'tv' ? new Serie().fromServer(r, databaseSeries) : new Credit(r))))
+          .map(r => (r.media_type === 'movie'
+          ? new Movie().fromServer(r, databaseMovies)
+          : (r.media_type === 'tv'
+            ? new Serie().fromServer(r, databaseSeries)
+            : new Credit().fromCrew(r))))
           .filter(r => (r instanceof Credit && r.profile)
            || (r instanceof Movie && r.poster)
            || (r instanceof Serie && r.poster));

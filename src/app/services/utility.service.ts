@@ -35,6 +35,7 @@ export class UtilityService {
   }
 
   public onClickCredit(credit: Credit) {
+    this.background.removeBackground();
     this.router.navigate([`/credit/${credit.id}`]);
   }
 

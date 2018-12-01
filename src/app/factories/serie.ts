@@ -1,50 +1,21 @@
 import { SerieResult } from '../types/tmdb';
 import { DataBaseSerie } from '../types/database';
+import { Tmdb } from './tmdb';
 
-export class Serie  {
-  public backdrop!: string;
+export class Serie extends Tmdb{
+  constructor() {
+    super();
+  }
 
-  public id!: number;
-
-  public title!: string;
-
-  public poster!: string;
-
-  public releaseDate!: string;
-
-  public seen!: boolean;
-
-  public voteCount!: number;
-
-  public voteAverage!: number;
-
-  constructor() {  }
-
-  public fromServer(options: SerieResult, database: DataBaseSerie = {}) {
-    this.backdrop =  options.backdrop_path;
-    this.id = options.id;
-    this.title = options.name;
-    this.poster = options.poster_path;
+  public fromServer(options: SerieResult, database: DataBaseSerie) {
+    this.title =  options.name;
     this.releaseDate = options.first_air_date;
-    this.voteCount = options.vote_count;
-    this.voteAverage = options.vote_average;
-    this.seen = !!database[this.id];
+    super.formatServer(options, database);
     return this;
   }
 
-  public fromStorage(options: Serie, database: DataBaseSerie = {}) {
-    this.backdrop =  options.backdrop;
-    this.id = options.id;
-    this.title = options.title;
-    this.poster = options.poster;
-    this.releaseDate = options.releaseDate;
-    this.voteCount = options.voteCount;
-    this.voteAverage = options.voteAverage;
-    this.seen = !!database[this.id];
+  public fromStorage(options: Serie) {
+    super.formatStorage(options);
     return this;
-  }
-
-  public toggleSeen() {
-    this.seen = !this.seen;
   }
 }

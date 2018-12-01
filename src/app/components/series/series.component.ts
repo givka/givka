@@ -99,7 +99,7 @@ export class TvComponent implements OnInit {
     if (list === 'collection') {
       const seen = Storage.readDB('series');
       this.series = Object.keys(seen)
-        .map(serieId => new Serie().fromStorage(seen[serieId], seen));
+        .map(serieId => new Serie().fromStorage(seen[serieId]));
       this.loading = false;
     } else {
       this.tmdb.getDiscoverSeries(list)
