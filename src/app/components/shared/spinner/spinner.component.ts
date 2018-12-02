@@ -4,8 +4,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
   selector: 'spinner-component',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class SpinnerComponent {
-  constructor() { }
+
 }

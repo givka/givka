@@ -1,25 +1,23 @@
 import {
-  Component, OnInit, ViewEncapsulation, Input,
+  Component, Input, OnInit, ViewEncapsulation,
 } from '@angular/core';
 
 @Component({
   selector: 'rating-component',
   templateUrl: './rating.component.html',
   styleUrls: ['./rating.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class RatingComponent implements OnInit {
-  @Input() voteAverage: number;
+  @Input() public voteAverage!: number;
 
-  @Input() voteCount: number;
+  @Input() public voteCount!: number;
 
-  nbrOfStars = 5;
+  public nbrOfStars = 5;
 
-  stars = [];
+  public stars!: string[];
 
-  constructor() { }
-
-  ngOnInit() {
+  public ngOnInit() {
     this.stars = Array.from(Array(this.nbrOfStars))
       .map((star, index) => {
         const starRating = index + 1 - this.voteAverage / 2;

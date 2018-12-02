@@ -1,27 +1,27 @@
 import {
-  Component, OnInit, ViewEncapsulation, OnDestroy,
+  Component, OnDestroy, OnInit, ViewEncapsulation,
 } from '@angular/core';
-import { TmdbService } from 'src/app/services/tmdb.service';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { RoutingStateService } from 'src/app/services/routing-state.service';
-import { Title } from '@angular/platform-browser';
-import { BackgroundService } from 'src/app/services/background.service';
-import { UtilityService } from 'src/app/services/utility.service';
-import { MovieDetails } from '../../../factories/movie-details';
+import { MovieDetails } from '../../../classes/movie-details';
+import { BackgroundService } from '../../../services/background.service';
+import { RoutingStateService } from '../../../services/routing-state.service';
+import { TmdbService } from '../../../services/tmdb.service';
+import { UtilityService } from '../../../services/utility.service';
 
 @Component({
   selector: 'movie-details-component',
   templateUrl: './movie-details.component.html',
   styleUrls: ['./movie-details.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class MovieDetailsComponent implements OnInit, OnDestroy {
-  movie: MovieDetails;
+  public movie!: MovieDetails;
 
-  loading = true;
+  public loading = true;
 
-  subRouter: Subscription;
+  public subRouter!: Subscription;
 
   constructor(
     private tmdb: TmdbService,
@@ -34,18 +34,18 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
       const { id } = routeParams;
       this.loadMovieDetails(+id);
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subRouter.unsubscribe();
   }
 
-  loadMovieDetails(id: number) {
+  public loadMovieDetails(id: number) {
     this.loading = true;
     this.tmdb.getMovieDetails(id)
       .then((movieDetails) => {
@@ -60,7 +60,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  close() {
+  public close() {
     this.router.navigate([this.routingState.getMoviesLastUrl()]);
   }
 }

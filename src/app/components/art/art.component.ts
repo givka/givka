@@ -1,33 +1,35 @@
 import {
-  Component, OnInit, ViewEncapsulation, OnDestroy, HostListener,
+  Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,
 } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { Storage } from 'src/app/factories/storage';
-import { BackgroundService } from 'src/app/services/background.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Artist } from '../../classes/artist';
+import { Painting } from '../../classes/painting';
+import { Storage } from '../../classes/storage';
+import { BackgroundService } from '../../services/background.service';
 import { WikiartService } from '../../services/wikiart.service';
-import { Painting } from '../../factories/painting';
 
 @Component({
   selector: 'art-component',
   templateUrl: './art.component.html',
   styleUrls: ['./art.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class ArtComponent implements OnInit, OnDestroy {
-  items
+  public items!: any[];
 
-  loading: boolean = true;
+  public loading: boolean = true;
 
-  popupPainting: Painting;
+  public popupPainting!: Painting;
 
-  intervalId;
+  public intervalId!: number;
 
-  subRouter
+  public subRouter!: Subscription;
 
-  list
+  public list!: string;
 
-  isSearching
+  public isSearching = false;
 
   constructor(
     private wikiart: WikiartService,
@@ -37,7 +39,7 @@ export class ArtComponent implements OnInit, OnDestroy {
     private background: BackgroundService,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.title.setTitle('Art');
     this.background.removeBackground();
     this.subRouter = this.activeRoute.params.subscribe((routeParams) => {
@@ -46,16 +48,16 @@ export class ArtComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.cancelArrayDelay();
     this.subRouter.unsubscribe();
   }
 
-  checkActivity(status) {
+  public checkActivity(status: boolean) {
     this.isSearching = status;
   }
 
-  loadList(list: string) {
+  public loadList(list: string) {
     const possibleLists = ['collection', 'artists', 'paintings'];
     if (!possibleLists.includes(list)) {
       this.router.navigate(['/art']);
@@ -71,25 +73,26 @@ export class ArtComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadCollection() {
+  public loadCollection() {
     const paintingsSeen = Storage.readDB('art');
     this.items = Object.keys(paintingsSeen).map(key => paintingsSeen[key]);
     this.loading = false;
   }
 
-  loadDiscover(list) {
-    const promise = list === 'paintings' ? this.wikiart.getMostViewedPaintings()
-      : this.wikiart.getPopularArtists();
-    promise.then((paintings) => {
-      this.arrayDelay(paintings);
+  public loadDiscover(list: string) {
+    const promise: Promise<Painting[] | Artist[]> = list === 'paintings'
+    ? this.wikiart.getMostViewedPaintings()
+    : this.wikiart.getPopularArtists();
+    promise.then((items) => {
+      this.arrayDelay(items);
     }).finally(() => { this.loading = false; });
   }
 
-  onClickArtist(artistUrl) {
+  public onClickArtist(artistUrl: string) {
     this.router.navigate([`/artist/${artistUrl}`]);
   }
 
-  onClickPortrait(portrait, event) {
+  public onClickPortrait(portrait: Painting, event: KeyboardEvent) {
     if (event.ctrlKey || event.metaKey) {
       portrait.seen = !portrait.seen;
       portrait.seen ? Storage.addKeyDB('art', portrait) : Storage.deleteKeyDB('art', portrait);
@@ -98,19 +101,21 @@ export class ArtComponent implements OnInit, OnDestroy {
     }
   }
 
-  private arrayDelay(array) {
-    this.items = [];
-    let i = 0;
-    this.intervalId = setInterval(() => {
-      if (i === array.length) {
-        this.cancelArrayDelay();
-      } else {
-        this.items.push(array[i++]);
-      }
-    }, 50);
+  public cancelArrayDelay() {
+    window.clearInterval(this.intervalId);
   }
 
-  cancelArrayDelay() {
-    clearInterval(this.intervalId);
+  private arrayDelay(items: any[]) {
+    this.items = [];
+    let i = 0;
+
+    this.intervalId = window.setInterval(() => {
+      if (i === items.length) {
+        this.cancelArrayDelay();
+      } else {
+        this.items.push(items[i]);
+        i = i + 1;
+      }
+    },                                   50);
   }
 }

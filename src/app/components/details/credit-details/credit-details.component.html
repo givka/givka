@@ -16,7 +16,6 @@
       <div class="title-bar">
         <span class="title">{{credit.name}}</span>
       </div>
-
       <div *ngIf="credit.birthday">
         <span>Born on {{credit.birthday}}</span>
         <span *ngIf="!credit.deathday"> ({{credit.age}} y/o)</span>
@@ -27,6 +26,14 @@
       </div>
 
       <div>{{credit.biography}}</div>
+
+      <div class="link ib"
+           *ngIf="credit.imdbId">
+        <i class="fab fa-imdb"
+           style="margin-right: 5px;"></i>
+        <a class="link"
+           [href]="'https://www.imdb.com/name/'+ credit.imdbId"
+           target="_blank">Go to IMDb</a></div>
     </div>
   </div>
   <div *ngIf="credit.images.length">

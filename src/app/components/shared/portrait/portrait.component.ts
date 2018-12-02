@@ -1,29 +1,27 @@
 import {
-  Component, Input, ViewEncapsulation, OnInit,
+  Component, Input, OnInit, ViewEncapsulation,
 } from '@angular/core';
 
 @Component({
   selector: 'portrait-component',
   templateUrl: './portrait.component.html',
   styleUrls: ['./portrait.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class PortraitComponent implements OnInit {
-  @Input() image: string;
+  @Input() public image!: string;
 
-  @Input() title: string;
+  @Input() public title!: string;
 
-  @Input() topTitle: string;
+  @Input() public topTitle!: string;
 
-  isHover = false;
+  public isHover = false;
 
-  showImage = false;
+  public showImage = false;
 
-  constructor() { }
-
-  ngOnInit() {
+  public ngOnInit() {
     setTimeout(() => {
       this.showImage = true;
-    }, 0);
+    },         0);
   }
 }

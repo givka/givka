@@ -1,41 +1,42 @@
 import {
-  Component, OnInit, ViewEncapsulation, Input, HostListener, Output, EventEmitter,
+  Component, EventEmitter, HostListener, Input, OnInit, Output, ViewEncapsulation,
 } from '@angular/core';
-import { findIndex } from 'lodash';
 import { Router } from '@angular/router';
-import { Storage } from 'src/app/factories/storage';
-import { Painting } from '../../../factories/painting';
+import { findIndex } from 'lodash';
+import { Painting } from '../../../classes/painting';
+import { Storage } from '../../../classes/storage';
 
 @Component({
   selector: 'popup-art-component',
   templateUrl: './popup-art.component.html',
   styleUrls: ['./popup-art.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
+
 export class PopupArtComponent implements OnInit {
-  @Input() paintings: Painting[]
+  @Input() public paintings!: Painting[];
 
-  @Input() painting: Painting
+  @Input() public painting!: Painting;
 
-  @Output() onClose: EventEmitter<any> = new EventEmitter();
+  @Output() public onClose: EventEmitter<any> = new EventEmitter();
 
-  loading = true;
+  public loading = true;
 
-  index;
+  public index!: number;
 
-  message: string;
+  public message!: string | null;
 
   constructor(private router: Router) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.index = findIndex(this.paintings, this.painting);
   }
 
-  onImageLoad() {
+  public onImageLoad() {
     this.loading = false;
   }
 
-  changePainting(indexInc: number) {
+  public changePainting(indexInc: number) {
     this.loading = true;
     this.message = null;
     this.index += indexInc;
@@ -47,7 +48,7 @@ export class PopupArtComponent implements OnInit {
     this.painting = this.paintings[this.index];
   }
 
-  showMessage(message) {
+  public showMessage(message: string) {
     this.message = message;
     setTimeout(() => { this.message = null; }, 500);
   }
@@ -68,7 +69,6 @@ export class PopupArtComponent implements OnInit {
         this.onClickArtist(this.painting.artistUrl);
         this.onClose.emit();
         break;
-
       case 'ArrowUp':
         this.painting.seen = !this.painting.seen;
         if (this.painting.seen) {
@@ -78,14 +78,13 @@ export class PopupArtComponent implements OnInit {
           Storage.deleteKeyDB('art', this.painting);
           this.showMessage('Removed');
         }
-
         break;
       default:
         break;
     }
   }
 
-  onClickArtist(artistUrl) {
+  public onClickArtist(artistUrl: string) {
     this.router.navigate([`/artist/${artistUrl}`]);
   }
 }

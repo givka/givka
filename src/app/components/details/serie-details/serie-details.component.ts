@@ -1,25 +1,26 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { TmdbService } from 'src/app/services/tmdb.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RoutingStateService } from 'src/app/services/routing-state.service';
 import { Title } from '@angular/platform-browser';
-import { SerieDetails } from 'src/app/factories/serie-details';
-import { BackgroundService } from 'src/app/services/background.service';
-import { UtilityService } from 'src/app/services/utility.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ISeason } from '../../../interfaces/all';
+import { BackgroundService } from '../../../services/background.service';
+import { RoutingStateService } from '../../../services/routing-state.service';
+import { TmdbService } from '../../../services/tmdb.service';
+import { UtilityService } from '../../../services/utility.service';
+import { SerieDetails } from '../../../classes/serie-details';
 
 @Component({
   selector: 'serie-details-component',
   templateUrl: './serie-details.component.html',
   styleUrls: ['./serie-details.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class SerieDetailsComponent implements OnInit {
-  serie: SerieDetails;
+  public serie!: SerieDetails;
 
-  loading = true;
+  public loading = true;
 
-  subRouter: Subscription;
+  public subRouter!: Subscription;
 
   constructor(
     private tmdb: TmdbService,
@@ -31,21 +32,22 @@ export class SerieDetailsComponent implements OnInit {
     public utility : UtilityService,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
       const { id } = routeParams;
       this.loadSerieDetails(+id);
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subRouter.unsubscribe();
   }
 
-  onClickSeason(season, event) {
+  public onClickSeason(season: ISeason, event: KeyboardEvent) {
+    // TODO: see season details
   }
 
-  loadSerieDetails(id: number) {
+  public loadSerieDetails(id: number) {
     this.loading = true;
     this.tmdb.getSerieDetails(id)
       .then((serieDetails) => {
@@ -60,7 +62,7 @@ export class SerieDetailsComponent implements OnInit {
       });
   }
 
-  close() {
+  public close() {
     this.router.navigate([this.routingState.getSeriesLastUrl()]);
   }
 }

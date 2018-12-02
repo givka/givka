@@ -1,45 +1,46 @@
 import {
-  Component, OnInit, ViewEncapsulation, OnDestroy, HostListener,
+  Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { BackgroundService } from 'src/app/services/background.service';
-import { UtilityService } from 'src/app/services/utility.service';
-import { Movie } from '../../factories/movie';
-import { Storage } from '../../factories/storage';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Movie } from '../../classes/movie';
+import { Storage } from '../../classes/storage';
+import { BackgroundService } from '../../services/background.service';
+import { UtilityService } from '../../services/utility.service';
+import { IOrder } from '../../interfaces/all';
 
+import { Utils } from '../../classes/utils';
 import { TmdbService } from '../../services/tmdb.service';
-import { Utils } from '../../factories/utils';
 
 @Component({
   selector: 'movies-component',
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 
 export class MoviesComponent implements OnInit, OnDestroy {
-  movies: Movie[];
+  public movies!: Movie[];
 
-  loading = true;
+  public loading = true;
 
-  subRouter: Subscription;
+  public subRouter!: Subscription;
 
-  list: string;
+  public list!: string;
 
-  orderAsc = {
+  public orderAsc: IOrder = {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
   };
 
-  isSearching = false;
+  public isSearching = false;
 
-  loadingAdd = false;
+  public loadingAdd = false;
 
-  offsetPages = 5;
+  public offsetPages = 5;
 
-  nbrPages = 5;
+  public nbrPages = 5;
 
   constructor(
     private tmdb: TmdbService,
@@ -50,7 +51,17 @@ export class MoviesComponent implements OnInit, OnDestroy {
     public utility : UtilityService,
   ) { }
 
-  ngOnInit() {
+  @HostListener('window:scroll', ['$event'])
+  public onWindowScroll() {
+    const max = document.documentElement!.scrollHeight - document.documentElement!.clientHeight;
+    const pos = document.documentElement!.scrollTop;
+
+    if (this.list !== 'collection' && !this.loadingAdd && pos === max) {
+      this.addMovies();
+    }
+  }
+
+  public ngOnInit() {
     this.title.setTitle('Movies');
     this.background.removeBackground();
     this.subRouter = this.routeActive.params.subscribe((params) => {
@@ -58,21 +69,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subRouter.unsubscribe();
   }
 
-  @HostListener("window:scroll", ["$event"])
-  onWindowScroll() {
-    const max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const pos = document.documentElement.scrollTop;
-
-    if (this.list !== 'collection' && !this.loadingAdd && pos === max) {
-      this.addMovies();
-    }
-  }
-
-  addMovies() {
+  public addMovies() {
     this.loadingAdd = true;
 
     this.tmdb.getDiscoverMovies(this.list, this.offsetPages, this.nbrPages)
@@ -83,11 +84,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
       .finally(() => { this.loadingAdd = false; });
   }
 
-  checkActivity(status) {
+  public checkActivity(status: boolean) {
     this.isSearching = status;
   }
 
-  loadList(list: string) {
+  public loadList(list: string) {
     const possibleLists = ['upcoming', 'top_rated', 'popular', 'collection'];
     if (!possibleLists.includes(list)) {
       this.router.navigate(['movies']);
@@ -99,7 +100,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     if (list === 'collection') {
       const seen = Storage.readDB('movies');
       this.movies = Object.keys(seen)
-        .map(movie => new Movie(seen[movie], seen));
+        .map(movie => new Movie().fromStorage(seen[movie]));
       this.loading = false;
     } else {
       this.tmdb.getDiscoverMovies(list)
@@ -108,7 +109,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     }
   }
 
-  orderBy(key) {
+  public orderBy(key: string) {
     const order = this.orderAsc[key] ? 'asc' : 'desc';
     this.orderAsc[key] = !this.orderAsc[key];
     this.loading = true;

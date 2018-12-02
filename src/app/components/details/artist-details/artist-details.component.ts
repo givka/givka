@@ -1,34 +1,34 @@
 import {
-  Component, OnInit, ViewEncapsulation, Input,
+  Component, Input, OnInit, ViewEncapsulation,
 } from '@angular/core';
 
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { WikiartService } from 'src/app/services/wikiart.service';
-import { ArtistDetails } from 'src/app/factories/artist-details';
-import { Painting } from 'src/app/factories/painting';
-import { Title } from '@angular/platform-browser';
-import { Storage } from 'src/app/factories/storage';
-import { RoutingStateService } from 'src/app/services/routing-state.service';
+import { ArtistDetails } from '../../../classes/artist-details';
+import { Painting } from '../../../classes/painting';
+import { Storage } from '../../../classes/storage';
+import { RoutingStateService } from '../../../services/routing-state.service';
+import { WikiartService } from '../../../services/wikiart.service';
 
 @Component({
   selector: 'artist-details-component',
   templateUrl: './artist-details.component.html',
   styleUrls: ['./artist-details.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class ArtistDetailsComponent implements OnInit {
-  artist: ArtistDetails
+  public artist!: ArtistDetails;
 
-  subRouter: Subscription
+  public subRouter!: Subscription;
 
-  loading = true;
+  public loading = true;
 
-  intervalId;
+  public intervalId!: number;
 
-  paintings: Painting[]
+  public paintings!: Painting[];
 
-  popupPainting: Painting
+  public popupPainting!: Painting;
 
   constructor(
     private routeActive: ActivatedRoute,
@@ -39,19 +39,19 @@ export class ArtistDetailsComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
       const { artistUrl } = routeParams;
       this.loadArtistDetails(artistUrl);
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subRouter.unsubscribe();
     this.cancelArrayDelay();
   }
 
-  loadArtistDetails(artistUrl: string) {
+  public loadArtistDetails(artistUrl: string) {
     this.loading = true;
     this.cancelArrayDelay();
     this.wikiart.getArtistDetails(artistUrl)
@@ -63,19 +63,7 @@ export class ArtistDetailsComponent implements OnInit {
       .finally(() => { this.loading = false; });
   }
 
-  private arrayDelay(array) {
-    this.paintings = [];
-    let i = 0;
-    this.intervalId = setInterval(() => {
-      if (i === array.length) {
-        this.cancelArrayDelay();
-      } else {
-        this.paintings.push(array[i++]);
-      }
-    }, 50);
-  }
-
-  onClickPortrait(portrait, event) {
+  public onClickPortrait(portrait: Painting, event: KeyboardEvent) {
     if (event.ctrlKey || event.metaKey) {
       portrait.seen = !portrait.seen;
       portrait.seen ? Storage.addKeyDB('art', portrait) : Storage.deleteKeyDB('art', portrait);
@@ -84,11 +72,24 @@ export class ArtistDetailsComponent implements OnInit {
     }
   }
 
-  cancelArrayDelay() {
-    clearInterval(this.intervalId);
+  public cancelArrayDelay() {
+    window.clearInterval(this.intervalId);
   }
 
-  onCloseArtist() {
+  public onCloseArtist() {
     this.router.navigate([this.routingState.getArtLastUrl()]);
+  }
+
+  private arrayDelay(array: Painting[]) {
+    this.paintings = [];
+    let i = 0;
+    this.intervalId = window.setInterval(() => {
+      if (i === array.length) {
+        this.cancelArrayDelay();
+      } else {
+        this.paintings.push(array[i]);
+        i = i + 1;
+      }
+    },                                   50);
   }
 }

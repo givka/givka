@@ -4,12 +4,11 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
   selector: 'button-component',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
-  encapsulation: ViewEncapsulation.None
-  })
+  encapsulation: ViewEncapsulation.None,
+})
 export class ButtonComponent {
-  @Input() title: string;
+  @Input() public title!: string;
 
-  @Input() orderAsc: boolean;
+  @Input() public orderAsc!: boolean;
 
-  constructor() { }
 }
