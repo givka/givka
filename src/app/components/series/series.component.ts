@@ -1,17 +1,16 @@
 import {
-  Component, OnInit, ViewEncapsulation, HostListener,
+  Component, HostListener, OnInit, ViewEncapsulation,
 } from '@angular/core';
-import { TmdbService } from 'src/app/services/tmdb.service';
-import { Serie } from 'src/app/factories/serie';
-import { Utils } from 'src/app/factories/utils';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { Movie } from 'src/app/factories/movie';
-
-import { BackgroundService } from 'src/app/services/background.service';
-import { UtilityService } from 'src/app/services/utility.service';
-import { Storage } from '../../factories/storage';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Serie } from '../../classes/serie';
+import { Storage } from '../../classes/storage';
+import { Utils } from '../../classes/utils';
+import { BackgroundService } from '../../services/background.service';
+import { TmdbService } from '../../services/tmdb.service';
+import { UtilityService } from '../../services/utility.service';
+import { IOrder } from '../../interfaces/all';
 
 @Component({
   selector: 'series-component',
@@ -20,25 +19,25 @@ import { Storage } from '../../factories/storage';
   encapsulation: ViewEncapsulation.None,
 })
 export class TvComponent implements OnInit {
-  series: Serie[];
+  public series!: Serie[];
 
-  loading;
+  public loading = true;
 
-  list;
+  public list!: string;
 
-  subRouter: Subscription;
+  public subRouter!: Subscription;
 
-  orderAsc = {
+  public orderAsc: IOrder = {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
   };
 
-  isSearching = false;
+  public isSearching = false;
 
-  loadingAdd = false;
+  public loadingAdd = false;
 
-  offsetPages = 5;
+  public offsetPages = 5;
 
-  nbrPages = 5;
+  public nbrPages = 5;
 
   constructor(
     private tmdb: TmdbService,
@@ -49,7 +48,7 @@ export class TvComponent implements OnInit {
     public utility: UtilityService,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.title.setTitle('TV Series');
     this.background.removeBackground();
     this.subRouter = this.routeActive.params.subscribe((params) => {
@@ -57,25 +56,25 @@ export class TvComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subRouter.unsubscribe();
   }
 
-  checkActivity(status) {
+  public checkActivity(status: boolean) {
     this.isSearching = status;
   }
 
   @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    const max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const pos = document.documentElement.scrollTop;
+  public onWindowScroll() {
+    const max = document.documentElement!.scrollHeight - document.documentElement!.clientHeight;
+    const pos = document.documentElement!.scrollTop;
 
     if (this.list !== 'collection' && !this.loadingAdd && pos === max) {
       this.addSeries();
     }
   }
 
-  addSeries() {
+  public addSeries() {
     this.loadingAdd = true;
 
     this.tmdb.getDiscoverSeries(this.list, this.offsetPages, this.nbrPages)
@@ -88,7 +87,7 @@ export class TvComponent implements OnInit {
       });
   }
 
-  loadList(list: string) {
+  public loadList(list: string) {
     const possibleLists = ['top_rated', 'popular', 'collection', 'on_the_air'];
     if (!possibleLists.includes(list)) {
       this.router.navigate(['series']);
@@ -108,7 +107,7 @@ export class TvComponent implements OnInit {
     }
   }
 
-  orderBy(key) {
+  public orderBy(key: string) {
     const order = this.orderAsc[key] ? 'asc' : 'desc';
     this.orderAsc[key] = !this.orderAsc[key];
     this.loading = true;

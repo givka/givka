@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Router, Event } from '@angular/router';
+import { Event, Router } from '@angular/router';
+import { Credit } from '../classes/credit';
+import { Movie } from '../classes/movie';
+import { MovieDetails } from '../classes/movie-details';
+import { Serie } from '../classes/serie';
+import { SerieDetails } from '../classes/serie-details';
+import { Storage } from '../classes/storage';
 import { BackgroundService } from './background.service';
-import { Movie } from '../factories/movie';
-import { Storage } from '../factories/storage';
-import { Serie } from '../factories/serie';
-import { MovieDetails } from '../factories/movie-details';
-import { SerieDetails } from '../factories/serie-details';
-import { Credit } from '../factories/credit';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +14,11 @@ import { Credit } from '../factories/credit';
 
 export class UtilityService {
   constructor(
-   private background :BackgroundService,
-   private router : Router,
+   private background: BackgroundService,
+   private router: Router,
   ) { }
 
-  public onClickMovie(movie: Movie, event: KeyboardEvent):void {
+  public onClickMovie(movie: Movie, event: KeyboardEvent): void {
     this.onClickTmdb(movie, event, 'movies', 'movie', () => movie.toggleSeen());
   }
 
@@ -40,7 +40,7 @@ export class UtilityService {
   }
 
   private onClickTmdb(item: Movie | Serie, event: KeyboardEvent,
-                      dbKey: string, url: string, call: Function) {
+                      dbKey: string, url: string, call: () => void) {
     if (event.ctrlKey || event.metaKey) {
       call();
       item.seen ? Storage.addKeyDB(dbKey, item) : Storage.deleteKeyDB(dbKey, item);

@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Movie } from '../factories/movie';
-import { MovieDetails } from '../factories/movie-details';
-import { Storage } from '../factories/storage';
-import { CreditDetails } from '../factories/credit-details';
-import { Serie } from '../factories/serie';
-import { SerieDetails } from '../factories/serie-details';
-import { Credit } from '../factories/credit';
-import { SerieResult, MovieResult } from '../types/tmdb';
+import { Injectable } from '@angular/core';
+import { Credit } from '../classes/credit';
+import { CreditDetails } from '../classes/credit-details';
+import { Movie } from '../classes/movie';
+import { MovieDetails } from '../classes/movie-details';
+import { Serie } from '../classes/serie';
+import { SerieDetails } from '../classes/serie-details';
+import { Storage } from '../classes/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +22,7 @@ export class TmdbService {
 
   constructor(private http: HttpClient) { }
 
-  getMultiplePages(url: string, offsetPages = 0, nbrOfPages = 5) {
+  public getMultiplePages(url: string, offsetPages = 0, nbrOfPages = 5) {
     const promises = Array.from(Array(nbrOfPages))
     .map((value, index) => this.getRequest(url, '', index + 1 + offsetPages));
 
@@ -35,23 +34,21 @@ export class TmdbService {
       });
   }
 
-  getDiscoverSeries(list: string, offsetPages = 0, nbrOfPages = 5) {
+  public getDiscoverSeries(list: string, offsetPages = 0, nbrOfPages = 5) {
     const database = Storage.readDB('series');
     return this.getMultiplePages(`tv/${list}`, offsetPages, nbrOfPages)
-      .then((results: SerieResult[]) => results
+      .then(results => results
         .map(result => new Serie().fromServer(result, database)).filter(serie => serie.poster));
   }
 
-  getDiscoverMovies(list: string, offsetPages = 0, nbrOfPages = 5) {
+  public getDiscoverMovies(list: string, offsetPages = 0, nbrOfPages = 5) {
     const database = Storage.readDB('movies');
     return this.getMultiplePages(`movie/${list}`, offsetPages, nbrOfPages)
-      .then((results: MovieResult[]) => results
+      .then(results => results
         .map(result => new Movie().fromServer(result, database)).filter(movie => movie.poster));
   }
 
-  async getMovieDetails(id: number) {
-    if (!id) { return null; }
-
+  public async getMovieDetails(id: number) {
     const database = Storage.readDB('movies');
     const movieData = await this.getRequest(`movie/${id}`, 'credits,images,videos,recommendations');
     const movieDetails = new MovieDetails(movieData, database);
@@ -69,7 +66,7 @@ export class TmdbService {
     return movieDetails;
   }
 
-  getSearch(query: string, toExclude: string) {
+  public getSearch(query: string, toExclude: string) {
     const databaseMovies = Storage.readDB('movies');
     const databaseSeries = Storage.readDB('series');
     return this.getMultiplePages(`search/multi?query=${query}`)
@@ -94,9 +91,7 @@ export class TmdbService {
       });
   }
 
-  async getSerieDetails(id: number) {
-    if (!id) { return null; }
-
+  public async getSerieDetails(id: number) {
     const database = Storage.readDB('series');
     const serieData = await this.getRequest(`tv/${id}`, 'credits,images,videos,recommendations');
     const serieDetails = new SerieDetails(serieData, database);
@@ -104,19 +99,18 @@ export class TmdbService {
     return serieDetails;
   }
 
-  getCollection(id: number) {
+  public getCollection(id: number) {
     return this.getRequest(`collection/${id}`);
   }
 
-  getPeople(id: number) {
-    if (!id) { return null; }
+  public getPeople(id: number) {
     const databaseMovies = Storage.readDB('movies');
     const databaseSeries = Storage.readDB('series');
     return this.getRequest(`person/${id}`, 'movie_credits,images,tagged_images,tv_credits')
       .then(c => new CreditDetails(c, databaseMovies, databaseSeries));
   }
 
-  private getRequest(url: string, addRequestAppend = '', page: number = 1) : Promise<any> {
+  private getRequest(url: string, addRequestAppend = '', page: number = 1): Promise<any> {
     return this.http.get(this.basicUrl + url, {
       params: {
         language: this.language,

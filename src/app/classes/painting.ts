@@ -1,25 +1,18 @@
+import { IDataBasePainting } from '../interfaces/all';
 import { Utils } from './utils';
 
 export class Painting {
-  artistName: string;
+  public artistName: string;
+  public artistUrl: string;
+  public image: string;
+  public title: string;
+  public year: string;
+  public height: number;
+  public extension: string;
+  public id: number;
+  public seen: boolean;
 
-  artistUrl: string;
-
-  image: string;
-
-  title: string;
-
-  year: string;
-
-  height: number;
-
-  extension: string;
-
-  id: number;
-
-  seen: boolean;
-
-  constructor(options, paintingsSeen) {
+  constructor(options: any, database: IDataBasePainting) {
     this.id = options.contentId;
     this.artistName = options.artistName;
     this.artistUrl = Utils.formatArtistUrl(options.artistName);
@@ -28,10 +21,10 @@ export class Painting {
     this.title = options.title;
     this.year = options.year || options.completitionYear;
     this.height = options.height;
-    this.seen = !!paintingsSeen[this.id];
+    this.seen = !!database[this.id];
   }
 
   private getExtension(image: string) {
-    return image.split('.').pop();
+    return image.split('.').pop() || '';
   }
 }

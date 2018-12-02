@@ -1,20 +1,19 @@
-import { Painting } from './painting';
 import { Utils } from './utils';
 
 export class Artist {
-  artistName: string;
+  public artistName: string;
 
-  artistUrl: string;
+  public artistUrl: string;
 
-  image: string;
+  public image: string | null;
 
-  birthDate: string;
+  public birthDate: string;
 
-  deathDate: string;
+  public deathDate: string;
 
-  extension: string;
+  public extension: string;
 
-  constructor(options) {
+  constructor(options: any) {
     this.artistName = options.artistName;
     this.artistUrl = options.url || Utils.formatArtistUrl(options.artistName);
     this.extension = options.image.split('.').pop();

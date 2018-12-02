@@ -1,44 +1,44 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { shuffle } from 'lodash';
-import { Painting } from '../factories/painting';
-import { Artist } from '../factories/artist';
-import { ArtistDetails } from '../factories/artist-details';
-import { Storage } from '../factories/storage';
+import { Artist } from '../classes/artist';
+import { ArtistDetails } from '../classes/artist-details';
+import { Painting } from '../classes/painting';
+import { Storage } from '../classes/storage';
 
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
-  API: string = 'https://givka-api.herokuapp.com/https://www.wikiart.org/en/';
+  private readonly baseUrl = 'https://givka-api.herokuapp.com/https://www.wikiart.org/en/';
 
   constructor(private http: HttpClient) { }
 
-  getMostViewedPaintings() {
-    const paintingsSeen = Storage.readDB('art');
+  public getMostViewedPaintings(): Promise<Painting[]> {
+    const database = Storage.readDB('art');
     return this.getRequest('App/Painting/MostViewedPaintings')
-      .then(result => shuffle(result.map(p => new Painting(p, paintingsSeen))));
+      .then(result => shuffle(result.map((p: any) => new Painting(p, database))));
   }
 
-  getSearch(query: string) {
-    const paintingsSeen = Storage.readDB('art');
+  public getSearch(query: string): Promise<Painting[]> {
+    const database = Storage.readDB('art');
     return this.getRequest(`search/${query}/1`)
-      .then(result => result.map(p => new Painting(p, paintingsSeen)));
+      .then(result => result.map((p: any) => new Painting(p, database)));
   }
 
-  getPopularArtists() {
+  public getPopularArtists(): Promise<Artist[]> {
     return this.getRequest('app/api/popularartists')
-      .then(data => shuffle(data.map(a => new Artist(a))));
+      .then(data => shuffle(data.map((a: any) => new Artist(a))));
   }
 
-  getArtistDetails(artistUrl: string) {
-    const paintingsSeen = Storage.readDB('art');
+  public getArtistDetails(artistUrl: string): Promise<ArtistDetails> {
+    const database = Storage.readDB('art');
     return Promise.all([
       this.getRequest(artistUrl),
       this.getRequest(`App/Painting/PaintingsByArtist?artistUrl=${artistUrl}`),
-    ]).then(([details, paintings]) => new ArtistDetails(details, paintings, paintingsSeen));
+    ]).then(([details, paintings]) => new ArtistDetails(details, paintings, database));
   }
 
-  private getRequest(url: string, page: number = 1): any {
-    return this.http.get(this.API + url, {
+  private getRequest(url: string, page: number = 1): Promise<any> {
+    return this.http.get(this.baseUrl + url, {
       params: {
         json: '2',
         page: page.toString(),
@@ -46,7 +46,7 @@ export class WikiartService {
     }).toPromise();
   }
 
-  private getWikiRequest(wikiUrl) {
+  private getWikiRequest(wikiUrl: string) {
     return this.http.get(wikiUrl).toPromise();
   }
 }

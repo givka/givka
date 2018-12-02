@@ -1,7 +1,6 @@
+import { IDataBaseMovie, IDataBaseSerie } from '../interfaces/all';
 import { Movie } from './movie';
-import { MovieResult, SerieResult, isSerieResult } from '../types/tmdb';
 import { Serie } from './serie';
-import { DataBaseMovie, DataBaseSerie } from '../types/database';
 
 export class Tmdb {
   public backdrop!: string;
@@ -31,14 +30,15 @@ export class Tmdb {
     this.voteAverage = options.voteAverage;
   }
 
-  public formatServer(options: MovieResult | SerieResult,
-                      database: DataBaseMovie | DataBaseSerie) {
+  public formatServer(options: any, database: IDataBaseMovie | IDataBaseSerie) {
     this.backdrop = options.backdrop_path;
     this.id = options.id;
     this.poster = options.poster_path;
     this.voteCount = options.vote_count;
     this.voteAverage = options.vote_average;
     this.seen = !!database[options.id];
+    this.releaseDate = options.release_date || options.first_air_date;
+    this.title = options.title || options.name;
   }
 
   public toggleSeen() {

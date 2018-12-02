@@ -1,23 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { Routes, RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { MoviesComponent } from './components/movies/movies.component';
-import { SpinnerComponent } from './components/shared/spinner/spinner.component';
-import { MovieDetailsComponent } from './components/details/movie-details/movie-details.component';
-import { CreditDetailsComponent } from './components/details/credit-details/credit-details.component';
-import { ButtonComponent } from './components/shared/button/button.component';
 import { ArtComponent } from './components/art/art.component';
-import { ArtistDetailsComponent } from './components/details/artist-details/artist-details.component';
 import { PopupArtComponent } from './components/art/popup-art/popup-art.component';
-import { PortraitComponent } from './components/shared/portrait/portrait.component';
-import { TvComponent } from './components/series/series.component';
+import { ArtistDetailsComponent } from
+ './components/details/artist-details/artist-details.component';
+import { CreditDetailsComponent } from
+'./components/details/credit-details/credit-details.component';
+import { MovieDetailsComponent } from './components/details/movie-details/movie-details.component';
 import { SerieDetailsComponent } from './components/details/serie-details/serie-details.component';
-import { SearchComponent } from './components/shared/search/search.component';
+import { MoviesComponent } from './components/movies/movies.component';
+import { TvComponent } from './components/series/series.component';
+import { ButtonComponent } from './components/shared/button/button.component';
+import { PortraitComponent } from './components/shared/portrait/portrait.component';
 import { RatingComponent } from './components/shared/rating/rating.component';
+import { SearchComponent } from './components/shared/search/search.component';
+import { SpinnerComponent } from './components/shared/spinner/spinner.component';
 
 const appRoutes: Routes = [
   { path: 'movies/:list', component: MoviesComponent },
@@ -35,28 +37,28 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [
-  AppComponent,
-  MoviesComponent,
-  SpinnerComponent,
-  MovieDetailsComponent,
-  CreditDetailsComponent,
-  ButtonComponent,
-  ArtComponent,
-  ArtistDetailsComponent,
-  PopupArtComponent,
-  PortraitComponent,
-  TvComponent,
-  SerieDetailsComponent,
-  SearchComponent,
-  RatingComponent,
+    AppComponent,
+    MoviesComponent,
+    SpinnerComponent,
+    MovieDetailsComponent,
+    CreditDetailsComponent,
+    ButtonComponent,
+    ArtComponent,
+    ArtistDetailsComponent,
+    PopupArtComponent,
+    PortraitComponent,
+    TvComponent,
+    SerieDetailsComponent,
+    SearchComponent,
+    RatingComponent,
   ],
   imports: [
-  BrowserModule,
-  HttpClientModule,
-  RouterModule.forRoot(appRoutes),
-  FormsModule
+    BrowserModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes),
+    FormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
-  })
+  bootstrap: [AppComponent],
+})
 export class AppModule { }
