@@ -7,9 +7,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Movie } from '../../classes/movie';
 import { Storage } from '../../classes/storage';
+import { IOrder } from '../../interfaces/all';
 import { BackgroundService } from '../../services/background.service';
 import { UtilityService } from '../../services/utility.service';
-import { IOrder } from '../../interfaces/all';
 
 import { Utils } from '../../classes/utils';
 import { TmdbService } from '../../services/tmdb.service';
@@ -63,7 +63,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.title.setTitle('Movies');
-    this.background.removeBackground();
+    this.background.addRandomBackground();
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });

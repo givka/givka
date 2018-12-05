@@ -20,7 +20,7 @@
               *ngIf="movie.title !== movie.originalTitle"> '{{movie.originalTitle}}' </span>
         <span>Directed by </span>
         <span class="link underline"
-              (click)="utility.onClickCredit(movie.director)">{{movie.director.name}}</span>
+              (click)="utility.onClickCredit(movie.director)">{{movie.director!.name}}</span>
       </div>
       <div class="police-title fs-20">{{movie.tagLine}}</div>
       <div>{{movie.releaseDate | date : 'MMMM d, y'}}</div>
@@ -101,7 +101,7 @@
     </div>
     <div class="director-movies"
          *ngIf="movie.directorMovies.length">
-      <div class="sub-title">{{movie.director.name}} movies</div>
+      <div class="sub-title">{{movie.director!.name}} movies</div>
       <div class="list">
         <portrait-component *ngFor="let directorMovie of movie.directorMovies"
                             (click)="utility.onClickMovieDetails(directorMovie, movie, $event)"

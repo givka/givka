@@ -30,4 +30,8 @@ export interface ISeason {
 
 export interface IOrder {
   [key: string]: boolean;
+  title: boolean;
+  releaseDate: boolean;
+  voteCount: boolean;
+  voteAverage: boolean;
 }

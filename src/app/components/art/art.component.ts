@@ -41,7 +41,7 @@ export class ArtComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.title.setTitle('Art');
-    this.background.removeBackground();
+    this.background.addRandomBackground();
     this.subRouter = this.activeRoute.params.subscribe((routeParams) => {
       const { list } = routeParams;
       this.loadList(list);

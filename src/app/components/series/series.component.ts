@@ -7,10 +7,10 @@ import { Subscription } from 'rxjs';
 import { Serie } from '../../classes/serie';
 import { Storage } from '../../classes/storage';
 import { Utils } from '../../classes/utils';
+import { IOrder } from '../../interfaces/all';
 import { BackgroundService } from '../../services/background.service';
 import { TmdbService } from '../../services/tmdb.service';
 import { UtilityService } from '../../services/utility.service';
-import { IOrder } from '../../interfaces/all';
 
 @Component({
   selector: 'series-component',
@@ -50,7 +50,7 @@ export class TvComponent implements OnInit {
 
   public ngOnInit() {
     this.title.setTitle('TV Series');
-    this.background.removeBackground();
+    this.background.addRandomBackground();
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });

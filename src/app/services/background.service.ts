@@ -11,6 +11,8 @@ export class BackgroundService {
 
   private background!: string | null;
 
+  private lastIndex!: number;
+
   constructor() {
     this.styleSheet = this.initStyleSheet();
     this.ruleAdded = false;
@@ -41,6 +43,14 @@ export class BackgroundService {
       this.ruleAdded = false;
       this.background = null;
     }
+  }
+
+  public addRandomBackground() {
+    const randomIndex = random(1, 16);
+    const index = randomIndex !== this.lastIndex ? randomIndex : 0;
+    const imageUrl = `assets/${index !== this.lastIndex ? index : 0}.jpg`;
+    this.lastIndex = index;
+    this.addBackground(imageUrl);
   }
 
   private initStyleSheet() {

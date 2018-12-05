@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { ArtistDetails } from '../../../classes/artist-details';
 import { Painting } from '../../../classes/painting';
 import { Storage } from '../../../classes/storage';
+import { BackgroundService } from '../../../services/background.service';
 import { RoutingStateService } from '../../../services/routing-state.service';
 import { WikiartService } from '../../../services/wikiart.service';
 
@@ -36,10 +37,12 @@ export class ArtistDetailsComponent implements OnInit {
     private wikiart: WikiartService,
     private title: Title,
     private routingState: RoutingStateService,
+    private background: BackgroundService,
   ) {
   }
 
   public ngOnInit() {
+    this.background.addRandomBackground();
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
       const { artistUrl } = routeParams;
       this.loadArtistDetails(artistUrl);
