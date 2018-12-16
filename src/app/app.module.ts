@@ -23,16 +23,16 @@ import { SpinnerComponent } from './components/shared/spinner/spinner.component'
 
 const appRoutes: Routes = [
   { path: 'movies/:list', component: MoviesComponent },
-  { path: 'movies', redirectTo: 'movies/collection', pathMatch: 'full' },
+  { path: 'movies', redirectTo: 'movies/top_rated', pathMatch: 'full' },
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'credit/:id', component: CreditDetailsComponent },
   { path: 'series/:list', component: TvComponent },
-  { path: 'series', redirectTo: 'series/collection', pathMatch: 'full' },
+  { path: 'series', redirectTo: 'series/top_rated', pathMatch: 'full' },
   { path: 'serie/:id', component: SerieDetailsComponent },
   { path: 'art/:list', component: ArtComponent },
-  { path: 'art', redirectTo: 'art/collection', pathMatch: 'full' },
+  { path: 'art', redirectTo: 'art/paintings', pathMatch: 'full' },
   { path: 'artist/:artistUrl', component: ArtistDetailsComponent },
-  { path: '', redirectTo: 'movies/collection', pathMatch: 'full' },
+  { path: '', redirectTo: 'art/paintings', pathMatch: 'full' },
 ];
 
 @NgModule({
