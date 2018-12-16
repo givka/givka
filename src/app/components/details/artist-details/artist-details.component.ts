@@ -83,16 +83,17 @@ export class ArtistDetailsComponent implements OnInit {
     this.router.navigate([this.routingState.getArtLastUrl()]);
   }
 
-  private arrayDelay(array: Painting[]) {
-    this.paintings = [];
-    let i = 0;
-    this.intervalId = window.setInterval(() => {
-      if (i === array.length) {
-        this.cancelArrayDelay();
-      } else {
-        this.paintings.push(array[i]);
-        i = i + 1;
-      }
-    },                                   50);
+  private arrayDelay(paintings: Painting[]) {
+    this.paintings = paintings;
+    // this.paintings = [];
+    // let i = 0;
+    // this.intervalId = window.setInterval(() => {
+    //   if (i === array.length) {
+    //     this.cancelArrayDelay();
+    //   } else {
+    //     this.paintings.push(array[i]);
+    //     i = i + 1;
+    //   }
+    // },                                   50);
   }
 }
