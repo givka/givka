@@ -3,12 +3,15 @@ artist-details-component {
     portrait-component {
       width: initial;
       height: initial;
-      &:hover {
-        transform: scale(1.025);
+      .portrait {
+        &:hover {
+          transform: scale(1.025);
+        }
       }
       img {
         height: 150px;
         width: initial;
+        max-width: 400px;
       }
     }
   }
