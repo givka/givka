@@ -33,6 +33,8 @@ const appRoutes: Routes = [
   { path: 'art', redirectTo: 'art/paintings', pathMatch: 'full' },
   { path: 'artist/:artistUrl', component: ArtistDetailsComponent },
   { path: '', redirectTo: 'art/paintings', pathMatch: 'full' },
+  { path: '**', redirectTo: 'art/paintings', pathMatch: 'full' },
+
 ];
 
 @NgModule({
