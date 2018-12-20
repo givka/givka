@@ -106,16 +106,15 @@ export class ArtComponent implements OnInit, OnDestroy {
   }
 
   private arrayDelay(items: any[]) {
-    this.items = items;
-    // let i = 0;
-
-    // this.intervalId = window.setInterval(() => {
-    //   if (i === items.length) {
-    //     this.cancelArrayDelay();
-    //   } else {
-    //     this.items.push(items[i]);
-    //     i = i + 1;
-    //   }
-    // },                                   50);
+    this.items = [];
+    let i = 0;
+    this.intervalId = window.setInterval(() => {
+      if (i === items.length) {
+        this.cancelArrayDelay();
+      } else {
+        this.items.push(items[i]);
+        i = i + 1;
+      }
+    },                                   50);
   }
 }
