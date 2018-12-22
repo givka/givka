@@ -8,7 +8,7 @@ import { Storage } from '../classes/storage';
 
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
-  private readonly baseUrl = 'https://givka-api.herokuapp.com/https://www.wikiart.org/en/';
+  private readonly baseUrl = 'shttps://www.wikiart.org/en/';
 
   constructor(private http: HttpClient) { }
 
