@@ -38,13 +38,9 @@ export class WikiartService {
     ]).then(([details, paintings]) => new ArtistDetails(details, paintings, database));
   }
 
-  private getRequest(url: string, page: number = 1): Promise<any> {
-    return this.http.get(this.baseUrl + url, {
-      params: {
-        json: '2',
-        page: page.toString(),
-      },
-    }).toPromise();
+  private getRequest(url: string): Promise<any> {
+    const reqUrl = `${this.baseUrl}${url}${url.includes('?') ? '&' : '?'}json=2`;
+    return this.http.get(reqUrl).toPromise();
   }
 
   private getWikiRequest(wikiUrl: string) {
