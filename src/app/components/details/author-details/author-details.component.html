@@ -1,0 +1,53 @@
+<div *ngIf="loading">
+  <spinner-component></spinner-component>
+</div>
+
+<div *ngIf="!loading"
+     class="details">
+  <div class="close-movie-details link"
+       (click)="onCloseAuthor()">
+    <i class="fas fa-times"></i>
+  </div>
+
+  <div class="details-bar">
+    <portrait-component [image]="''"></portrait-component>
+    <div class="description">
+      <div class="title-bar">
+        <div>
+          <span class="title">{{author.name}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="author.scenarioAlbums.length">
+    <div class="sub-title">Scenario albums</div>
+    <div class="grid">
+      <portrait-component *ngFor="let album of author.scenarioAlbums"
+                          (click)="onClickComic(album.serieId)"
+                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover">
+      </portrait-component>
+    </div>
+  </div>
+
+  <div *ngIf="author.drawingAlbums.length">
+    <div class="sub-title">Drawing albums</div>
+    <div class="grid">
+      <portrait-component *ngFor="let album of author.drawingAlbums"
+                          (click)="onClickComic(album.serieId)"
+                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover">
+      </portrait-component>
+    </div>
+  </div>
+
+  <div *ngIf="author.colorsAlbums.length">
+    <div class="sub-title">Colors albums</div>
+    <div class="grid">
+      <portrait-component *ngFor="let album of author.colorsAlbums"
+                          (click)="onClickComic(album.serieId)"
+                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover">
+      </portrait-component>
+    </div>
+  </div>
+
+</div>

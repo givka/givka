@@ -1,0 +1,31 @@
+comic-album-component {
+  display: flex;
+
+  image {
+    width: 156px;
+  }
+
+  .info {
+    padding: 20px;
+    width: calc(100% - 156px);
+
+    .line {
+      padding: 5px;
+
+      i {
+        width: 17px;
+        font-size: 12px;
+        vertical-align: 1px;
+      }
+    }
+
+
+    rating-component {
+      div {
+        padding: 5px;
+      }
+    }
+
+
+  }
+}

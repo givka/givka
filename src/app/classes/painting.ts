@@ -8,6 +8,7 @@ export class Painting {
   public title: string;
   public year: string;
   public height: number;
+  public width: number;
   public extension: string;
   public id: number;
   public seen: boolean;
@@ -21,6 +22,7 @@ export class Painting {
     this.title = options.title;
     this.year = options.year || options.completitionYear;
     this.height = options.height;
+    this.width = options.width;
     this.seen = !!database[this.id];
   }
 

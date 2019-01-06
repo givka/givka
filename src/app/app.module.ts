@@ -7,8 +7,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ArtComponent } from './components/art/art.component';
 import { PopupArtComponent } from './components/art/popup-art/popup-art.component';
+import { ComicsComponent } from './components/comics/comics.component';
 import { ArtistDetailsComponent } from
  './components/details/artist-details/artist-details.component';
+import { AuthorDetailsComponent } from
+ './components/details/author-details/author-details.component';
+import { ComicAlbumComponent } from
+'./components/details/comic-details/comic-album/comic-album.component';
+import { ComicDetailsComponent } from './components/details/comic-details/comic-details.component';
 import { CreditDetailsComponent } from
 './components/details/credit-details/credit-details.component';
 import { MovieDetailsComponent } from './components/details/movie-details/movie-details.component';
@@ -32,9 +38,11 @@ const appRoutes: Routes = [
   { path: 'art/:list', component: ArtComponent },
   { path: 'art', redirectTo: 'art/paintings', pathMatch: 'full' },
   { path: 'artist/:artistUrl', component: ArtistDetailsComponent },
+  { path: 'comics', component: ComicsComponent },
+  { path: 'comic/:id', component: ComicDetailsComponent },
+  { path: 'author/:name', component: AuthorDetailsComponent },
   { path: '', redirectTo: 'art/paintings', pathMatch: 'full' },
   { path: '**', redirectTo: 'art/paintings', pathMatch: 'full' },
-
 ];
 
 @NgModule({
@@ -53,6 +61,10 @@ const appRoutes: Routes = [
     SerieDetailsComponent,
     SearchComponent,
     RatingComponent,
+    ComicsComponent,
+    ComicDetailsComponent,
+    ComicAlbumComponent,
+    AuthorDetailsComponent,
   ],
   imports: [
     BrowserModule,

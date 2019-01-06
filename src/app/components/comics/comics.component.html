@@ -1,0 +1,34 @@
+<div>
+  <h1>Most Popular Albums</h1>
+
+  <div *ngIf="loading">
+    <spinner-component></spinner-component>
+  </div>
+
+  <div *ngIf="!loading">
+
+    <div class="buttons">
+      <button-component class="br"
+                        [title]="'Popular'"
+                        [routerLink]="['/comics/popular']"
+                        routerLinkActive="link-active"></button-component>
+      <button-component class="br"
+                        [title]="'Top Rated'"
+                        [routerLink]="['/comics/top_rated']"
+                        routerLinkActive="link-active"></button-component>
+      <button-component [title]="'Collection'"
+                        [routerLink]="['/comics/collection']"
+                        routerLinkActive="link-active"></button-component>
+    </div>
+
+    <div *ngIf="comics"
+         class="grid">
+      <portrait-component *ngFor="let comic of comics"
+                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+comic.imageCover"
+                          (click)="onClickComic(comic)">
+      </portrait-component>
+
+    </div>
+
+  </div>
+</div>

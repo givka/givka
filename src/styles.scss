@@ -10,9 +10,11 @@ body {
   text-shadow: 2px 2px 8px #000000;
   font-family: "Roboto", sans-serif;
   color: #f2f2f2;
+
   .ib {
     display: inline-block;
   }
+
   .tab {
     color: inherit;
     text-decoration: inherit;
@@ -20,12 +22,14 @@ body {
     font-size: 14px;
     user-select: none;
     outline: none;
+
     &:hover {
       cursor: pointer;
       background-color: #ec3655;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 1);
     }
   }
+
   .link {
     user-select: none;
     color: inherit;
@@ -40,9 +44,11 @@ body {
   .link-active {
     color: #ec3655;
   }
+
   .cap {
     text-transform: capitalize;
   }
+
   .float-right {
     float: right;
   }
@@ -50,8 +56,13 @@ body {
   .police-title {
     font-family: "Oswald", sans-serif;
   }
+
   .fs-20 {
     font-size: 20px;
+  }
+
+  .fs-12 {
+    font-size: 12px;
   }
 }
 

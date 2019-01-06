@@ -2,5 +2,5 @@
   <i *ngFor="let star of stars"
      class="{{star}}"></i>
 
-  <span> {{voteAverage | number : '1.1-1' }} - {{voteCount}} reviews</span>
+  <span> {{voteAverage / voteMax * 10 | number : '1.1-1' }} - {{voteCount}} reviews</span>
 </div>

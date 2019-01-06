@@ -1,17 +1,28 @@
 app-component {
+
   h1,
   h2,
   h3 {
     text-align: center;
     font-family: "Oswald", sans-serif;
   }
+
   h1 {
     font-size: 40px;
     font-weight: 600;
   }
 
+  .underline {
+    text-decoration: underline;
+  }
+
+  .bold {
+    font-weight: 800;
+  }
+
   .nav-placeholder {
     height: 37px;
+
     .navigation-bar {
       z-index: 10;
       height: 36px;
@@ -22,10 +33,12 @@ app-component {
       border-bottom: 1px solid rgba(255, 255, 255, 0.25);
       background-color: rgba(0, 0, 0, 0.75);
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
+
       &.sub {
         top: 30px;
         height: 20px;
         border-bottom: 1px solid;
+
         div {
           padding: 0 8px;
           font-size: 12px;
@@ -38,6 +51,7 @@ app-component {
     position: relative;
     padding: 10px 10%;
     padding-top: 50px;
+
     &::before {
       z-index: -1;
       content: " ";
@@ -55,19 +69,23 @@ app-component {
       transition: 1s ease;
       transform: scale(1.1);
     }
+
     .close-movie-details {
       float: right;
       margin-top: 20px;
       font-size: 20px;
     }
+
     .instructions {
       margin: 20px;
       text-align: center;
     }
+
     .loading-add {
       position: relative;
       height: 150px;
     }
+
     .grid {
       width: 100%;
       display: flex;
@@ -78,6 +96,7 @@ app-component {
       margin-bottom: -10px;
       margin-left: 10px;
     }
+
     .buttons {
       box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
       background-color: rgba(255, 255, 255, 0.1);
@@ -101,9 +120,11 @@ app-component {
       padding: 10px;
       overflow-y: hidden;
       align-content: baseline;
+
       portrait-component {
         height: 100%;
       }
+
       .image {
         height: 139px;
         max-width: fit-content;
@@ -111,10 +132,12 @@ app-component {
         padding-right: 10px;
         padding-bottom: 10px;
         user-select: none;
+
         &:hover {
           transform: scale(1.05);
           cursor: pointer;
         }
+
         img {
           height: 100%;
           border-radius: 3px;
@@ -123,16 +146,20 @@ app-component {
         }
       }
     }
+
     .sub-title {
       text-align: center;
       margin: 20px 20px 10px;
       font-family: "Oswald", sans-serif;
     }
+
     .details-bar {
       display: flex;
+
       portrait-component {
         width: 250px;
         height: 370px;
+
         .portrait {
           &:hover {
             transform: scale(1);
@@ -140,25 +167,28 @@ app-component {
           }
         }
       }
+
       .description {
         width: calc(100% - 250px);
+
         .title-bar {
           font-size: 20px;
+
           .title {
             font-family: "Oswald", sans-serif;
             font-size: 40px;
             font-weight: 600;
           }
+
           .original-title {
             margin-right: 7px;
             font-weight: 400;
             letter-spacing: 0;
             font-style: italic;
           }
-          .underline {
-            text-decoration: underline;
-          }
+
         }
+
         div {
           margin: 10px;
         }
