@@ -8,23 +8,15 @@ import { TmdbDetails } from './tmdb-details';
 import { Utils } from './utils';
 
 export class MovieDetails extends TmdbDetails {
-  public directorMovies!: Movie[];
-
-  public collectionMovies!: Movie[];
-
   public recoMovies: Movie[];
-
   public collection: BelongsToCollection;
-
   public tagLine: string;
-
-  public imdbId: string;
-
-  public popularity!: string;
-
   public director: Credit | null;
-
   public runtime: string;
+  public imdbId: string;
+  public directorMovies!: Movie[];
+  public collectionMovies!: Movie[];
+  public popularity!: string;
 
   constructor(options: any, database: IDataBaseMovie) {
     super(options, database);

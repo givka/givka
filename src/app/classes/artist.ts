@@ -2,15 +2,10 @@ import { Utils } from './utils';
 
 export class Artist {
   public artistName: string;
-
   public artistUrl: string;
-
   public image: string | null;
-
   public birthDate: string;
-
   public deathDate: string;
-
   public extension: string;
 
   constructor(options: any) {

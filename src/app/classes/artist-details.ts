@@ -4,15 +4,10 @@ import { Painting } from './painting';
 
 export class ArtistDetails extends Artist {
   public paintings: Painting[];
-
   public wikipediaUrl: string;
-
   public biography: string;
-
   public careerStart: number;
-
   public careerEnd: number;
-
   public originalName: string;
 
   constructor(options: any, paintings = [], database: IDataBasePainting) {

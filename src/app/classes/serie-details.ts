@@ -5,13 +5,9 @@ import { TmdbDetails } from './tmdb-details';
 
 export class SerieDetails extends TmdbDetails {
   public numberOfSeasons: number;
-
   public numberOfEpisodes: number;
-
   public recoSeries: Serie[];
-
   public seasons: ISeason[];
-
   public creator: Credit;
 
   constructor(options: any, database: IDataBaseSerie) {

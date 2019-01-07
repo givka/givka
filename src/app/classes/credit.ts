@@ -1,10 +1,7 @@
 export class Credit {
   public id!: number;
-
   public name!: string;
-
   public profile!: string;
-
   public role!: string;
 
   public fromCrew(options: any) {

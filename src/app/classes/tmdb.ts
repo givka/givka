@@ -4,19 +4,12 @@ import { Serie } from './serie';
 
 export class Tmdb {
   public backdrop!: string;
-
   public id!: number;
-
   public title!: string;
-
   public poster!: string;
-
   public releaseDate!: string;
-
   public seen!: boolean;
-
   public voteCount!: number;
-
   public voteAverage!: number;
 
   public formatStorage(options: Movie | Serie) {
