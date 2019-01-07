@@ -6,15 +6,10 @@ import { Utils } from './utils';
 
 export class TmdbDetails extends Tmdb {
   public originalTitle: string;
-
   public releaseYear: string;
-
   public overview: string;
-
   public trailer: string;
-
   public credits: Credit[];
-
   public images: string[];
 
   constructor(options: any, database: IDataBaseMovie) {
