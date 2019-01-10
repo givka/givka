@@ -25,7 +25,9 @@
          class="grid">
       <portrait-component *ngFor="let comic of comics"
                           [image]="'https://www.bedetheque.com/cache/thb_couv/'+comic.imageCover"
-                          (click)="onClickComic(comic)">
+                          (click)="onClickComic(comic)"
+                          [topTitle]="comic.albumTitle"
+                          [title]="comic.date">
       </portrait-component>
 
     </div>

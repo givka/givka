@@ -2,12 +2,12 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SerieDetails } from '../../../classes/serie-details';
 import { ISeason } from '../../../interfaces/all';
 import { BackgroundService } from '../../../services/background.service';
 import { RoutingStateService } from '../../../services/routing-state.service';
 import { TmdbService } from '../../../services/tmdb.service';
 import { UtilityService } from '../../../services/utility.service';
-import { SerieDetails } from '../../../classes/serie-details';
 
 @Component({
   selector: 'serie-details-component',

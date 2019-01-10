@@ -56,8 +56,8 @@
          *ngIf="movie.credits.length">
       <portrait-component *ngFor="let credit of movie.credits"
                           [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
-                          [title]="credit.name"
-                          [topTitle]="credit.role"
+                          [topTitle]="credit.name"
+                          [title]="credit.role"
                           (click)="utility.onClickCredit(credit)">
 
       </portrait-component>
@@ -85,7 +85,9 @@
         <portrait-component *ngFor="let collectionMovie of movie.collectionMovies"
                             (click)="utility.onClickMovieDetails(collectionMovie, movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+collectionMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && collectionMovie.seen) || (list === 'collection' && !collectionMovie.seen)}">
+                            [ngClass]="{'seen' : (list !== 'collection' && collectionMovie.seen) || (list === 'collection' && !collectionMovie.seen)}"
+                            [topTitle]="collectionMovie.title"
+                            [title]="collectionMovie.releaseDate">
         </portrait-component>
       </div>
     </div>
@@ -96,7 +98,9 @@
         <portrait-component *ngFor="let recoMovie of movie.recoMovies"
                             (click)="utility.onClickMovieDetails(recoMovie, movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+recoMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && recoMovie.seen) || (list === 'collection' && !recoMovie.seen)}">
+                            [ngClass]="{'seen' : (list !== 'collection' && recoMovie.seen) || (list === 'collection' && !recoMovie.seen)}"
+                            [topTitle]="recoMovie.title"
+                            [title]="recoMovie.releaseDate">
         </portrait-component>
       </div>
     </div>
@@ -107,7 +111,9 @@
         <portrait-component *ngFor="let directorMovie of movie.directorMovies"
                             (click)="utility.onClickMovieDetails(directorMovie, movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+directorMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && directorMovie.seen) || (list === 'collection' && !directorMovie.seen)}">
+                            [ngClass]="{'seen' : (list !== 'collection' && directorMovie.seen) || (list === 'collection' && !directorMovie.seen)}"
+                            [topTitle]="directorMovie.title"
+                            [title]="directorMovie.releaseDate">
         </portrait-component>
       </div>
     </div>

@@ -42,8 +42,8 @@
          *ngIf="serie.credits">
       <portrait-component *ngFor="let credit of serie.credits"
                           [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
-                          [title]="credit.name"
-                          [topTitle]="credit.role"
+                          [topTitle]="credit.name"
+                          [title]="credit.role"
                           (click)="utility.onClickCredit(credit)">
 
       </portrait-component>
@@ -78,7 +78,9 @@
         <portrait-component *ngFor="let recoSerie of serie.recoSeries"
                             (click)="utility.onClickSerieDetails(recoSerie,serie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+recoSerie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && recoSerie.seen) || (list === 'collection' && !recoSerie.seen)}">
+                            [ngClass]="{'seen' : (list !== 'collection' && recoSerie.seen) || (list === 'collection' && !recoSerie.seen)}"
+                            [topTitle]="recoSerie.title"
+                            [title]="recoSerie.releaseDate">
         </portrait-component>
       </div>
     </div>

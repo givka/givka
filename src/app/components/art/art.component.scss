@@ -3,11 +3,7 @@ art-component {
     portrait-component {
       width: initial;
       height: initial;
-      .portrait {
-        &:hover {
-          transform: scale(1.025);
-        }
-      }
+
       img {
         height: 150px;
         width: initial;
@@ -15,6 +11,7 @@ art-component {
       }
     }
   }
+
   .close {
     position: absolute;
     top: 40px;
@@ -23,10 +20,12 @@ art-component {
     font-weight: bold;
     transition: 0.3s;
   }
+
   .test2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
     .test {
       max-width: 80vw;
       max-height: 80vh;

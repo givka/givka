@@ -64,7 +64,9 @@
       <portrait-component *ngFor="let serie of series"
                           (click)="utility.onClickSerie(serie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
-                          [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
+                          [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}"
+                          [topTitle]="serie.title"
+                          [title]="serie.releaseDate">
       </portrait-component>
 
     </div>

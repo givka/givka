@@ -25,7 +25,9 @@
     <div class="grid">
       <portrait-component *ngFor="let album of author.scenarioAlbums"
                           (click)="onClickComic(album.serieId)"
-                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover">
+                          [image]="album.imageCover? 'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover: ''"
+                          [topTitle]="album.albumTitle"
+                          [title]="album.date">
       </portrait-component>
     </div>
   </div>
@@ -35,7 +37,9 @@
     <div class="grid">
       <portrait-component *ngFor="let album of author.drawingAlbums"
                           (click)="onClickComic(album.serieId)"
-                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover">
+                          [image]="album.imageCover? 'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover: ''"
+                          [topTitle]="album.albumTitle"
+                          [title]="album.date">
       </portrait-component>
     </div>
   </div>
@@ -45,7 +49,9 @@
     <div class="grid">
       <portrait-component *ngFor="let album of author.colorsAlbums"
                           (click)="onClickComic(album.serieId)"
-                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover">
+                          [image]="album.imageCover? 'https://www.bedetheque.com/cache/thb_couv/'+album.imageCover: ''"
+                          [topTitle]="album.albumTitle"
+                          [title]="album.date">
       </portrait-component>
     </div>
   </div>

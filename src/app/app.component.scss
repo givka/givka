@@ -134,7 +134,6 @@ app-component {
         user-select: none;
 
         &:hover {
-          transform: scale(1.05);
           cursor: pointer;
         }
 
@@ -162,7 +161,6 @@ app-component {
 
         .portrait {
           &:hover {
-            transform: scale(1);
             cursor: default;
           }
         }

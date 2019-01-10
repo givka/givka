@@ -12,7 +12,7 @@
          [src]="image ==='no_credit' ? 'assets/no-profile.png' : image ">
   </div>
 
-  <div *ngIf="title"
+  <div *ngIf="title && isHover"
        class="image-title">
     <div>
       {{title}}

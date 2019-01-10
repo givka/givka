@@ -3,11 +3,7 @@ artist-details-component {
     portrait-component {
       width: initial;
       height: initial;
-      .portrait {
-        &:hover {
-          transform: scale(1.025);
-        }
-      }
+
       img {
         height: 150px;
         width: initial;
@@ -15,6 +11,7 @@ artist-details-component {
       }
     }
   }
+
   .close {
     position: absolute;
     top: 40px;

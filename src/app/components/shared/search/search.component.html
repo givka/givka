@@ -20,7 +20,9 @@
         <portrait-component *ngFor="let movie of movies"
                             (click)="onClickItem(movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+ movie.poster"
-                            [ngClass]="{'seen':movie.seen}">
+                            [ngClass]="{'seen':movie.seen}"
+                            [topTitle]="movie.title"
+                            [title]="movie.releaseDate">
         </portrait-component>
 
       </div>
@@ -32,7 +34,9 @@
         <portrait-component *ngFor="let serie of series"
                             (click)="onClickItem(serie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+ serie.poster"
-                            [ngClass]="{'seen':serie.seen}">
+                            [ngClass]="{'seen':serie.seen}"
+                            [topTitle]="serie.title"
+                            [title]="serie.releaseDate">
         </portrait-component>
 
       </div>
@@ -44,7 +48,7 @@
         <portrait-component *ngFor="let credit of credits"
                             (click)="onClickItem(credit, $event)"
                             [image]=" credit.profile ? 'https://image.tmdb.org/t/p/w185'+ credit.profile : 'no_credit'"
-                            [title]="credit.name">
+                            [topTitle]="credit.name">
         </portrait-component>
 
       </div>
@@ -56,7 +60,9 @@
         <portrait-component *ngFor="let painting of paintings"
                             [ngClass]="{'seen' :painting.seen}"
                             [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
-                            (click)="onClickItem(painting, $event)">
+                            (click)="onClickItem(painting, $event)"
+                            [topTitle]="painting.artistName"
+                            [title]="painting.title">
         </portrait-component>
 
       </div>

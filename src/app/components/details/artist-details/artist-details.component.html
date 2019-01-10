@@ -32,7 +32,8 @@
     <portrait-component *ngFor="let painting of paintings"
                         [ngClass]="{'seen': painting.seen}"
                         [image]="painting.image + '!PinterestSmall.' + painting.extension"
-                        (click)="onClickPortrait(painting,$event)">
+                        (click)="onClickPortrait(painting,$event)"
+                        [title]="painting.title">
     </portrait-component>
   </div>
 </div>
