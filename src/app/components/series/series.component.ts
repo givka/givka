@@ -1,6 +1,7 @@
 import {
   Component, HostListener, OnInit, ViewEncapsulation,
 } from '@angular/core';
+import { Sort } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,6 +21,7 @@ import { UtilityService } from '../../services/utility.service';
 })
 export class TvComponent implements OnInit {
   public series!: Serie[];
+  public sortedSeries!: Serie[];
   public loading = true;
   public list!: string;
   public subRouter!: Subscription;
@@ -31,10 +33,10 @@ export class TvComponent implements OnInit {
   public offsetPages = 5;
   public nbrPages = 5;
   public linkButtons = [
-  { title: 'Upcoming', url:'/movies/upcoming' },
-  { title: 'Popular', url:'/movies/popular' },
-  { title: 'Top Rated', url:'/movies/top_rated' },
-  { title: 'Collection', url:'/movies/collection' },
+  { title: 'On the Air', url:'/series/on_the_air' },
+  { title: 'Popular', url:'/series/popular' },
+  { title: 'Top Rated', url:'/series/top_rated' },
+  { title: 'Collection', url:'/series/collection' },
   ];
   public sortButtons = [
   { title: 'Title', key:'title' },
@@ -42,6 +44,7 @@ export class TvComponent implements OnInit {
   { title: 'Vote Count', key:'voteCount' },
   { title: 'Vote Average', key:'voteAverage' },
   ];
+  public sortActive = '';
 
   constructor(
     private tmdb: TmdbService,
@@ -85,6 +88,7 @@ export class TvComponent implements OnInit {
       .then((result) => {
         this.offsetPages += this.nbrPages;
         this.series = this.series.concat(result);
+        this.sortedSeries = this.series.slice();
       })
       .finally(() => {
         setTimeout(() => { this.loadingAdd = false; }, 500);
@@ -101,21 +105,28 @@ export class TvComponent implements OnInit {
     this.loading = true;
     if (list === 'collection') {
       const seen = Storage.readDB('series');
-      this.series = Object.keys(seen)
-        .map(serieId => new Serie().fromStorage(seen[serieId]));
+      this.series = Object.keys(seen).map(serieId => new Serie().fromStorage(seen[serieId]));
+      this.sortedSeries = this.series.slice();
       this.loading = false;
     } else {
       this.tmdb.getDiscoverSeries(list)
-        .then((series) => { this.series = series; })
+        .then((series) => {
+          this.series = series;
+          this.sortedSeries = this.series.slice();
+        })
         .finally(() => { this.loading = false; });
     }
   }
 
-  public orderBy(key: string) {
-    const order = this.orderAsc[key] ? 'asc' : 'desc';
-    this.orderAsc[key] = !this.orderAsc[key];
+  public sort(sort: Sort) {
+    if (sort.direction === '') {
+      this.sortedSeries = this.series.slice();
+      this.sortActive = '';
+      return;
+    }
+    this.sortActive = sort.active;
     this.loading = true;
-    this.series = Utils.orderBy(this.series, key, order);
+    this.sortedSeries = Utils.orderBy(this.series, sort.active, sort.direction);
     this.loading = false;
   }
 }

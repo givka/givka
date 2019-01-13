@@ -11,48 +11,34 @@
   <h1 *ngIf="list==='on_the_air'">On The Air Series</h1>
   <h1 *ngIf="list==='popular'">Popular Series </h1>
   <h1 *ngIf="list==='top_rated'">Top Rated Series</h1>
-  <div *ngIf="list==='collection'">
-    <h1>Collection Series</h1>
-    <h3>{{series.length}} serie(s) seen</h3>
+  <h1 *ngIf="list==='collection'">Collection Series</h1>
+
+  <div class="button-group">
+    <button mat-button
+            *ngFor="let linkButton of linkButtons"
+            [routerLink]="[linkButton.url]"
+            routerLinkActive="active">
+      <div>{{linkButton.title}}</div>
+    </button>
+  </div>
+
+  <div class="button-group"
+       style="float: right"
+       matSort
+       (matSortChange)="sort($event)">
+
+    <button mat-button
+            class="sort-button"
+            *ngFor="let sortButton of sortButtons"
+            [ngClass]="{'active': sortActive === sortButton.key}">
+      <span mat-sort-header="{{sortButton.key}}">{{sortButton.title}}</span>
+    </button>
+
   </div>
 
   <div *ngIf="!loading">
-    <div class="buttons">
-      <button-component class="br"
-                        [title]="'On the Air'"
-                        [routerLink]="['/series/on_the_air']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component class="br"
-                        [title]="'Popular'"
-                        [routerLink]="['/series/popular']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component class="br"
-                        [title]="'Top Rated'"
-                        [routerLink]="['/series/top_rated']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component [title]="'Collection'"
-                        [routerLink]="['/series/collection']"
-                        routerLinkActive="link-active"></button-component>
-    </div>
-    <div class="buttons float-right">
 
-      <button-component class="br"
-                        [title]="'Title'"
-                        [orderAsc]="orderAsc.title"
-                        (click)="orderBy('title')"></button-component>
-      <button-component class="br"
-                        [title]="'Release Date'"
-                        [orderAsc]="orderAsc.releaseDate"
-                        (click)="orderBy('releaseDate')"></button-component>
-      <button-component class="br"
-                        [title]="'Vote Average'"
-                        [orderAsc]="orderAsc.voteAverage"
-                        (click)="orderBy('voteAverage')"></button-component>
-      <button-component [title]="'Vote Count'"
-                        [orderAsc]="orderAsc.voteCount"
-                        (click)="orderBy('voteCount')"></button-component>
-
-    </div>
+    <h3 *ngIf="list==='collection'">{{series.length}} serie(s) seen</h3>
 
     <div *ngIf="list === 'collection' && series.length < 10"
          class="instructions">
@@ -61,7 +47,7 @@
 
     <div *ngIf="series"
          class="grid">
-      <portrait-component *ngFor="let serie of series"
+      <portrait-component *ngFor="let serie of sortedSeries"
                           (click)="utility.onClickSerie(serie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}"
