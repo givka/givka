@@ -9,35 +9,29 @@
 
   <h1 *ngIf="list === 'paintings'">Discover Paintings</h1>
   <h1 *ngIf="list === 'artists'">Discover Artists</h1>
-  <div *ngIf="list === 'collection'">
-    <h1>Collection Art</h1>
-    <h3>{{items.length}} painting(s) saved</h3>
+  <h1 *ngIf="list === 'collection'">Collection Art</h1>
+
+  <div class="button-group">
+    <button mat-button
+            *ngFor="let linkButton of linkButtons"
+            [routerLink]="[linkButton.url]"
+            routerLinkActive="active">
+      <div>{{linkButton.title}}</div>
+    </button>
   </div>
+
   <div *ngIf="!loading">
-    <div class="buttons">
-      <button-component class="br"
-                        [title]="'Popular Artists'"
-                        routerLink="/art/artists"
-                        routerLinkActive="link-active"></button-component>
-      <button-component class="br"
-                        [title]="'Popular Paintings'"
-                        routerLink="/art/paintings"
-                        routerLinkActive="link-active"></button-component>
-      <button-component [title]="'Collection'"
-                        routerLink="/art/collection"
-                        routerLinkActive="link-active"></button-component>
-    </div>
 
     <div class="grid portrait-grid"
          *ngIf="list==='artists'">
-
       <portrait-component *ngFor="let artist of items"
                           [image]="artist.image ? artist.image + '!PinterestSmall.' + artist.extension : null"
                           (click)="onClickArtist(artist.artistUrl, $event)"
                           [topTitle]="artist.artistName">
       </portrait-component>
-
     </div>
+
+    <h3 *ngIf="list === 'collection'">{{items.length}} painting(s) saved</h3>
 
     <div *ngIf="list === 'collection' && items.length < 10"
          class="instructions">

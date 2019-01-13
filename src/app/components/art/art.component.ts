@@ -18,18 +18,17 @@ import { WikiartService } from '../../services/wikiart.service';
 })
 export class ArtComponent implements OnInit, OnDestroy {
   public items!: any[];
-
   public loading: boolean = true;
-
   public popupPainting!: Painting;
-
   public intervalId!: number;
-
   public subRouter!: Subscription;
-
   public list!: string;
-
   public isSearching = false;
+  public linkButtons = [
+  { title: 'Popular Artists', url:'/art/artists' },
+  { title: 'Popular Paintings', url:'/art/paintings' },
+  { title: 'Collection', url:'/art/collection' },
+  ];
 
   constructor(
     private wikiart: WikiartService,
