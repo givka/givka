@@ -7,20 +7,6 @@
 
   <div *ngIf="!loading">
 
-    <div class="buttons">
-      <button-component class="br"
-                        [title]="'Popular'"
-                        [routerLink]="['/comics/popular']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component class="br"
-                        [title]="'Top Rated'"
-                        [routerLink]="['/comics/top_rated']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component [title]="'Collection'"
-                        [routerLink]="['/comics/collection']"
-                        routerLinkActive="link-active"></button-component>
-    </div>
-
     <div *ngIf="comics"
          class="grid">
       <portrait-component *ngFor="let comic of comics"
