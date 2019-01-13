@@ -11,6 +11,7 @@ import { IOrder } from '../../interfaces/all';
 import { BackgroundService } from '../../services/background.service';
 import { UtilityService } from '../../services/utility.service';
 
+import { Sort } from '@angular/material';
 import { Utils } from '../../classes/utils';
 import { TmdbService } from '../../services/tmdb.service';
 
@@ -23,24 +24,28 @@ import { TmdbService } from '../../services/tmdb.service';
 
 export class MoviesComponent implements OnInit, OnDestroy {
   public movies!: Movie[];
-
+  public sortedMovies!: Movie[];
   public loading = true;
-
   public subRouter!: Subscription;
-
   public list!: string;
-
-  public orderAsc: IOrder = {
-    title: true, releaseDate: true, voteAverage: false, voteCount: false,
-  };
-
   public isSearching = false;
-
   public loadingAdd = false;
-
   public offsetPages = 5;
-
   public nbrPages = 5;
+  public sortActive = '';
+  public linkButtons = [
+  { title: 'Upcoming', url:'/movies/upcoming' },
+  { title: 'Popular', url:'/movies/popular' },
+  { title: 'Top Rated', url:'/movies/top_rated' },
+  { title: 'Collection', url:'/movies/collection' },
+  ];
+
+  public sortButtons = [
+  { title: 'Title', key:'title' },
+  { title: 'Release Date', key:'releaseDate' },
+  { title: 'Vote Count', key:'voteCount' },
+  { title: 'Vote Average', key:'voteAverage' },
+  ];
 
   constructor(
     private tmdb: TmdbService,
@@ -80,6 +85,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
       .then((result) => {
         this.offsetPages += this.nbrPages;
         this.movies = this.movies.concat(result);
+        this.sortedMovies = this.movies.slice();
       })
       .finally(() => { this.loadingAdd = false; });
   }
@@ -99,21 +105,28 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.loading = true;
     if (list === 'collection') {
       const seen = Storage.readDB('movies');
-      this.movies = Object.keys(seen)
-        .map(movie => new Movie().fromStorage(seen[movie]));
+      this.movies = Object.keys(seen).map(movie => new Movie().fromStorage(seen[movie]));
+      this.sortedMovies = this.movies.slice();
       this.loading = false;
     } else {
       this.tmdb.getDiscoverMovies(list)
-        .then((movies) => { this.movies = movies; })
+        .then((movies) => {
+          this.movies = movies;
+          this.sortedMovies = this.movies.slice();
+        })
         .finally(() => { this.loading = false; });
     }
   }
 
-  public orderBy(key: string) {
-    const order = this.orderAsc[key] ? 'asc' : 'desc';
-    this.orderAsc[key] = !this.orderAsc[key];
+  public sort(sort: Sort) {
+    if (sort.direction === '') {
+      this.sortedMovies = this.movies.slice();
+      this.sortActive = '';
+      return;
+    }
+    this.sortActive = sort.active;
     this.loading = true;
-    this.movies = Utils.orderBy(this.movies, key, order);
+    this.sortedMovies = Utils.orderBy(this.movies, sort.active, sort.direction);
     this.loading = false;
   }
 }

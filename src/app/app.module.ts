@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
+import { MatButton, MatButtonToggle, MatRippleModule ,
+MatSortModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { ArtComponent } from './components/art/art.component';
 import { PopupArtComponent } from './components/art/popup-art/popup-art.component';
@@ -26,6 +29,7 @@ import { PortraitComponent } from './components/shared/portrait/portrait.compone
 import { RatingComponent } from './components/shared/rating/rating.component';
 import { SearchComponent } from './components/shared/search/search.component';
 import { SpinnerComponent } from './components/shared/spinner/spinner.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 const appRoutes: Routes = [
   { path: 'movies/:list', component: MoviesComponent },
@@ -65,12 +69,18 @@ const appRoutes: Routes = [
     ComicDetailsComponent,
     ComicAlbumComponent,
     AuthorDetailsComponent,
+    MatButtonToggle,
+    MatButton,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
+    BrowserAnimationsModule,
+    MatRippleModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -20,37 +20,10 @@ app-component {
     font-weight: 800;
   }
 
-  .nav-placeholder {
-    height: 37px;
-
-    .navigation-bar {
-      z-index: 10;
-      height: 36px;
-      top: 0px;
-      right: 0px;
-      left: 0px;
-      position: fixed;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-      background-color: rgba(0, 0, 0, 0.75);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
-
-      &.sub {
-        top: 30px;
-        height: 20px;
-        border-bottom: 1px solid;
-
-        div {
-          padding: 0 8px;
-          font-size: 12px;
-        }
-      }
-    }
-  }
-
   .main-content {
     position: relative;
     padding: 10px 10%;
-    padding-top: 50px;
+    padding-top: 62px;
 
     &::before {
       z-index: -1;
@@ -97,13 +70,6 @@ app-component {
       margin-left: 10px;
     }
 
-    .buttons {
-      box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
-      background-color: rgba(255, 255, 255, 0.1);
-      display: inline-block;
-      border-radius: 4px;
-      overflow: hidden;
-    }
   }
 
   .details {

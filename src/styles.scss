@@ -1,3 +1,17 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+$color-primary: #f2f2f2;
+$color-secondary: #ec3655;
+$color-border: rgba(255, 255, 255, 0.1);
+$color-background: rgba(0, 0, 0, 0.1);
+
+$font-primary:'Roboto',
+sans-serif;
+$font-secondary: 'Oswald',
+sans-serif;
+
+
+
 html,
 body {
   box-sizing: border-box;
@@ -8,8 +22,8 @@ body {
   padding: 0;
   margin: 0;
   text-shadow: 2px 2px 8px #000000;
-  font-family: "Roboto", sans-serif;
-  color: #f2f2f2;
+  font-family: $font-primary;
+  color: $color-primary;
 
   .ib {
     display: inline-block;
@@ -25,7 +39,7 @@ body {
 
     &:hover {
       cursor: pointer;
-      background-color: #ec3655;
+      background-color: $color-secondary;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 1);
     }
   }
@@ -37,12 +51,12 @@ body {
 
     &:hover {
       cursor: pointer;
-      color: #ec3655;
+      color: $color-secondary;
     }
   }
 
   .link-active {
-    color: #ec3655;
+    color: $color-secondary;
   }
 
   .cap {
@@ -54,7 +68,7 @@ body {
   }
 
   .police-title {
-    font-family: "Oswald", sans-serif;
+    font-family: $font-secondary;
   }
 
   .fs-20 {
@@ -68,4 +82,49 @@ body {
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+.button-group {
+  border-radius: 4px;
+  background-color: $color-background;
+  border: 1px solid $color-border;
+  overflow: hidden;
+  display: inline-block;
+
+  button {
+    border-radius: 0px;
+
+    &.sort-button {
+      padding: 0;
+
+      .mat-sort-header-container {
+        padding: 0 16px;
+      }
+    }
+
+
+
+    &+button {
+      border-left: 1px solid $color-border;
+    }
+  }
+}
+
+button {
+  &.active {
+    color: $color-secondary;
+
+    .mat-sort-header-arrow {
+      color: $color-secondary;
+    }
+  }
+}
+
+.buttons-space {
+  display: flex;
+}
+
+
+a {
+  color: inherit
 }

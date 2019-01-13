@@ -6,63 +6,47 @@
   <h1 *ngIf="list==='upcoming'">Upcoming Movies</h1>
   <h1 *ngIf="list==='top_rated'">Top Rated Movies</h1>
   <h1 *ngIf="list==='popular'">Popular Movies</h1>
-  <div *ngIf="list==='collection'">
-    <h1>Collection Movies</h1>
-    <h3>{{movies.length}} movie(s) seen</h3>
-
-  </div>
+  <h1 *ngIf="list==='collection'">Collection Movies</h1>
 
   <div *ngIf="loading">
     <spinner-component></spinner-component>
   </div>
 
+  <div class="button-group">
+    <button mat-button
+            *ngFor="let linkButton of linkButtons"
+            [routerLink]="[linkButton.url]"
+            routerLinkActive="active">
+      <div>{{linkButton.title}}</div>
+    </button>
+  </div>
+
+  <div class="button-group"
+       style="float: right"
+       matSort
+       (matSortChange)="sort($event)">
+
+    <button mat-button
+            class="sort-button"
+            *ngFor="let sortButton of sortButtons"
+            [ngClass]="{'active': sortActive === sortButton.key}">
+      <span mat-sort-header="{{sortButton.key}}">{{sortButton.title}}</span>
+    </button>
+
+  </div>
+
   <div *ngIf="!loading">
 
-    <div class="buttons">
-      <button-component class="br"
-                        [title]="'Upcoming'"
-                        [routerLink]="['/movies/upcoming']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component class="br"
-                        [title]="'Popular'"
-                        [routerLink]="['/movies/popular']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component class="br"
-                        [title]="'Top Rated'"
-                        [routerLink]="['/movies/top_rated']"
-                        routerLinkActive="link-active"></button-component>
-      <button-component [title]="'Collection'"
-                        [routerLink]="['/movies/collection']"
-                        routerLinkActive="link-active"></button-component>
-    </div>
+    <h3 *ngIf="list==='collection'">{{sortedMovies.length}} movie(s) seen</h3>
 
-    <div class="buttons float-right">
-      <button-component class="br"
-                        [title]="'Title'"
-                        [orderAsc]="orderAsc.title"
-                        (click)="orderBy('title')"></button-component>
-      <button-component class="br"
-                        [title]="'Release Date'"
-                        [orderAsc]="orderAsc.releaseDate"
-                        (click)="orderBy('releaseDate')"></button-component>
-      <button-component class="br"
-                        [title]="'Vote Average'"
-                        [orderAsc]="orderAsc.voteAverage"
-                        (click)="orderBy('voteAverage')"></button-component>
-      <button-component [title]="'Vote Count'"
-                        [orderAsc]="orderAsc.voteCount"
-                        (click)="orderBy('voteCount')"></button-component>
-
-    </div>
-
-    <div *ngIf="list === 'collection' && movies.length < 10"
+    <div *ngIf="list === 'collection' && sortedMovies.length < 10"
          class="instructions">
       Discover or Search Movies and Cmd+Click or Ctrl+Click on a poster to add it to the collection.
     </div>
 
-    <div *ngIf="movies"
+    <div *ngIf="sortedMovies"
          class="grid">
-      <portrait-component *ngFor="let movie of movies"
+      <portrait-component *ngFor="let movie of sortedMovies"
                           (click)="utility.onClickMovie(movie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}"

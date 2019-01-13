@@ -1,0 +1,11 @@
+<nav>
+  <img src="../../../favicon.ico"
+       alt="givka-icon"
+       style="height: 18px;">
+  <button mat-button
+          *ngFor="let linkButton of linkButtons"
+          [routerLink]="[linkButton.url]"
+          routerLinkActive="active">
+    <div>{{linkButton.title}}</div>
+  </button>
+</nav>

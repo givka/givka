@@ -20,24 +20,28 @@ import { UtilityService } from '../../services/utility.service';
 })
 export class TvComponent implements OnInit {
   public series!: Serie[];
-
   public loading = true;
-
   public list!: string;
-
   public subRouter!: Subscription;
-
   public orderAsc: IOrder = {
     title: true, releaseDate: true, voteAverage: false, voteCount: false,
   };
-
   public isSearching = false;
-
   public loadingAdd = false;
-
   public offsetPages = 5;
-
   public nbrPages = 5;
+  public linkButtons = [
+  { title: 'Upcoming', url:'/movies/upcoming' },
+  { title: 'Popular', url:'/movies/popular' },
+  { title: 'Top Rated', url:'/movies/top_rated' },
+  { title: 'Collection', url:'/movies/collection' },
+  ];
+  public sortButtons = [
+  { title: 'Title', key:'title' },
+  { title: 'Release Date', key:'releaseDate' },
+  { title: 'Vote Count', key:'voteCount' },
+  { title: 'Vote Average', key:'voteAverage' },
+  ];
 
   constructor(
     private tmdb: TmdbService,
