@@ -1,21 +1,39 @@
+@import "../../../../styles.scss";
+
 search-component {
-  input {
+
+  .mat-form-field {
     position: absolute;
     right: 10vw;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
-    border: 0;
-    color: inherit;
-    padding: 10px;
-    border-radius: 4px;
-    overflow: hidden;
 
-    &:focus {
-      outline: solid 1px#ec3655;
-    }
-    &::placeholder {
-      color: inherit;
-      opacity: 0.5;
+    .mat-input-element {
+      color: $color-primary;
+      caret-color: $color-secondary;
     }
   }
+
+  .mat-form-field-empty.mat-form-field-label {
+    color: $color-primary;
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: $color-secondary;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-label {
+    color: rgba($color: $color-primary, $alpha: 0.5);
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: $color-secondary;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-underline {
+    background-color: $color-border
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-underline {
+    background-color: $color-border;
+  }
+
 }

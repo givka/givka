@@ -1,7 +1,9 @@
-<input type="text"
-       placeholder="{{placeholder}}"
-       [(ngModel)]="search"
-       (ngModelChange)='onChange()'>
+<mat-form-field>
+  <input matInput
+         placeholder="{{placeholder}}"
+         [(ngModel)]="search"
+         (ngModelChange)='onChange()'>
+</mat-form-field>
 
 <div *ngIf="search !== ''">
   <h1 *ngIf="type === 'movies'">Searching Movies</h1>
