@@ -8,51 +8,50 @@ popup-art-component {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.9);
+
   .close {
     position: absolute;
-    top: 40px;
+    top: 64px;
     right: 20px;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
   }
+
   .previous {
     position: absolute;
     top: 50%;
     left: 20px;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
   }
+
   .next {
     position: absolute;
     top: 50%;
     right: 20px;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
   }
+
   .loading-wrapper {
     height: 100%;
     width: 100%;
+
     .loading-img {
       height: 100%;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+
       .modal-content {
         margin: auto;
         display: block;
         max-width: calc(100% - 150px);
         max-height: calc(100% - 150px);
       }
+
       .message {
         position: absolute;
         font-size: 40px;
       }
     }
   }
+
   .info {
     position: absolute;
     bottom: 10px;

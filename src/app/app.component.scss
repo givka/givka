@@ -43,10 +43,14 @@ app-component {
       transform: scale(1.1);
     }
 
-    .close-movie-details {
+
+    mat-icon {
+      font-weight: bold;
+      transition: color 0.3s ease-out
+    }
+
+    .close {
       float: right;
-      margin-top: 20px;
-      font-size: 20px;
     }
 
     .instructions {

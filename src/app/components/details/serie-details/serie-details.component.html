@@ -3,10 +3,9 @@
 </div>
 <div *ngIf="!loading"
      class="details">
-  <div class="close-movie-details link"
-       (click)="close()">
-    <i class="fas fa-times"></i>
-  </div>
+  <mat-icon class="close link"
+            (click)="close()">close</mat-icon>
+
   <div class="details-bar">
     <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + serie.poster"></portrait-component>
     <div class="description">

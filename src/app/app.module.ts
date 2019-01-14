@@ -7,6 +7,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MatButtonModule, MatButtonToggleModule ,
 MatRippleModule , MatSortModule} from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { ArtComponent } from './components/art/art.component';
@@ -83,6 +85,7 @@ const appRoutes: Routes = [
     MatInputModule,
     MatButtonToggleModule,
     MatButtonModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

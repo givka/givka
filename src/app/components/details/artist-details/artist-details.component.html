@@ -4,10 +4,8 @@
 
 <div *ngIf="!loading"
      class="details">
-  <div class="close-movie-details link"
-       (click)="onCloseArtist()">
-    <i class="fas fa-times"></i>
-  </div>
+  <mat-icon class="close link"
+            (click)="onCloseArtist()">close</mat-icon>
 
   <div class="details-bar">
     <portrait-component [image]="artist.image"></portrait-component>

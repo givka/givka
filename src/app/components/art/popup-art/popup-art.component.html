@@ -1,13 +1,11 @@
-<span class="close link"
-      (click)="onClose.emit()">×</span>
-<span class="next link"
-      (click)="changePainting(1)">
-  <i class="fas fa-caret-right"></i>
-</span>
-<span class="previous link"
-      (click)="changePainting(-1)">
-  <i class="fas fa-caret-left"></i>
-</span>
+<mat-icon class="close link"
+          (click)="onClose.emit()">close</mat-icon>
+
+<mat-icon class="previous link"
+          (click)="changePainting(-1)">arrow_back</mat-icon>
+
+<mat-icon class="next link"
+          (click)="changePainting(1)">arrow_forward</mat-icon>
 
 <div class="loading-wrapper"
      *ngIf="loading">

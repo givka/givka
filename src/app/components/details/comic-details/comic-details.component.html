@@ -4,10 +4,8 @@
 
 <div *ngIf="!loading"
      class="details">
-  <div class="close-movie-details link"
-       (click)="onCloseComic()">
-    <i class="fas fa-times"></i>
-  </div>
+  <mat-icon class="close link"
+            (click)="onCloseComic()">close</mat-icon>
 
   <div class="details-bar">
     <portrait-component [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.albums[0].imageCover"></portrait-component>
