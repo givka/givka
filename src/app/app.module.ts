@@ -5,8 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MatButton, MatButtonToggle, MatRippleModule ,
-MatSortModule } from '@angular/material';
+import { MatButtonModule, MatButtonToggleModule ,
+MatRippleModule , MatSortModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { ArtComponent } from './components/art/art.component';
@@ -70,8 +70,6 @@ const appRoutes: Routes = [
     ComicDetailsComponent,
     ComicAlbumComponent,
     AuthorDetailsComponent,
-    MatButtonToggle,
-    MatButton,
     NavbarComponent,
   ],
   imports: [
@@ -83,6 +81,8 @@ const appRoutes: Routes = [
     MatRippleModule,
     MatSortModule,
     MatInputModule,
+    MatButtonToggleModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
