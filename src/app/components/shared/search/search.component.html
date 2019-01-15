@@ -22,9 +22,12 @@
         <portrait-component *ngFor="let movie of movies"
                             (click)="onClickItem(movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+ movie.poster"
-                            [ngClass]="{'seen':movie.seen}"
-                            [topTitle]="movie.title"
-                            [title]="movie.releaseDate">
+                            [ngClass]="{'seen':movie.seen}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
 
       </div>
@@ -36,9 +39,12 @@
         <portrait-component *ngFor="let serie of series"
                             (click)="onClickItem(serie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+ serie.poster"
-                            [ngClass]="{'seen':serie.seen}"
-                            [topTitle]="serie.title"
-                            [title]="serie.releaseDate">
+                            [ngClass]="{'seen':serie.seen}">
+          <div>{{serie.title}}</div>
+          <div>{{serie.releaseYear}}</div>
+          <rating-component [voteAverage]="serie.voteAverage"
+                            [voteCount]="serie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
 
       </div>
@@ -49,8 +55,8 @@
       <div class="grid">
         <portrait-component *ngFor="let credit of credits"
                             (click)="onClickItem(credit, $event)"
-                            [image]=" credit.profile ? 'https://image.tmdb.org/t/p/w185'+ credit.profile : 'no_credit'"
-                            [topTitle]="credit.name">
+                            [image]=" credit.profile ? 'https://image.tmdb.org/t/p/w185'+ credit.profile : 'no_credit'">
+          <div>{{credit.name}}</div>
         </portrait-component>
 
       </div>
@@ -62,9 +68,9 @@
         <portrait-component *ngFor="let painting of paintings"
                             [ngClass]="{'seen' :painting.seen}"
                             [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
-                            (click)="onClickItem(painting, $event)"
-                            [topTitle]="painting.artistName"
-                            [title]="painting.title">
+                            (click)="onClickItem(painting, $event)">
+          <div>{{painting.artistName}}</div>
+          <div>{{painting.title}}</div>
         </portrait-component>
 
       </div>

@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { IDataBaseMovie, IDataBaseSerie } from '../interfaces/all';
 import { Movie } from './movie';
 import { Serie } from './serie';
@@ -8,6 +9,7 @@ export class Tmdb {
   public title!: string;
   public poster!: string;
   public releaseDate!: string;
+  public releaseYear!: string;
   public seen!: boolean;
   public voteCount!: number;
   public voteAverage!: number;
@@ -21,6 +23,7 @@ export class Tmdb {
     this.seen = options.seen;
     this.voteCount = options.voteCount;
     this.voteAverage = options.voteAverage;
+    this.releaseYear = moment(this.releaseDate, 'YYYY-MM-DD').format('YYYY');
   }
 
   public formatServer(options: any, database: IDataBaseMovie | IDataBaseSerie) {
@@ -31,6 +34,7 @@ export class Tmdb {
     this.voteAverage = options.vote_average;
     this.seen = !!database[options.id];
     this.releaseDate = options.release_date || options.first_air_date;
+    this.releaseYear = moment(this.releaseDate, 'YYYY-MM-DD').format('YYYY');
     this.title = options.title || options.name;
   }
 

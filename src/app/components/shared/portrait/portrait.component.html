@@ -1,22 +1,13 @@
-<div class="portrait"
-     (mouseover)="isHover = true"
-     (mouseleave)="isHover = false">
-  <div *ngIf="topTitle && isHover"
-       class="image-title">
-    <div class="top">
-      {{topTitle}}
-    </div>
-  </div>
+<div class="portrait">
   <div class="image-container">
     <img *ngIf="image"
          [src]="image ==='no_credit' ? 'assets/no-profile.png' : image ">
   </div>
-
-  <div *ngIf="title && isHover"
-       class="image-title">
-    <div>
-      {{title}}
+  <div class="image-title"
+       [ngClass]="{'empty': !ref.innerHTML.trim()}">
+    <div class="content"
+         #ref>
+      <ng-content></ng-content>
     </div>
   </div>
-
 </div>

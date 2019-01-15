@@ -9,40 +9,40 @@
             (click)="close()">close</mat-icon>
 
   <div class="details-bar">
-    <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + movie.poster"></portrait-component>
+    <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + movieDetails.poster"></portrait-component>
     <div class="description">
       <div class="title-bar">
-        <span class="title">{{movie.title}}</span>
-        <span class="release-date "> {{movie.releaseYear}} </span>
+        <span class="title">{{movieDetails.title}}</span>
+        <span class="release-date "> {{movieDetails.releaseYear}} </span>
         <span class="original-title"
-              *ngIf="movie.title !== movie.originalTitle"> '{{movie.originalTitle}}' </span>
+              *ngIf="movieDetails.title !== movieDetails.originalTitle"> '{{movieDetails.originalTitle}}' </span>
         <span>Directed by </span>
         <span class="link underline"
-              (click)="utility.onClickCredit(movie.director)">{{movie.director!.name}}</span>
+              (click)="utility.onClickCredit(movieDetails.director)">{{movieDetails.director!.name}}</span>
       </div>
-      <div class="police-title fs-20">{{movie.tagLine}}</div>
-      <div>{{movie.releaseDate | date : 'MMMM d, y'}}</div>
-      <div>{{movie.runtime}}</div>
-      <div>{{movie.overview}}</div>
+      <div class="police-title fs-20">{{movieDetails.tagLine}}</div>
+      <div>{{movieDetails.releaseDate | date : 'MMMM d, y'}}</div>
+      <div>{{movieDetails.runtime}}</div>
+      <div>{{movieDetails.overview}}</div>
 
       <div class="link ib"
-           *ngIf="movie.trailer">
+           *ngIf="movieDetails.trailer">
         <i class="fab fa-youtube"
            style="margin-right: 5px;"></i>
         <a class="link"
-           [href]="movie.trailer"
+           [href]="movieDetails.trailer"
            target="_blank">Watch trailer</a></div>
 
       <div class="link ib"
-           *ngIf="movie.imdbId">
+           *ngIf="movieDetails.imdbId">
         <i class="fab fa-imdb"
            style="margin-right: 5px;"></i>
         <a class="link"
-           [href]="'https://www.imdb.com/title/'+ movie.imdbId"
+           [href]="'https://www.imdb.com/title/'+ movieDetails.imdbId"
            target="_blank">Go to IMDb</a></div>
 
-      <rating-component [voteAverage]="movie.voteAverage"
-                        [voteCount]="movie.voteCount"
+      <rating-component [voteAverage]="movieDetails.voteAverage"
+                        [voteCount]="movieDetails.voteCount"
                         [voteMax]="10"></rating-component>
 
     </div>
@@ -51,22 +51,22 @@
   <div>
     <div class="sub-title">Casting</div>
     <div class="list credits"
-         *ngIf="movie.credits.length">
-      <portrait-component *ngFor="let credit of movie.credits"
+         *ngIf="movieDetails.credits.length">
+      <portrait-component *ngFor="let credit of movieDetails.credits"
                           [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
-                          [topTitle]="credit.name"
-                          [title]="credit.role"
                           (click)="utility.onClickCredit(credit)">
+        <div>{{credit.name}}</div>
+        <div>{{credit.role}}</div>
 
       </portrait-component>
 
     </div>
 
-    <div *ngIf="movie.images.length">
+    <div *ngIf="movieDetails.images.length">
       <div class="sub-title">Images</div>
       <div class="list">
         <div class="image"
-             *ngFor="let image of movie.images">
+             *ngFor="let image of movieDetails.images">
           <a [href]="'https://image.tmdb.org/t/p/original' + image"
              target="_blank">
             <img [src]="'https://image.tmdb.org/t/p/w300' + image">
@@ -77,41 +77,50 @@
     </div>
 
     <div class="collection-movies"
-         *ngIf="movie.collectionMovies.length">
+         *ngIf="movieDetails.collectionMovies.length">
       <div class="sub-title">Collection movies</div>
       <div class="list">
-        <portrait-component *ngFor="let collectionMovie of movie.collectionMovies"
-                            (click)="utility.onClickMovieDetails(collectionMovie, movie, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+collectionMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && collectionMovie.seen) || (list === 'collection' && !collectionMovie.seen)}"
-                            [topTitle]="collectionMovie.title"
-                            [title]="collectionMovie.releaseDate">
+        <portrait-component *ngFor="let movie of movieDetails.collectionMovies"
+                            (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
       </div>
     </div>
     <div class="reco-movies"
-         *ngIf="movie.recoMovies.length">
+         *ngIf="movieDetails.recoMovies.length">
       <div class="sub-title">Similar movies</div>
       <div class="list">
-        <portrait-component *ngFor="let recoMovie of movie.recoMovies"
-                            (click)="utility.onClickMovieDetails(recoMovie, movie, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+recoMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && recoMovie.seen) || (list === 'collection' && !recoMovie.seen)}"
-                            [topTitle]="recoMovie.title"
-                            [title]="recoMovie.releaseDate">
+        <portrait-component *ngFor="let movie of movieDetails.recoMovies"
+                            (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
       </div>
     </div>
     <div class="director-movies"
-         *ngIf="movie.directorMovies.length">
-      <div class="sub-title">{{movie.director!.name}} movies</div>
+         *ngIf="movieDetails.directorMovies.length">
+      <div class="sub-title">{{movieDetails.director!.name}} movies</div>
       <div class="list">
-        <portrait-component *ngFor="let directorMovie of movie.directorMovies"
-                            (click)="utility.onClickMovieDetails(directorMovie, movie, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+directorMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && directorMovie.seen) || (list === 'collection' && !directorMovie.seen)}"
-                            [topTitle]="directorMovie.title"
-                            [title]="directorMovie.releaseDate">
+        <portrait-component *ngFor="let movie of movieDetails.directorMovies"
+                            (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
       </div>
     </div>

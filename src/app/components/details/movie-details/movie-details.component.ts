@@ -17,7 +17,7 @@ import { UtilityService } from '../../../services/utility.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
-  public movie!: MovieDetails;
+  public movieDetails!: MovieDetails;
 
   public loading = true;
 
@@ -52,7 +52,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
         if (movieDetails.backdrop) {
           this.background.addBackground(`https://image.tmdb.org/t/p/w300${movieDetails.backdrop}`);
         }
-        this.movie = movieDetails;
+        this.movieDetails = movieDetails;
         this.title.setTitle(movieDetails.title);
       })
       .finally(() => {

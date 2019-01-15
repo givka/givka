@@ -50,12 +50,15 @@
          *ngIf="credit.actorMovies.length">
       <div class="sub-title">Actor movies</div>
       <div class="list">
-        <portrait-component *ngFor="let actorMovie of credit.actorMovies"
-                            (click)="utility.onClickMovie(actorMovie, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+actorMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && actorMovie.seen) || (list === 'collection' && !actorMovie.seen)}"
-                            [topTitle]="actorMovie.title"
-                            [title]="actorMovie.releaseDate">
+        <portrait-component *ngFor="let movie of credit.actorMovies"
+                            (click)="utility.onClickMovie(movie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
       </div>
     </div>
@@ -63,12 +66,15 @@
     <div *ngIf="credit.actorSeries.length">
       <div class="sub-title">Actor series</div>
       <div class="list">
-        <portrait-component *ngFor="let actorSerie of credit.actorSeries"
-                            (click)="utility.onClickSerie(actorSerie, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+actorSerie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && actorSerie.seen) || (list === 'collection' && !actorSerie.seen)}"
-                            [topTitle]="actorSerie.title"
-                            [title]="actorSerie.releaseDate">
+        <portrait-component *ngFor="let movie of credit.actorSeries"
+                            (click)="utility.onClickSerie(movie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
       </div>
     </div>
@@ -77,12 +83,15 @@
          *ngIf="credit.directorMovies.length">
       <div class="sub-title">Director movies</div>
       <div class="list">
-        <portrait-component *ngFor="let directorMovie of credit.directorMovies"
-                            (click)="utility.onClickMovie(directorMovie, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+directorMovie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && directorMovie.seen) || (list === 'collection' && !directorMovie.seen)}"
-                            [topTitle]="directorMovie.title"
-                            [title]="directorMovie.releaseDate">
+        <portrait-component *ngFor="let movie of credit.directorMovies"
+                            (click)="utility.onClickMovie(movie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
       </div>
     </div>
@@ -90,12 +99,15 @@
     <div *ngIf="credit.creatorSeries.length">
       <div class="sub-title">Creator series</div>
       <div class="list">
-        <portrait-component *ngFor="let creatorSerie of credit.creatorSeries"
-                            (click)="utility.onClickSerie(creatorSerie, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+creatorSerie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && creatorSerie.seen) || (list === 'collection' && !creatorSerie.seen)}"
-                            [topTitle]="creatorSerie.title"
-                            [title]="creatorSerie.releaseDate">
+        <portrait-component *ngFor="let movie of credit.creatorSeries"
+                            (click)="utility.onClickSerie(movie, $event)"
+                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+          <div>{{movie.title}}</div>
+          <div>{{movie.releaseYear}}</div>
+          <rating-component [voteAverage]="movie.voteAverage"
+                            [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
         </portrait-component>
       </div>
     </div>

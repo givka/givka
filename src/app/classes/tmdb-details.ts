@@ -1,4 +1,3 @@
-import * as moment from 'moment';
 import { IDataBaseMovie } from '../interfaces/all';
 import { Credit } from './credit';
 import { Tmdb } from './tmdb';
@@ -6,7 +5,6 @@ import { Utils } from './utils';
 
 export class TmdbDetails extends Tmdb {
   public originalTitle: string;
-  public releaseYear: string;
   public overview: string;
   public trailer: string;
   public credits: Credit[];
@@ -17,7 +15,6 @@ export class TmdbDetails extends Tmdb {
     super.formatServer(options, database);
     this.originalTitle = options.original_title || options.original_name;
     this.overview = options.overview;
-    this.releaseYear = moment(this.releaseDate, 'YYYY-MM-DD').format('YYYY');
     this.trailer = this.formatVideos(options);
     this.credits = this.formatCredits(options);
     this.images = this.formatImages(options);

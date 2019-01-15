@@ -72,6 +72,12 @@ app-component {
       margin-top: 10px;
       margin-bottom: -10px;
       margin-left: 10px;
+
+      rating-component {
+        span {
+          display: none;
+        }
+      }
     }
 
   }
@@ -93,6 +99,12 @@ app-component {
 
       portrait-component {
         height: 100%;
+      }
+
+      rating-component {
+        span {
+          display: none;
+        }
       }
 
       .image {

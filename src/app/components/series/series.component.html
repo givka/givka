@@ -50,9 +50,12 @@
       <portrait-component *ngFor="let serie of sortedSeries"
                           (click)="utility.onClickSerie(serie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
-                          [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}"
-                          [topTitle]="serie.title"
-                          [title]="serie.releaseDate">
+                          [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
+        <div>{{serie.title}}</div>
+        <div>{{serie.releaseYear}}</div>
+        <rating-component [voteAverage]="serie.voteAverage"
+                          [voteCount]="serie.voteCount"
+                          [voteMax]="10"></rating-component>
       </portrait-component>
 
     </div>

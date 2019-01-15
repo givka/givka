@@ -17,8 +17,9 @@ portrait-component {
     border-radius: 3px;
     overflow: hidden;
     background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px #000000;
     transition: 0.3s all ease;
+    position: relative;
 
     .image-container {
       height: 100%;
@@ -26,29 +27,37 @@ portrait-component {
     }
 
     .image-title {
-      display: none;
-      position: relative;
-      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
       display: flex;
-      justify-content: center;
-      font-size: 11px;
+      position: absolute;
+      top: 0;
+      padding: 10px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      font-size: 12px;
+      transition: opacity 0.2s cubic-bezier(0.35, 0, 0.25, 1);
 
-      &:hover {
-        display: block;
+      .content {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
 
-      div {
-        position: absolute;
-        bottom: 0;
-        padding: 5px;
-        width: calc(100% - 10px);
-        text-align: center;
-        background: rgba(0, 0, 0, 0.5);
+      &.empty {
+        opacity: 1;
+        cursor: default;
+        background-color: initial;
 
-        &.top {
-          bottom: initial;
-          top: 0;
-        }
+      }
+
+      &:hover {
+        opacity: 1;
       }
     }
 

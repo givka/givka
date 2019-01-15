@@ -16,7 +16,7 @@ import { UtilityService } from '../../../services/utility.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class SerieDetailsComponent implements OnInit {
-  public serie!: SerieDetails;
+  public serieDetails!: SerieDetails;
 
   public loading = true;
 
@@ -54,7 +54,7 @@ export class SerieDetailsComponent implements OnInit {
         if (serieDetails.backdrop) {
           this.background.addBackground(`https://image.tmdb.org/t/p/w300${serieDetails.backdrop}`);
         }
-        this.serie = serieDetails;
+        this.serieDetails = serieDetails;
         this.title.setTitle(serieDetails.title);
       })
       .finally(() => {

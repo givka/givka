@@ -8,20 +8,8 @@ import {
   styleUrls: ['./portrait.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class PortraitComponent implements OnInit {
+export class PortraitComponent {
   @Input() public image!: string;
-
   @Input() public title!: string;
-
   @Input() public topTitle!: string;
-
-  public isHover = false;
-
-  public showImage = false;
-
-  public ngOnInit() {
-    setTimeout(() => {
-      this.showImage = true;
-    },         0);
-  }
 }
