@@ -70,6 +70,7 @@
                             [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
                             (click)="onClickItem(painting, $event)">
           <div>{{painting.artistName}}</div>
+          <div>{{painting.year}}</div>
           <div>{{painting.title}}</div>
         </portrait-component>
 
