@@ -20,9 +20,9 @@ export class RatingComponent implements OnInit {
     this.stars = Array.from(Array(this.nbrOfStars))
       .map((star, index) => {
         const starRating = index + 1 - (voteAverage * 10) / 2;
-        if (starRating <= 0) return 'fas fa-star';
-        if (starRating <= 0.5) { return 'fas fa-star-half-alt'; }
-        return 'far fa-star';
+        if (starRating <= 0) return 'star';
+        if (starRating <= 0.5) { return 'star_half'; }
+        return 'star_border';
       });
   }
 }
