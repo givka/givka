@@ -21,7 +21,7 @@
       <portrait-component *ngFor="let serie of series"
                           [image]="'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover"
                           (click)="onClickComic(serie)">
-        <div>{{serie.serieTitle}}</div>
+        <div class="title-portrait">{{serie.serieTitle}}</div>
         <div>{{serie.numberOfAlbums}} album(s)</div>
         <rating-component [voteAverage]="serie.voteAverage"
                           [voteCount]="serie.voteCount"

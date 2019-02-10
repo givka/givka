@@ -42,7 +42,7 @@
       <portrait-component *ngFor="let credit of serieDetails.credits"
                           [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
                           (click)="utility.onClickCredit(credit)">
-        <div>{{credit.name}}</div>
+        <div class="title-portrait">{{credit.name}}</div>
         <div>{{credit.role}}</div>
 
       </portrait-component>
@@ -66,7 +66,7 @@
         <portrait-component *ngFor="let season of serieDetails.seasons"
                             (click)="onClickSeason(season, $event)"
                             [image]="season.poster?'https://image.tmdb.org/t/p/w185'+season.poster:null">
-          <div>{{season.name}}</div>
+          <div class="title-portrait">{{season.name}}</div>
         </portrait-component>
       </div>
     </div>
@@ -78,7 +78,7 @@
                             (click)="utility.onClickSerieDetails(serie,serieDetails, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
-          <div>{{serie.title}}</div>
+          <div class="title-portrait">{{serie.title}}</div>
           <div>{{serie.releaseYear}}</div>
           <rating-component [voteAverage]="serie.voteAverage"
                             [voteCount]="serie.voteCount"

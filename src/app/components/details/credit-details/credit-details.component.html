@@ -9,8 +9,7 @@
   </mat-icon>
 
   <div class="details-bar">
-    <portrait-component
-      [image]="credit.profile? 'https://image.tmdb.org/t/p/h632' + credit.profile : 'no_credit'"></portrait-component>
+    <portrait-component [image]="credit.profile? 'https://image.tmdb.org/t/p/h632' + credit.profile : 'no_credit'"></portrait-component>
 
     <div class="description">
       <div class="title-bar">
@@ -56,7 +55,7 @@
                             (click)="utility.onClickMovie(movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-          <div>{{movie.title}}</div>
+          <div class="title-portrait">{{movie.title}}</div>
           <div>{{movie.releaseYear}}</div>
           <rating-component [voteAverage]="movie.voteAverage"
                             [voteCount]="movie.voteCount"
@@ -72,7 +71,7 @@
                             (click)="utility.onClickSerie(movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-          <div>{{movie.title}}</div>
+          <div class="title-portrait">{{movie.title}}</div>
           <div>{{movie.releaseYear}}</div>
           <rating-component [voteAverage]="movie.voteAverage"
                             [voteCount]="movie.voteCount"
@@ -89,7 +88,7 @@
                             (click)="utility.onClickMovie(movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-          <div>{{movie.title}}</div>
+          <div class="title-portrait">{{movie.title}}</div>
           <div>{{movie.releaseYear}}</div>
           <rating-component [voteAverage]="movie.voteAverage"
                             [voteCount]="movie.voteCount"
@@ -105,7 +104,7 @@
                             (click)="utility.onClickSerie(movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
                             [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-          <div>{{movie.title}}</div>
+          <div class="title-portrait">{{movie.title}}</div>
           <div>{{movie.releaseYear}}</div>
           <rating-component [voteAverage]="movie.voteAverage"
                             [voteCount]="movie.voteCount"

@@ -50,7 +50,7 @@
                           (click)="utility.onClickMovie(movie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w342'+movie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-        <div>{{movie.title}}</div>
+        <div class="title-portrait">{{movie.title}}</div>
         <div>{{movie.releaseYear}}</div>
         <rating-component [voteAverage]="movie.voteAverage"
                           [voteCount]="movie.voteCount"

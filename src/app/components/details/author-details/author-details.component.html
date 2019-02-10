@@ -25,7 +25,7 @@
       <portrait-component *ngFor="let album of author.bothAlbums"
                           (click)="onClickComic(album.serieId)"
                           [image]="album.imageCover? 'https://www.bedetheque.com/media/Couvertures/'+album.imageCover: ''">
-        <div>{{album.albumTitle}}</div>
+        <div class="title-portrait">{{album.albumTitle}}</div>
         <div>{{album.date}}</div>
         <rating-component [voteAverage]="album.voteAverage"
                           [voteCount]="album.voteCount"
@@ -40,7 +40,7 @@
       <portrait-component *ngFor="let album of author.scenarioAlbums"
                           (click)="onClickComic(album.serieId)"
                           [image]="album.imageCover? 'https://www.bedetheque.com/media/Couvertures/'+album.imageCover: ''">
-        <div>{{album.albumTitle}}</div>
+        <div class="title-portrait">{{album.albumTitle}}</div>
         <div>{{album.date}}</div>
         <rating-component [voteAverage]="album.voteAverage"
                           [voteCount]="album.voteCount"
@@ -55,7 +55,7 @@
       <portrait-component *ngFor="let album of author.drawingAlbums"
                           (click)="onClickComic(album.serieId)"
                           [image]="album.imageCover? 'https://www.bedetheque.com/media/Couvertures/'+album.imageCover: ''">
-        <div>{{album.albumTitle}}</div>
+        <div class="title-portrait">{{album.albumTitle}}</div>
         <div>{{album.date}}</div>
         <rating-component [voteAverage]="album.voteAverage"
                           [voteCount]="album.voteCount"

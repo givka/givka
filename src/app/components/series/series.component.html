@@ -51,7 +51,7 @@
                           (click)="utility.onClickSerie(serie, $event)"
                           [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
-        <div>{{serie.title}}</div>
+        <div class="title-portrait">{{serie.title}}</div>
         <div>{{serie.releaseYear}}</div>
         <rating-component [voteAverage]="serie.voteAverage"
                           [voteCount]="serie.voteCount"

@@ -23,7 +23,7 @@
                             (click)="onClickItem(movie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+ movie.poster"
                             [ngClass]="{'seen':movie.seen}">
-          <div>{{movie.title}}</div>
+          <div class="title-portrait">{{movie.title}}</div>
           <div>{{movie.releaseYear}}</div>
           <rating-component [voteAverage]="movie.voteAverage"
                             [voteCount]="movie.voteCount"
@@ -40,7 +40,7 @@
                             (click)="onClickItem(serie, $event)"
                             [image]="'https://image.tmdb.org/t/p/w185'+ serie.poster"
                             [ngClass]="{'seen':serie.seen}">
-          <div>{{serie.title}}</div>
+          <div class="title-portrait">{{serie.title}}</div>
           <div>{{serie.releaseYear}}</div>
           <rating-component [voteAverage]="serie.voteAverage"
                             [voteCount]="serie.voteCount"
@@ -56,7 +56,7 @@
         <portrait-component *ngFor="let credit of credits"
                             (click)="onClickItem(credit, $event)"
                             [image]=" credit.profile ? 'https://image.tmdb.org/t/p/w185'+ credit.profile : 'no_credit'">
-          <div>{{credit.name}}</div>
+          <div class="title-portrait">{{credit.name}}</div>
         </portrait-component>
 
       </div>
@@ -67,11 +67,11 @@
       <div class="grid portrait-grid">
         <portrait-component *ngFor="let painting of paintings"
                             [ngClass]="{'seen' :painting.seen}"
-                            [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
+                            [image]="painting.imageLQ ? painting.imageLQ : null"
                             (click)="onClickItem(painting, $event)">
-          <div>{{painting.artistName}}</div>
+          <div class="title-portrait">{{painting.artistName}}</div>
           <div>{{painting.year}}</div>
-          <div>{{painting.title}}</div>
+          <div class="title-portrait">{{painting.title}}</div>
         </portrait-component>
 
       </div>

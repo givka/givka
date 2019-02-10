@@ -27,7 +27,7 @@
       <portrait-component *ngFor="let artist of items"
                           [image]="artist.imageLQ ? artist.imageLQ : null"
                           (click)="onClickArtist(artist.artistUrl, $event)">
-        <div>{{artist.artistName}}</div>
+        <div class="title-portrait">{{artist.artistName}}</div>
       </portrait-component>
     </div>
 
@@ -46,9 +46,9 @@
                           [image]="painting.imageLQ ? painting.imageLQ : null"
                           (click)="onClickPortrait(painting, $event)">
 
-        <div>{{painting.artistName}}</div>
+        <div class="title-portrait">{{painting.artistName}}</div>
         <div>{{painting.year}}</div>
-        <div>{{painting.title}}</div>
+        <div class="title-portrait">{{painting.title}}</div>
       </portrait-component>
 
     </div>
