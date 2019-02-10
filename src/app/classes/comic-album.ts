@@ -14,6 +14,7 @@ export class ComicAlbum {
   public date: string;
   public editor: string;
   public nbrOfPages: number;
+  public albumNumber : number;
 
   constructor(options: any) {
     this.serieId = options.serieId;
@@ -31,5 +32,6 @@ export class ComicAlbum {
     this.date = options.date;
     this.editor = options.editor;
     this.nbrOfPages = options.nbrOfPages;
+    this.albumNumber = options.albumNumber;
   }
 }

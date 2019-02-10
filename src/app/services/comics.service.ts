@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ComicAlbum } from '../classes/comic-album';
 import { ComicAuthor } from '../classes/comic-author';
 import { ComicSerie } from '../classes/comic-serie';
+import { ComicSerieDetails } from '../classes/comic-serie-details';
 
 @Injectable({
   providedIn: 'root',
@@ -19,10 +20,16 @@ export class ComicsService {
     .then((response: any) => response.map((a: any) => new ComicAlbum(a)) as ComicAlbum[]);
   }
 
+  public getSeries() {
+    return this.http.get(`${this.baseUrl}read-all?class=series&order=voteCount`)
+    .toPromise()
+    .then((response: any) => response.map((s: any) => new ComicSerie(s)) as ComicSerie[]);
+  }
+
   public getSerieDetails(id: number) {
     return this.http.get(`${this.baseUrl}read-serie?serieId=${id}`)
     .toPromise()
-    .then(response => new ComicSerie(response));
+    .then(response => new ComicSerieDetails(response));
   }
 
   public getAuthor(name: string) {

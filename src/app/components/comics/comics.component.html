@@ -7,16 +7,24 @@
 
   <div *ngIf="!loading">
 
-    <div *ngIf="comics"
-         class="grid">
-      <portrait-component *ngFor="let comic of comics"
-                          [image]="'https://www.bedetheque.com/cache/thb_couv/'+comic.imageCover"
-                          (click)="onClickComic(comic)">
+    <div class="button-group">
+      <button mat-button
+              *ngFor="let linkButton of linkButtons"
+              [routerLink]="[linkButton.url]"
+              routerLinkActive="active">
+        <div>{{linkButton.title}}</div>
+      </button>
+    </div>
 
-        <div>{{comic.albumTitle}}</div>
-        <div>{{comic.date}}</div>
-        <rating-component [voteAverage]="comic.voteAverage"
-                          [voteCount]="comic.voteCount"
+    <div *ngIf="list === 'popular'"
+         class="grid">
+      <portrait-component *ngFor="let serie of series"
+                          [image]="'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover"
+                          (click)="onClickComic(serie)">
+        <div>{{serie.serieTitle}}</div>
+        <div>{{serie.numberOfAlbums}} album(s)</div>
+        <rating-component [voteAverage]="serie.voteAverage"
+                          [voteCount]="serie.voteCount"
                           [voteMax]="100"></rating-component>
       </portrait-component>
 

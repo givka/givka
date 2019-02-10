@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ComicAlbum } from '../../classes/comic-album';
+import { ComicSerie } from '../../classes/comic-serie';
 import { BackgroundService } from '../../services/background.service';
 import { ComicsService } from '../../services/comics.service';
 
@@ -12,7 +12,13 @@ import { ComicsService } from '../../services/comics.service';
 })
 export class ComicsComponent implements OnInit {
   public loading = true;
-  public comics !: ComicAlbum[];
+  public series !: ComicSerie[];
+  public list !: 'popular' | 'collection';
+
+  public linkButtons = [
+  { title: 'Popular', url:'/comics/popular' },
+  { title: 'Collection', url:'/comics/collection' },
+  ];
 
   constructor(private comicsAPI: ComicsService,
               private router: Router,
@@ -21,10 +27,11 @@ export class ComicsComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
+    this.list = 'popular';
     this.title.setTitle('Comics');
     this.background.addRandomBackground();
-    this.comicsAPI.getAlbums()
-    .then(result => this.comics = result)
+    this.comicsAPI.getSeries()
+    .then(result => this.series = result)
     .finally(() => this.loading = false);
   }
 

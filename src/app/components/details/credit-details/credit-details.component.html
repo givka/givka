@@ -5,10 +5,12 @@
 <div *ngIf="!loading"
      class="details">
   <mat-icon class="close link"
-            (click)="close()">close</mat-icon>
+            (click)="close()">close
+  </mat-icon>
 
   <div class="details-bar">
-    <portrait-component [image]="credit.profile? 'https://image.tmdb.org/t/p/h632' + credit.profile : 'no_credit'"></portrait-component>
+    <portrait-component
+      [image]="credit.profile? 'https://image.tmdb.org/t/p/h632' + credit.profile : 'no_credit'"></portrait-component>
 
     <div class="description">
       <div class="title-bar">
@@ -107,6 +109,11 @@
           <div>{{movie.releaseYear}}</div>
           <rating-component [voteAverage]="movie.voteAverage"
                             [voteCount]="movie.voteCount"
+                            [voteMax]="10"></rating-component>
+
+          <rating-component *ngFor="let movie of credit.actorSeries.length"
+                            [voteAverage]="12"
+                            [voteCount]="12"
                             [voteMax]="10"></rating-component>
         </portrait-component>
       </div>

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ComicSerie } from '../../../classes/comic-serie';
+import { ComicSerieDetails } from '../../../classes/comic-serie-details';
 import { BackgroundService } from '../../../services/background.service';
 import { ComicsService } from '../../../services/comics.service';
 
@@ -14,7 +14,7 @@ import { ComicsService } from '../../../services/comics.service';
 })
 export class ComicDetailsComponent implements OnInit {
   public subRouter!: Subscription;
-  public serie!: ComicSerie;
+  public serie!: ComicSerieDetails;
   public loading = true;
 
   constructor(private routeActive: ActivatedRoute,

@@ -3,15 +3,18 @@ import { ComicAlbum } from './comic-album';
 export class ComicSerie{
   public serieTitle: string;
   public serieId: number;
-  public albums : ComicAlbum[];
   public voteAverage: number;
   public voteCount: number;
+  public numberOfAlbums: number;
+  public serieCover: string;
 
   constructor(options: any) {
     this.serieTitle = options.serieTitle;
     this.serieId = options.serieId;
-    this.albums = options.albums.map((a: any) => new ComicAlbum(a));
     this.voteAverage = options.voteAverage;
     this.voteCount = options.voteCount;
+    this.numberOfAlbums = options.numberOfAlbums;
+    this.serieCover = options.serieCover;
+
   }
 }
