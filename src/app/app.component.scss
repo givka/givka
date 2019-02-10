@@ -22,7 +22,7 @@ app-component {
 
   .main-content {
     position: relative;
-    padding: 10px 10%;
+    padding: 50px;
     padding-top: 62px;
 
     &::before {
@@ -138,19 +138,10 @@ app-component {
       display: flex;
 
       portrait-component {
-        width: 250px;
         height: 370px;
-
-        .portrait {
-          &:hover {
-            cursor: default;
-          }
-        }
       }
 
       .description {
-        width: calc(100% - 250px);
-
         .title-bar {
           font-size: 20px;
 

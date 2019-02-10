@@ -17,6 +17,6 @@ export class ArtistDetails extends Artist {
     this.careerStart = options.activeYearsStart;
     this.careerEnd = options.activeYearsCompletion;
     this.originalName = options.OriginalArtistName;
-    this.paintings = paintings.map(p => new Painting(p, database));
+    this.paintings = paintings.map(p => new Painting(p).fromServer(p, database));
   }
 }

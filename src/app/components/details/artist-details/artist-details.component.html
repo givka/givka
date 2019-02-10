@@ -29,7 +29,7 @@
   <div class="grid portrait-grid">
     <portrait-component *ngFor="let painting of paintings"
                         [ngClass]="{'seen': painting.seen}"
-                        [image]="painting.image + '!PinterestSmall.' + painting.extension"
+                        [image]="painting.imageLQ"
                         (click)="onClickPortrait(painting,$event)">
       <div>{{painting.year}}</div>
       <div>{{painting.title}}</div>

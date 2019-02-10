@@ -74,7 +74,8 @@ export class ArtComponent implements OnInit, OnDestroy {
 
   public loadCollection() {
     const paintingsSeen = Storage.readDB('art');
-    this.items = Object.keys(paintingsSeen).map(key => paintingsSeen[key]);
+    this.items = Object.keys(paintingsSeen)
+    .map(key => new Painting(paintingsSeen[key]).fromStorage(paintingsSeen[key]));
     this.loading = false;
   }
 

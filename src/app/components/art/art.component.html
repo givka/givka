@@ -25,7 +25,7 @@
     <div class="grid portrait-grid"
          *ngIf="list==='artists'">
       <portrait-component *ngFor="let artist of items"
-                          [image]="artist.image ? artist.image + '!PinterestSmall.' + artist.extension : null"
+                          [image]="artist.imageLQ ? artist.imageLQ : null"
                           (click)="onClickArtist(artist.artistUrl, $event)">
         <div>{{artist.artistName}}</div>
       </portrait-component>
@@ -43,7 +43,7 @@
 
       <portrait-component *ngFor="let painting of items"
                           [ngClass]="{'seen' : (list !== 'collection' && painting.seen) || (list === 'collection' && !painting.seen)}"
-                          [image]="painting.image ? painting.image + '!PinterestSmall.' + painting.extension : null"
+                          [image]="painting.imageLQ ? painting.imageLQ : null"
                           (click)="onClickPortrait(painting, $event)">
 
         <div>{{painting.artistName}}</div>

@@ -3,15 +3,8 @@ comic-album-component {
   padding-top: 20px;
 
   portrait-component {
-    width: initial;
     height: 300px;
     padding: 0;
-
-    .portrait {
-      img {
-        width: initial;
-      }
-    }
   }
 
   .info {

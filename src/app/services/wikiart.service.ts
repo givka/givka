@@ -16,13 +16,15 @@ export class WikiartService {
   public getMostViewedPaintings(): Promise<Painting[]> {
     const database = Storage.readDB('art');
     return this.getRequest('App/Painting/MostViewedPaintings')
-      .then(result => shuffle(result.map((p: any) => new Painting(p, database))));
+      .then(result => shuffle(result
+        .map((p: any) => new Painting(p).fromServer(p, database))));
   }
 
   public getSearch(query: string): Promise<Painting[]> {
     const database = Storage.readDB('art');
     return this.getRequest(`search/${query}/1`)
-      .then(result => result.map((p: any) => new Painting(p, database)));
+      .then(result => result
+        .map((p: any) => new Painting(p).fromServer(p, database)));
   }
 
   public getPopularArtists(): Promise<Artist[]> {

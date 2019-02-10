@@ -1,14 +1,7 @@
 artist-details-component {
-  .portrait-grid {
-    portrait-component {
-      width: initial;
-      height: initial;
-
-      img {
-        height: 150px;
-        width: initial;
-        max-width: 400px;
-      }
-    }
+  portrait-component {
+    height: 250px;
+    max-width: 100%;
   }
+
 }

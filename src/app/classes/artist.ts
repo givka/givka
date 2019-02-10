@@ -4,6 +4,7 @@ export class Artist {
   public artistName: string;
   public artistUrl: string;
   public image: string | null;
+  public imageLQ: string | null;
   public birthDate: string;
   public deathDate: string;
   public extension: string;
@@ -15,6 +16,17 @@ export class Artist {
     this.image = this.formatImage(options.image);
     this.birthDate = options.birthDayAsString;
     this.deathDate = options.deathDayAsString;
+    this.imageLQ = this.image ? `${this.image}!Blog.${this.extension}` : null;
+
+    if (this.image) {
+      const img = new Image();
+      img.onload =  () => {
+        if (img.width < 500 && img.height < 500) {
+          this.imageLQ = this.image;
+        }
+      };
+      img.src = this.image;
+    }
   }
 
   private formatImage(image: string) {
