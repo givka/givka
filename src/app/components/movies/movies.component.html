@@ -48,7 +48,7 @@
          class="grid">
       <portrait-component *ngFor="let movie of sortedMovies"
                           (click)="utility.onClickMovie(movie, $event)"
-                          [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                          [image]="'https://image.tmdb.org/t/p/w342'+movie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
         <div>{{movie.title}}</div>
         <div>{{movie.releaseYear}}</div>
