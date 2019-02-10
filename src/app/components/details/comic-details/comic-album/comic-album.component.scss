@@ -1,13 +1,21 @@
 comic-album-component {
   display: flex;
+  padding-top: 20px;
 
-  image {
-    width: 156px;
+  portrait-component {
+    width: initial;
+    height: 300px;
+    padding: 0;
+
+    .portrait {
+      img {
+        width: initial;
+      }
+    }
   }
 
   .info {
-    padding: 20px;
-    width: calc(100% - 156px);
+    padding-left: 20px;
 
     .line {
       padding: 5px;

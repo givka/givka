@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ComicSerie } from '../../classes/comic-serie';
@@ -9,6 +9,7 @@ import { ComicsService } from '../../services/comics.service';
   selector: 'app-comics',
   templateUrl: './comics.component.html',
   styleUrls: ['./comics.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ComicsComponent implements OnInit {
   public loading = true;
