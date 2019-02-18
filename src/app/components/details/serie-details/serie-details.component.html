@@ -16,10 +16,12 @@
           <span class="release-date "> {{serieDetails.releaseYear}} </span>
           <span class="original-title"
                 *ngIf="serieDetails.title !== serieDetails.originalTitle"> '{{serieDetails.originalTitle}}' </span>
-          <span>Created by </span>
-          <span class="link underline"
-                (click)="utility.onClickCredit(serieDetails.creator)"
-                style="margin-right:5px;">{{serieDetails.creator.name}}</span>
+          <span *ngIf="serieDetails.creator">
+            <span>Created by </span>
+            <span class="link underline"
+                  (click)="utility.onClickCredit(serieDetails.creator)"
+                  style="margin-right:5px;">{{serieDetails.creator!.name}}</span></span>
+
         </div>
         <div>{{serieDetails.releaseDate | date : 'MMMM d, y'}}</div>
         <div>{{serieDetails.overview}}</div>
@@ -69,6 +71,8 @@
                               (click)="onClickSeason(season, $event)"
                               [image]="season.poster?'https://image.tmdb.org/t/p/w185'+season.poster:null">
             <div class="title-portrait">{{season.name}}</div>
+            <div>{{season.releaseDate | date : 'y'}}</div>
+            <div class="title-portrait">{{season.episodeCount}} episodes</div>
           </portrait-component>
         </div>
       </div>

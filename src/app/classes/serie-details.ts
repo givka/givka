@@ -8,7 +8,7 @@ export class SerieDetails extends TmdbDetails {
   public numberOfEpisodes: number;
   public recoSeries: Serie[];
   public seasons: ISeason[];
-  public creator: Credit;
+  public creator: Credit | null;
 
   constructor(options: any, database: IDataBaseSerie) {
     super(options, database);
@@ -16,7 +16,7 @@ export class SerieDetails extends TmdbDetails {
     this.numberOfEpisodes = options.number_of_episodes;
     this.seasons = this.formatSeasons(options);
     this.creator = this.formatCreator(options);
-    this.credits = [this.creator].concat(this.credits);
+    this.credits = this.creator ? [this.creator].concat(this.credits) : this.credits;
     this.recoSeries = this.formatRecoSeries(options, database);
   }
 
@@ -27,23 +27,28 @@ export class SerieDetails extends TmdbDetails {
   }
 
   private formatCreator(options: any) {
-    const creator = new Credit().fromCast(options.created_by[0]) || this.credits[0];
-    creator.role = 'Creator';
-    return creator;
+    if (options.created_by.length) {
+      const creator = new Credit().fromCast(options.created_by[0]);
+      creator.role = 'Creator';
+      return creator;
+    }
+    return null;
   }
 
   private formatSeasons(options: any): ISeason[] {
-    return options.seasons.filter((s: any) => s.season_number !== 0)
+    return options.seasons.filter((s: any) => s.season_number !== 0 && s.poster_path)
     .map((s: any) => ({
       id: s.id,
       name: s.name,
       poster: s.poster_path,
       releaseDate: s.air_date,
+      episodeCount: s.episode_count,
     }));
   }
 
   private formatRecoSeries(options: any, database: IDataBaseSerie) {
     return options.recommendations.results
+      .filter((serie: any) => serie.poster_path)
       .map((serie: any) => new Serie().fromServer(serie, database));
   }
 }

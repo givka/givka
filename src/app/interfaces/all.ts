@@ -26,6 +26,7 @@ export interface ISeason {
   name: string;
   poster: string;
   releaseDate: string;
+  episodeCount: number;
 }
 
 export interface IOrder {
