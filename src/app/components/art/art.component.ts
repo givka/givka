@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { Artist } from '../../classes/artist';
 import { Painting } from '../../classes/painting';
 import { Storage } from '../../classes/storage';
-import { BackgroundService } from '../../services/background.service';
 import { WikiartService } from '../../services/wikiart.service';
 
 @Component({
@@ -35,12 +34,10 @@ export class ArtComponent implements OnInit, OnDestroy {
     private router: Router,
     private title: Title,
     private activeRoute: ActivatedRoute,
-    private background: BackgroundService,
   ) { }
 
   public ngOnInit() {
     this.title.setTitle('Art');
-    this.background.addRandomBackground();
     this.subRouter = this.activeRoute.params.subscribe((routeParams) => {
       const { list } = routeParams;
       this.loadList(list);

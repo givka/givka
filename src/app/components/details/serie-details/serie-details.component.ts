@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SerieDetails } from '../../../classes/serie-details';
 import { ISeason } from '../../../interfaces/all';
-import { BackgroundService } from '../../../services/background.service';
 import { RoutingStateService } from '../../../services/routing-state.service';
 import { TmdbService } from '../../../services/tmdb.service';
 import { UtilityService } from '../../../services/utility.service';
@@ -28,7 +27,6 @@ export class SerieDetailsComponent implements OnInit {
     private router: Router,
     private routingState: RoutingStateService,
     private title: Title,
-    private background: BackgroundService,
     public utility : UtilityService,
   ) { }
 
@@ -51,9 +49,6 @@ export class SerieDetailsComponent implements OnInit {
     this.loading = true;
     this.tmdb.getSerieDetails(id)
       .then((serieDetails) => {
-        if (serieDetails.backdrop) {
-          this.background.addBackground(`https://image.tmdb.org/t/p/w300${serieDetails.backdrop}`);
-        }
         this.serieDetails = serieDetails;
         this.title.setTitle(serieDetails.title);
       })

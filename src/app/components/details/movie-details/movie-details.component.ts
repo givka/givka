@@ -5,7 +5,6 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MovieDetails } from '../../../classes/movie-details';
-import { BackgroundService } from '../../../services/background.service';
 import { RoutingStateService } from '../../../services/routing-state.service';
 import { TmdbService } from '../../../services/tmdb.service';
 import { UtilityService } from '../../../services/utility.service';
@@ -29,7 +28,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private routingState: RoutingStateService,
     private title: Title,
-    private background: BackgroundService,
     public utility : UtilityService,
   ) {
   }
@@ -49,9 +47,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.tmdb.getMovieDetails(id)
       .then((movieDetails) => {
-        if (movieDetails.backdrop) {
-          this.background.addBackground(`https://image.tmdb.org/t/p/w300${movieDetails.backdrop}`);
-        }
         this.movieDetails = movieDetails;
         this.title.setTitle(movieDetails.title);
       })

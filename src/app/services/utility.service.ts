@@ -6,7 +6,6 @@ import { MovieDetails } from '../classes/movie-details';
 import { Serie } from '../classes/serie';
 import { SerieDetails } from '../classes/serie-details';
 import { Storage } from '../classes/storage';
-import { BackgroundService } from './background.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +13,6 @@ import { BackgroundService } from './background.service';
 
 export class UtilityService {
   constructor(
-   private background: BackgroundService,
    private router: Router,
   ) { }
 
@@ -35,7 +33,6 @@ export class UtilityService {
   }
 
   public onClickCredit(credit: Credit) {
-    this.background.addRandomBackground();
     this.router.navigate([`/credit/${credit.id}`]);
   }
 
@@ -45,9 +42,6 @@ export class UtilityService {
       call();
       item.seen ? Storage.addKeyDB(dbKey, item) : Storage.deleteKeyDB(dbKey, item);
     } else {
-      if (item.backdrop) {
-        this.background.addBackground(`https://image.tmdb.org/t/p/w300${item.backdrop}`);
-      }
       this.router.navigate([`${url}/${item.id}`]);
     }
   }

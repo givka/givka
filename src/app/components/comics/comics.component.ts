@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ComicSerie } from '../../classes/comic-serie';
-import { BackgroundService } from '../../services/background.service';
 import { ComicsService } from '../../services/comics.service';
 
 @Component({
@@ -24,13 +23,11 @@ export class ComicsComponent implements OnInit {
   constructor(private comicsAPI: ComicsService,
               private router: Router,
               private title: Title,
-              private background: BackgroundService,
   ) { }
 
   public ngOnInit() {
     this.list = 'popular';
     this.title.setTitle('Comics');
-    this.background.addRandomBackground();
     this.comicsAPI.getSeries()
     .then(result => this.series = result)
     .finally(() => this.loading = false);

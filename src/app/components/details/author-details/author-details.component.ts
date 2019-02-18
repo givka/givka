@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ComicAuthor } from '../../../classes/comic-author';
-import { BackgroundService } from '../../../services/background.service';
 import { ComicsService } from '../../../services/comics.service';
 
 @Component({
@@ -22,10 +21,9 @@ export class AuthorDetailsComponent implements OnInit {
               private router: Router,
               private comicsAPI: ComicsService,
               private title: Title,
-              private background: BackgroundService) { }
+              ) { }
 
   public ngOnInit() {
-    this.background.addRandomBackground();
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
       const { name } = routeParams;
       this.loadComicAuthor(name);

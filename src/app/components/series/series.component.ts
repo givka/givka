@@ -9,7 +9,6 @@ import { Serie } from '../../classes/serie';
 import { Storage } from '../../classes/storage';
 import { Utils } from '../../classes/utils';
 import { IOrder } from '../../interfaces/all';
-import { BackgroundService } from '../../services/background.service';
 import { TmdbService } from '../../services/tmdb.service';
 import { UtilityService } from '../../services/utility.service';
 
@@ -51,13 +50,11 @@ export class TvComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private router: Router,
     private title: Title,
-    private background: BackgroundService,
     public utility: UtilityService,
   ) { }
 
   public ngOnInit() {
     this.title.setTitle('TV Series');
-    this.background.addRandomBackground();
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });
