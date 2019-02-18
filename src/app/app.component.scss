@@ -64,6 +64,16 @@ app-component {
   }
 
   .details {
+    height: calc(100vh - 52px);
+    background-repeat: no-repeat;
+    background-position: center 0;
+    background-size: cover;
+    margin: -10px -50px 0 -50px;
+
+    .details-content {
+      padding: 50px;
+    }
+
     .list {
       display: flex;
       flex-wrap: wrap;

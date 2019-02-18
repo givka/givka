@@ -17,9 +17,7 @@ import { UtilityService } from '../../../services/utility.service';
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
   public movieDetails!: MovieDetails;
-
   public loading = true;
-
   public subRouter!: Subscription;
 
   constructor(

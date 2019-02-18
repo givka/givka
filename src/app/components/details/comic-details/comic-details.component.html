@@ -4,28 +4,31 @@
 
 <div *ngIf="!loading"
      class="details">
-  <mat-icon class="close link"
-            (click)="onCloseComic()">close</mat-icon>
 
-  <div class="details-bar">
-    <portrait-component [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover"></portrait-component>
-    <div class="description">
-      <div class="title-bar">
-        <div>
-          <span class="title">{{serie.serieTitle}}</span>
+  <div class="details-content">
+    <mat-icon class="close link"
+              (click)="onCloseComic()">close</mat-icon>
+
+    <div class="details-bar">
+      <portrait-component [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover"></portrait-component>
+      <div class="description">
+        <div class="title-bar">
+          <div>
+            <span class="title">{{serie.serieTitle}}</span>
+          </div>
+          <rating-component [voteAverage]="serie.voteAverage"
+                            [voteCount]="serie.voteCount"
+                            [voteMax]="100">
+          </rating-component>
         </div>
-        <rating-component [voteAverage]="serie.voteAverage"
-                          [voteCount]="serie.voteCount"
-                          [voteMax]="100">
-        </rating-component>
       </div>
     </div>
-  </div>
-  <div class="albums">
-    <comic-album-component *ngFor="let album of serie.albums"
-                           [album]="album"
-                           id="{{album.albumId}}">
-    </comic-album-component>
+    <div class="albums">
+      <comic-album-component *ngFor="let album of serie.albums"
+                             [album]="album"
+                             id="{{album.albumId}}">
+      </comic-album-component>
 
+    </div>
   </div>
 </div>

@@ -4,36 +4,38 @@
 
 <div *ngIf="!loading"
      class="details">
-  <mat-icon class="close link"
-            (click)="onCloseArtist()">close</mat-icon>
+  <div class="details-content">
+    <mat-icon class="close link"
+              (click)="onCloseArtist()">close</mat-icon>
 
-  <div class="details-bar">
-    <portrait-component [image]="artist.image"></portrait-component>
-    <div class="description">
-      <div class="title-bar">
-        <span class="title">{{artist.artistName}}</span>
-        <span class="release-date"> {{artist.birthDate}}</span>
-        <span class="release-date"
-              *ngIf="artist.deathDate"> - {{artist.deathDate}} </span>
+    <div class="details-bar">
+      <portrait-component [image]="artist.image"></portrait-component>
+      <div class="description">
+        <div class="title-bar">
+          <span class="title">{{artist.artistName}}</span>
+          <span class="release-date"> {{artist.birthDate}}</span>
+          <span class="release-date"
+                *ngIf="artist.deathDate"> - {{artist.deathDate}} </span>
+        </div>
+
+        <div>
+          <a class="link"
+             [href]="artist.wikipediaUrl"
+             target="_blank"><i class="fab fa-wikipedia-w"
+               style="margin-right:5px;"></i>Go to Wikipedia</a>
+        </div>
+
       </div>
-
-      <div>
-        <a class="link"
-           [href]="artist.wikipediaUrl"
-           target="_blank"><i class="fab fa-wikipedia-w"
-             style="margin-right:5px;"></i>Go to Wikipedia</a>
-      </div>
-
     </div>
-  </div>
-  <div class="grid portrait-grid">
-    <portrait-component *ngFor="let painting of paintings"
-                        [ngClass]="{'seen': painting.seen}"
-                        [image]="painting.imageLQ"
-                        (click)="onClickPortrait(painting,$event)">
-      <div>{{painting.year}}</div>
-      <div class="title-portrait">{{painting.title}}</div>
-    </portrait-component>
+    <div class="grid portrait-grid">
+      <portrait-component *ngFor="let painting of paintings"
+                          [ngClass]="{'seen': painting.seen}"
+                          [image]="painting.imageLQ"
+                          (click)="onClickPortrait(painting,$event)">
+        <div>{{painting.year}}</div>
+        <div class="title-portrait">{{painting.title}}</div>
+      </portrait-component>
+    </div>
   </div>
 </div>
 

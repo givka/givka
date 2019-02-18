@@ -3,125 +3,126 @@
 </div>
 
 <div *ngIf="!loading"
-     class="details">
+     class="details"
+     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url('+'https://image.tmdb.org/t/p/w1280' + movieDetails.backdrop+')'}">
 
-  <mat-icon class="close link"
-            (click)="close()">close</mat-icon>
+  <div class="details-content">
+    <mat-icon class="close link"
+              (click)="close()">close</mat-icon>
+    <div class="details-bar">
+      <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + movieDetails.poster"></portrait-component>
+      <div class="description">
+        <div class="title-bar">
+          <span class="title">{{movieDetails.title}}</span>
+          <span class="release-date "> {{movieDetails.releaseYear}} </span>
+          <span class="original-title"
+                *ngIf="movieDetails.title !== movieDetails.originalTitle"> '{{movieDetails.originalTitle}}' </span>
+          <span>Directed by </span>
+          <span class="link underline"
+                (click)="utility.onClickCredit(movieDetails.director)">{{movieDetails.director!.name}}</span>
+        </div>
+        <div class="police-title fs-20">{{movieDetails.tagLine}}</div>
+        <div>{{movieDetails.releaseDate | date : 'MMMM d, y'}}</div>
+        <div>{{movieDetails.runtime}}</div>
+        <div>{{movieDetails.overview}}</div>
 
-  <div class="details-bar">
-    <portrait-component [image]="'https://image.tmdb.org/t/p/w500' + movieDetails.poster"></portrait-component>
-    <div class="description">
-      <div class="title-bar">
-        <span class="title">{{movieDetails.title}}</span>
-        <span class="release-date "> {{movieDetails.releaseYear}} </span>
-        <span class="original-title"
-              *ngIf="movieDetails.title !== movieDetails.originalTitle"> '{{movieDetails.originalTitle}}' </span>
-        <span>Directed by </span>
-        <span class="link underline"
-              (click)="utility.onClickCredit(movieDetails.director)">{{movieDetails.director!.name}}</span>
+        <div class="link ib"
+             *ngIf="movieDetails.trailer">
+          <i class="fab fa-youtube"
+             style="margin-right: 5px;"></i>
+          <a class="link"
+             [href]="movieDetails.trailer"
+             target="_blank">Watch trailer</a></div>
+
+        <div class="link ib"
+             *ngIf="movieDetails.imdbId">
+          <i class="fab fa-imdb"
+             style="margin-right: 5px;"></i>
+          <a class="link"
+             [href]="'https://www.imdb.com/title/'+ movieDetails.imdbId"
+             target="_blank">Go to IMDb</a></div>
+
+        <rating-component [voteAverage]="movieDetails.voteAverage"
+                          [voteCount]="movieDetails.voteCount"
+                          [voteMax]="10"></rating-component>
+
       </div>
-      <div class="police-title fs-20">{{movieDetails.tagLine}}</div>
-      <div>{{movieDetails.releaseDate | date : 'MMMM d, y'}}</div>
-      <div>{{movieDetails.runtime}}</div>
-      <div>{{movieDetails.overview}}</div>
-
-      <div class="link ib"
-           *ngIf="movieDetails.trailer">
-        <i class="fab fa-youtube"
-           style="margin-right: 5px;"></i>
-        <a class="link"
-           [href]="movieDetails.trailer"
-           target="_blank">Watch trailer</a></div>
-
-      <div class="link ib"
-           *ngIf="movieDetails.imdbId">
-        <i class="fab fa-imdb"
-           style="margin-right: 5px;"></i>
-        <a class="link"
-           [href]="'https://www.imdb.com/title/'+ movieDetails.imdbId"
-           target="_blank">Go to IMDb</a></div>
-
-      <rating-component [voteAverage]="movieDetails.voteAverage"
-                        [voteCount]="movieDetails.voteCount"
-                        [voteMax]="10"></rating-component>
-
     </div>
+    <div>
+      <div class="sub-title">Casting</div>
+      <div class="list credits"
+           *ngIf="movieDetails.credits.length">
+        <portrait-component *ngFor="let credit of movieDetails.credits"
+                            [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
+                            (click)="utility.onClickCredit(credit)">
+          <div class="title-portrait">{{credit.name}}</div>
+          <div>{{credit.role}}</div>
 
-  </div>
-  <div>
-    <div class="sub-title">Casting</div>
-    <div class="list credits"
-         *ngIf="movieDetails.credits.length">
-      <portrait-component *ngFor="let credit of movieDetails.credits"
-                          [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
-                          (click)="utility.onClickCredit(credit)">
-        <div class="title-portrait">{{credit.name}}</div>
-        <div>{{credit.role}}</div>
+        </portrait-component>
 
-      </portrait-component>
+      </div>
 
-    </div>
+      <div *ngIf="movieDetails.images.length">
+        <div class="sub-title">Images</div>
+        <div class="list">
+          <div class="image"
+               *ngFor="let image of movieDetails.images">
+            <a [href]="'https://image.tmdb.org/t/p/original' + image"
+               target="_blank">
+              <img [src]="'https://image.tmdb.org/t/p/w300' + image">
+            </a>
+          </div>
+        </div>
 
-    <div *ngIf="movieDetails.images.length">
-      <div class="sub-title">Images</div>
-      <div class="list">
-        <div class="image"
-             *ngFor="let image of movieDetails.images">
-          <a [href]="'https://image.tmdb.org/t/p/original' + image"
-             target="_blank">
-            <img [src]="'https://image.tmdb.org/t/p/w300' + image">
-          </a>
+      </div>
+
+      <div class="collection-movies"
+           *ngIf="movieDetails.collectionMovies.length">
+        <div class="sub-title">Collection movies</div>
+        <div class="list">
+          <portrait-component *ngFor="let movie of movieDetails.collectionMovies"
+                              (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
+                              [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                              [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+            <div class="title-portrait">{{movie.title}}</div>
+            <div>{{movie.releaseYear}}</div>
+            <rating-component [voteAverage]="movie.voteAverage"
+                              [voteCount]="movie.voteCount"
+                              [voteMax]="10"></rating-component>
+          </portrait-component>
         </div>
       </div>
-
-    </div>
-
-    <div class="collection-movies"
-         *ngIf="movieDetails.collectionMovies.length">
-      <div class="sub-title">Collection movies</div>
-      <div class="list">
-        <portrait-component *ngFor="let movie of movieDetails.collectionMovies"
-                            (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-          <div class="title-portrait">{{movie.title}}</div>
-          <div>{{movie.releaseYear}}</div>
-          <rating-component [voteAverage]="movie.voteAverage"
-                            [voteCount]="movie.voteCount"
-                            [voteMax]="10"></rating-component>
-        </portrait-component>
+      <div class="reco-movies"
+           *ngIf="movieDetails.recoMovies.length">
+        <div class="sub-title">Similar movies</div>
+        <div class="list">
+          <portrait-component *ngFor="let movie of movieDetails.recoMovies"
+                              (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
+                              [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                              [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+            <div class="title-portrait">{{movie.title}}</div>
+            <div>{{movie.releaseYear}}</div>
+            <rating-component [voteAverage]="movie.voteAverage"
+                              [voteCount]="movie.voteCount"
+                              [voteMax]="10"></rating-component>
+          </portrait-component>
+        </div>
       </div>
-    </div>
-    <div class="reco-movies"
-         *ngIf="movieDetails.recoMovies.length">
-      <div class="sub-title">Similar movies</div>
-      <div class="list">
-        <portrait-component *ngFor="let movie of movieDetails.recoMovies"
-                            (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-          <div class="title-portrait">{{movie.title}}</div>
-          <div>{{movie.releaseYear}}</div>
-          <rating-component [voteAverage]="movie.voteAverage"
-                            [voteCount]="movie.voteCount"
-                            [voteMax]="10"></rating-component>
-        </portrait-component>
-      </div>
-    </div>
-    <div class="director-movies"
-         *ngIf="movieDetails.directorMovies.length">
-      <div class="sub-title">{{movieDetails.director!.name}} movies</div>
-      <div class="list">
-        <portrait-component *ngFor="let movie of movieDetails.directorMovies"
-                            (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
-                            [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
-                            [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
-          <div class="title-portrait">{{movie.title}}</div>
-          <div>{{movie.releaseYear}}</div>
-          <rating-component [voteAverage]="movie.voteAverage"
-                            [voteCount]="movie.voteCount"
-                            [voteMax]="10"></rating-component>
-        </portrait-component>
+      <div class="director-movies"
+           *ngIf="movieDetails.directorMovies.length">
+        <div class="sub-title">{{movieDetails.director!.name}} movies</div>
+        <div class="list">
+          <portrait-component *ngFor="let movie of movieDetails.directorMovies"
+                              (click)="utility.onClickMovieDetails(movie, movieDetails, $event)"
+                              [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                              [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
+            <div class="title-portrait">{{movie.title}}</div>
+            <div>{{movie.releaseYear}}</div>
+            <rating-component [voteAverage]="movie.voteAverage"
+                              [voteCount]="movie.voteCount"
+                              [voteMax]="10"></rating-component>
+          </portrait-component>
+        </div>
       </div>
     </div>
   </div>
