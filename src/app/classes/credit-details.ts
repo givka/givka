@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash';
 import * as moment from 'moment';
 import { IDataBaseMovie, IDataBaseSerie } from '../interfaces/all';
 import { Credit } from './credit';
@@ -7,27 +8,16 @@ import { Utils } from './utils';
 
 export class CreditDetails extends Credit {
   public biography: string;
-
   public birthday: string | null;
-
   public deathday: string | null;
-
   public images: string[];
-
   public knownFor: string;
-
   public actorMovies: Movie[];
-
   public directorMovies: Movie[];
-
   public actorSeries: Serie[];
-
   public creatorSeries: Serie[];
-
   public birthPlace: string;
-
   public age: number | null;
-
   public imdbId!: string;
 
   constructor(options: any, databaseMovies: IDataBaseMovie, databaseSeries: IDataBaseSerie) {
@@ -87,7 +77,7 @@ export class CreditDetails extends Credit {
   private formatSeries(series: any[], database: IDataBaseSerie) {
     const seriesFormatted = series.map(m => new Serie().fromServer(m, database))
       .filter(m => m.poster && m.voteCount && m.backdrop);
-    return Utils.orderBy(seriesFormatted, 'voteCount');
+    return uniqBy(Utils.orderBy(seriesFormatted, 'voteCount'), s => s.id);
   }
 
   private formatImages(options: any) {
