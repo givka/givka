@@ -79,7 +79,7 @@ app-component {
       flex-wrap: wrap;
       border-radius: 5px;
       background-color: rgba(255, 255, 255, 0.1);
-      height: 139px;
+      height: 175px;
 
       box-shadow: 0 0 10px #000;
       flex-direction: column;
@@ -90,31 +90,15 @@ app-component {
 
       portrait-component {
         height: 100%;
+
+        &:last-child {
+          padding-right: 10px;
+        }
       }
 
       rating-component {
         span {
           display: none;
-        }
-      }
-
-      .image {
-        height: 139px;
-        max-width: fit-content;
-        transition: 0.2s ease;
-        padding-right: 10px;
-        padding-bottom: 10px;
-        user-select: none;
-
-        &:hover {
-          cursor: pointer;
-        }
-
-        img {
-          height: 100%;
-          border-radius: 3px;
-          object-fit: cover;
-          box-shadow: 0 0px 10px rgba(0, 0, 0, 0.75);
         }
       }
     }
