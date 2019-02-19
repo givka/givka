@@ -50,7 +50,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     this.tmdb.getMovieDetails(id)
       .then((movieDetails) => {
         this.movieDetails = movieDetails;
-        this.title.setTitle(movieDetails.title);
+        this.title.setTitle(`${movieDetails.title} - Givka`);
       })
       .finally(() => {
         this.loading = false;

@@ -35,7 +35,7 @@ export class ComicDetailsComponent implements OnInit {
     this.comicsAPI.getSerieDetails(id)
     .then((result) => {
       this.serie = result;
-      this.title.setTitle(this.serie.serieTitle);
+      this.title.setTitle(`${this.serie.serieTitle} - Givka`);
     })
     .finally(() => this.loading = false);
   }

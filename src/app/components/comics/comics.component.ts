@@ -27,7 +27,7 @@ export class ComicsComponent implements OnInit {
 
   public ngOnInit() {
     this.list = 'popular';
-    this.title.setTitle('Comics');
+    this.title.setTitle('Franco-Belgian Comics - Givka');
     this.comicsAPI.getSeries()
     .then(result => this.series = result)
     .finally(() => this.loading = false);

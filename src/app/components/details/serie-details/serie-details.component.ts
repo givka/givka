@@ -52,7 +52,7 @@ export class SerieDetailsComponent implements OnInit {
     this.tmdb.getSerieDetails(id)
       .then((serieDetails) => {
         this.serieDetails = serieDetails;
-        this.title.setTitle(serieDetails.title);
+        this.title.setTitle(`${serieDetails.title} - Givka`);
       })
       .finally(() => {
         this.loading = false;

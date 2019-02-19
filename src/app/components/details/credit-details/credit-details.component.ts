@@ -53,7 +53,7 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
     this.tmdb.getPeople(id)
       .then((credit) => {
         this.credit = credit;
-        this.title.setTitle(credit.name);
+        this.title.setTitle(`${credit.name} - Givka`);
       })
       .finally(() => { this.loading = false; });
   }

@@ -64,7 +64,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.title.setTitle('Movies');
+    this.title.setTitle('Movies - Givka');
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });

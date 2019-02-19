@@ -36,7 +36,7 @@ export class AuthorDetailsComponent implements OnInit {
     this.comicsAPI.getAuthor(name)
     .then((result) => {
       this.author = result;
-      this.title.setTitle(this.author.name);
+      this.title.setTitle(`${this.author.name} - Givka`);
     })
     .finally(() => this.loading = false);
   }

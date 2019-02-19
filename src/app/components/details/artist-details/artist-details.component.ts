@@ -53,7 +53,7 @@ export class ArtistDetailsComponent implements OnInit {
     this.cancelArrayDelay();
     this.wikiart.getArtistDetails(artistUrl)
       .then((artist) => {
-        this.title.setTitle(artist.artistName);
+        this.title.setTitle(`${artist.artistName} - Givka`);
         this.arrayDelay(artist.paintings);
         this.artist = artist;
       })

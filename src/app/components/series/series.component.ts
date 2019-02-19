@@ -54,7 +54,7 @@ export class TvComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
-    this.title.setTitle('TV Series');
+    this.title.setTitle('TV Series - Givka');
     this.subRouter = this.routeActive.params.subscribe((params) => {
       this.loadList(params.list);
     });
