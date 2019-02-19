@@ -10,7 +10,7 @@
     </mat-icon>
 
     <div class="details-bar">
-      <portrait-component [image]="credit.profile? 'https://image.tmdb.org/t/p/h632' + credit.profile : 'no_credit'"></portrait-component>
+      <portrait-component [image]="credit.profile? 'https://image.tmdb.org/t/p/w500' + credit.profile : 'no_credit'"></portrait-component>
 
       <div class="description">
         <div class="title-bar">
@@ -40,7 +40,7 @@
       <div class="sub-title">Images</div>
       <div class="list">
         <portrait-component *ngFor="let image of credit.images"
-                            [image]="'https://image.tmdb.org/t/p/w300' + image"
+                            [image]="'https://image.tmdb.org/t/p/w780' + image"
                             (click)="openNewTab(image)">
           <i class="material-icons">launch</i>
         </portrait-component>
@@ -52,7 +52,7 @@
         <div class="list">
           <portrait-component *ngFor="let movie of credit.actorMovies"
                               (click)="utility.onClickMovie(movie, $event)"
-                              [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                              [image]="'https://image.tmdb.org/t/p/w342'+movie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
             <div class="title-portrait">{{movie.title}}</div>
             <div>{{movie.releaseYear}}</div>
@@ -68,7 +68,7 @@
         <div class="list">
           <portrait-component *ngFor="let serie of credit.actorSeries"
                               (click)="utility.onClickSerie(serie, $event)"
-                              [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
+                              [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
             <div class="title-portrait">{{serie.title}}</div>
             <div>{{serie.releaseYear}}</div>
@@ -85,7 +85,7 @@
         <div class="list">
           <portrait-component *ngFor="let movie of credit.directorMovies"
                               (click)="utility.onClickMovie(movie, $event)"
-                              [image]="'https://image.tmdb.org/t/p/w185'+movie.poster"
+                              [image]="'https://image.tmdb.org/t/p/w342'+movie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
             <div class="title-portrait">{{movie.title}}</div>
             <div>{{movie.releaseYear}}</div>
@@ -101,7 +101,7 @@
         <div class="list">
           <portrait-component *ngFor="let serie of credit.creatorSeries"
                               (click)="utility.onClickSerie(serie, $event)"
-                              [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
+                              [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
             <div class="title-portrait">{{serie.title}}</div>
             <div>{{serie.releaseYear}}</div>

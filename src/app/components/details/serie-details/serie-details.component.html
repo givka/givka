@@ -44,7 +44,7 @@
       <div class="list credits"
            *ngIf="serieDetails.credits">
         <portrait-component *ngFor="let credit of serieDetails.credits"
-                            [image]="credit.profile? 'https://image.tmdb.org/t/p/w185' + credit.profile : 'no_credit'"
+                            [image]="credit.profile? 'https://image.tmdb.org/t/p/w342' + credit.profile : 'no_credit'"
                             (click)="utility.onClickCredit(credit)">
           <div class="title-portrait">{{credit.name}}</div>
           <div>{{credit.role}}</div>
@@ -55,7 +55,7 @@
         <div class="sub-title">Images</div>
         <div class="list">
           <portrait-component *ngFor="let image of serieDetails.images"
-                              [image]="'https://image.tmdb.org/t/p/w300' + image"
+                              [image]="'https://image.tmdb.org/t/p/w780' + image"
                               (click)="openNewTab(image)">
             <i class="material-icons">launch</i>
           </portrait-component>
@@ -67,7 +67,7 @@
         <div class="list">
           <portrait-component *ngFor="let season of serieDetails.seasons"
                               (click)="onClickSeason(season, $event)"
-                              [image]="season.poster?'https://image.tmdb.org/t/p/w185'+season.poster:null">
+                              [image]="season.poster?'https://image.tmdb.org/t/p/w342'+season.poster:null">
             <div class="title-portrait">{{season.name}}</div>
             <div>{{season.releaseDate | date : 'y'}}</div>
             <div class="title-portrait">{{season.episodeCount}} episodes</div>
@@ -80,7 +80,7 @@
         <div class="list">
           <portrait-component *ngFor="let serie of serieDetails.recoSeries"
                               (click)="utility.onClickSerieDetails(serie,serieDetails, $event)"
-                              [image]="'https://image.tmdb.org/t/p/w185'+serie.poster"
+                              [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
             <div class="title-portrait">{{serie.title}}</div>
             <div>{{serie.releaseYear}}</div>
