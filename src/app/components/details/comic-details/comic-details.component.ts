@@ -14,7 +14,7 @@ import { ComicsService } from '../../../services/comics.service';
 })
 export class ComicDetailsComponent implements OnInit {
   public subRouter!: Subscription;
-  public serie!: ComicSerieDetails;
+  public serieDetails!: ComicSerieDetails;
   public loading = true;
   public background = `${random(0, 16)}.jpg`;
 
@@ -32,14 +32,22 @@ export class ComicDetailsComponent implements OnInit {
   }
 
   public loadComicDetails(id: number) {
+    this.loading = true;
     this.comicsAPI.getSerieDetails(id)
     .then((result) => {
-      this.serie = result;
-      this.title.setTitle(`${this.serie.serieTitle} - Givka`);
+      this.serieDetails = result;
+      this.title.setTitle(`${this.serieDetails.serieTitle} - Givka`);
     })
     .finally(() => this.loading = false);
   }
 
+  public onClickAuthor(name: string) {
+    this.router.navigate([`/author/${name}`]);
+  }
+
+  public onClickSerie(id: number) {
+    this.router.navigate([`/comic/${id}`]);
+  }
   public onCloseComic() {
     this.router.navigate(['/comics']);
   }

@@ -1,5 +1,3 @@
-import { ComicAlbum } from './comic-album';
-
 export class ComicSerie{
   public serieTitle: string;
   public serieId: number;

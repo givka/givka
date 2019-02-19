@@ -18,8 +18,6 @@ import { ArtistDetailsComponent } from
  './components/details/artist-details/artist-details.component';
 import { AuthorDetailsComponent } from
  './components/details/author-details/author-details.component';
-import { ComicAlbumComponent } from
-'./components/details/comic-details/comic-album/comic-album.component';
 import { ComicDetailsComponent } from './components/details/comic-details/comic-details.component';
 import { CreditDetailsComponent } from
 './components/details/credit-details/credit-details.component';
@@ -70,7 +68,6 @@ const appRoutes: Routes = [
     RatingComponent,
     ComicsComponent,
     ComicDetailsComponent,
-    ComicAlbumComponent,
     AuthorDetailsComponent,
     NavbarComponent,
   ],

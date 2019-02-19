@@ -11,25 +11,73 @@
               (click)="onCloseComic()">close</mat-icon>
 
     <div class="details-bar">
-      <portrait-component [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover"></portrait-component>
+      <portrait-component [image]="'https://www.bedetheque.com/media/Couvertures/' + serieDetails.serieCover"></portrait-component>
       <div class="description">
         <div class="title-bar">
           <div>
-            <span class="title">{{serie.serieTitle}}</span>
+            <span class="title">{{serieDetails.serieTitle}}</span>
           </div>
-          <rating-component [voteAverage]="serie.voteAverage"
-                            [voteCount]="serie.voteCount"
+          <rating-component [voteAverage]="serieDetails.voteAverage"
+                            [voteCount]="serieDetails.voteCount"
                             [voteMax]="100">
           </rating-component>
         </div>
       </div>
     </div>
-    <div class="albums">
-      <comic-album-component *ngFor="let album of serie.albums"
-                             [album]="album"
-                             id="{{album.albumId}}">
-      </comic-album-component>
+    <div *ngIf="serieDetails.albums.length">
+      <div class="sub-title">Albums</div>
+      <div class="list">
+        <portrait-component *ngFor="let album of serieDetails.albums"
+                            [image]="'https://www.bedetheque.com/media/Couvertures/' + album.imageCover">
 
+          <div class="title-portrait">
+            <span>{{album.albumNumber}} - {{album.albumTitle}}</span>
+          </div>
+          <div class="line fs-12">
+            <span>{{album.date}}</span>
+          </div>
+
+          <div class="line">
+            <i class="fas fa-file-alt"
+               style="margin-right: 5px"></i>
+            <span class="link bold"
+                  (click)="onClickAuthor(album.scenario)">{{album.scenario}}</span>
+          </div>
+          <div class="line">
+            <i class="fas fa-pencil-alt"
+               style="margin-right: 5px"></i>
+            <span class="link bold"
+                  (click)="onClickAuthor(album.drawing)">{{album.drawing}}</span>
+          </div>
+
+          <div>
+            <rating-component [voteAverage]="album.voteAverage"
+                              [voteCount]="album.voteCount"
+                              [voteMax]="100">
+            </rating-component>
+          </div>
+
+          <!-- <div class="line fs-12">
+            <span>Pages: </span>
+            <span>{{album.nbrOfPages}}</span>
+          </div> -->
+        </portrait-component>
+      </div>
+    </div>
+
+    <div *ngIf="serieDetails.recommendations.length">
+      <div class="sub-title">Similar Comic Series</div>
+      <div class="list">
+        <portrait-component *ngFor="let serie of serieDetails.recommendations"
+                            [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover"
+                            (click)="onClickSerie(serie.serieId)">
+          <div class="title-portrait">{{serie.serieTitle}}</div>
+          <div>{{serie.numberOfAlbums}} album(s)</div>
+          <rating-component [voteAverage]="serie.voteAverage"
+                            [voteCount]="serie.voteCount"
+                            [voteMax]="100"></rating-component>
+        </portrait-component>
+      </div>
     </div>
   </div>
 </div>
