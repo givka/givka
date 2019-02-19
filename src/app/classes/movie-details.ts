@@ -1,6 +1,5 @@
 import * as moment from 'moment';
-import { IDataBaseMovie } from '../interfaces/all';
-import { BelongsToCollection } from '../interfaces/all';
+import { BelongsToCollection, IDataBaseMovie } from '../interfaces/all';
 import { Credit } from './credit';
 import { CreditDetails } from './credit-details';
 import { Movie } from './movie';
@@ -52,6 +51,7 @@ export class MovieDetails extends TmdbDetails {
 
   private formatRecoMovies(options: any, database: IDataBaseMovie) {
     return options.recommendations.results
-      .map((m: any) => new Movie().fromServer(m, database));
+      .map((m: any) => new Movie().fromServer(m, database))
+      .filter((m: any) => m.poster);
   }
 }
