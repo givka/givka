@@ -11,56 +11,60 @@
               (click)="onCloseAuthor()">close</mat-icon>
 
     <div class="details-bar">
-      <portrait-component [image]="''"></portrait-component>
+      <portrait-component [image]="author.image ? 'https://www.bedetheque.com/media/Photos/' + author.image : null"></portrait-component>
       <div class="description">
         <div class="title-bar">
-          <div>
-            <span class="title">{{author.name}}</span>
-          </div>
+          <span class="title">{{author.name}}</span>
+        </div>
+        <div *ngIf="author.birthDate">
+          <span>Born on {{author.birthDate}}</span>
+        </div>
+        <div *ngIf="author.deathDate">
+          <span>Died on {{author.deathDate}}</span>
         </div>
       </div>
     </div>
 
-    <div *ngIf="author.bothAlbums.length">
-      <div class="sub-title">Scenario and Drawing albums</div>
-      <div class="grid">
-        <portrait-component *ngFor="let album of author.bothAlbums"
-                            (click)="onClickComic(album.serieId)"
-                            [image]="album.imageCover? 'https://www.bedetheque.com/media/Couvertures/'+album.imageCover: ''">
-          <div class="title-portrait">{{album.albumTitle}}</div>
-          <div>{{album.date}}</div>
-          <rating-component [voteAverage]="album.voteAverage"
-                            [voteCount]="album.voteCount"
+    <div *ngIf="author.seriesBoth.length">
+      <div class="sub-title">Scenario and Drawing series</div>
+      <div class="list">
+        <portrait-component *ngFor="let serie of author.seriesBoth"
+                            (click)="onClickComic(serie.serieId)"
+                            [image]="serie.serieCover? 'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover: ''">
+          <div class="title-portrait">{{serie.serieTitle}}</div>
+          <div>{{serie.numberOfAlbums}} album(s)</div>
+          <rating-component [voteAverage]="serie.voteAverage"
+                            [voteCount]="serie.voteCount"
                             [voteMax]="100"></rating-component>
         </portrait-component>
       </div>
     </div>
 
-    <div *ngIf="author.scenarioAlbums.length">
-      <div class="sub-title">Scenario only albums</div>
-      <div class="grid">
-        <portrait-component *ngFor="let album of author.scenarioAlbums"
-                            (click)="onClickComic(album.serieId)"
-                            [image]="album.imageCover? 'https://www.bedetheque.com/media/Couvertures/'+album.imageCover: ''">
-          <div class="title-portrait">{{album.albumTitle}}</div>
-          <div>{{album.date}}</div>
-          <rating-component [voteAverage]="album.voteAverage"
-                            [voteCount]="album.voteCount"
+    <div *ngIf="author.seriesScenario.length">
+      <div class="sub-title">Scenario only series</div>
+      <div class="list">
+        <portrait-component *ngFor="let serie of author.seriesScenario"
+                            (click)="onClickComic(serie.serieId)"
+                            [image]="serie.serieCover? 'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover: ''">
+          <div class="title-portrait">{{serie.serieTitle}}</div>
+          <div>{{serie.numberOfAlbums}} album(s)</div>
+          <rating-component [voteAverage]="serie.voteAverage"
+                            [voteCount]="serie.voteCount"
                             [voteMax]="100"></rating-component>
         </portrait-component>
       </div>
     </div>
 
-    <div *ngIf="author.drawingAlbums.length">
-      <div class="sub-title">Drawing only albums</div>
-      <div class="grid">
-        <portrait-component *ngFor="let album of author.drawingAlbums"
-                            (click)="onClickComic(album.serieId)"
-                            [image]="album.imageCover? 'https://www.bedetheque.com/media/Couvertures/'+album.imageCover: ''">
-          <div class="title-portrait">{{album.albumTitle}}</div>
-          <div>{{album.date}}</div>
-          <rating-component [voteAverage]="album.voteAverage"
-                            [voteCount]="album.voteCount"
+    <div *ngIf="author.seriesDrawing.length">
+      <div class="sub-title">Drawing only series</div>
+      <div class="list">
+        <portrait-component *ngFor="let serie of author.seriesDrawing"
+                            (click)="onClickComic(serie.serieId)"
+                            [image]="serie.serieCover? 'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover: ''">
+          <div class="title-portrait">{{serie.serieTitle}}</div>
+          <div>{{serie.numberOfAlbums}} album(s)</div>
+          <rating-component [voteAverage]="serie.voteAverage"
+                            [voteCount]="serie.voteCount"
                             [voteMax]="100"></rating-component>
         </portrait-component>
       </div>

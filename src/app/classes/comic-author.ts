@@ -1,19 +1,24 @@
 import { ComicAlbum } from './comic-album';
+import { ComicSerie } from './comic-serie';
 
 export class ComicAuthor{
+  public authorId: number;
   public name: string;
-  public bothAlbums: ComicAlbum[];
-  public scenarioAlbums: ComicAlbum[];
-  public drawingAlbums: ComicAlbum[];
+  public birthDate: string | null;
+  public deathDate: string | null;
+  public image: string;
+  public seriesBoth: ComicSerie[];
+  public seriesScenario: ComicSerie[];
+  public seriesDrawing: ComicSerie[];
 
   constructor(options: any) {
-    const albums = options.albums.map((a:any) => new ComicAlbum(a)) as ComicAlbum[];
+    this.authorId = options.authorId;
     this.name = options.name;
-    this.bothAlbums = albums.filter(album => album.scenario === this.name &&
-                                             album.drawing === this.name);
-    this.scenarioAlbums = albums.filter(album => album.scenario === this.name &&
-                                                 album.drawing !== this.name);
-    this.drawingAlbums = albums.filter(album => album.drawing === this.name &&
-                                                album.scenario !== this.name);
+    this.birthDate = options.birthDate;
+    this.deathDate = options.deathDate;
+    this.image = options.image;
+    this.seriesBoth = options.seriesBoth.map((s:any) => new ComicSerie(s));
+    this.seriesScenario = options.seriesScenario.map((s:any) => new ComicSerie(s));
+    this.seriesDrawing = options.seriesDrawing.map((s:any) => new ComicSerie(s));
   }
 }
