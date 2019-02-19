@@ -16,9 +16,7 @@ import { UtilityService } from '../../../services/utility.service';
 })
 export class SerieDetailsComponent implements OnInit {
   public serieDetails!: SerieDetails;
-
   public loading = true;
-
   public subRouter!: Subscription;
 
   constructor(
@@ -43,6 +41,10 @@ export class SerieDetailsComponent implements OnInit {
 
   public onClickSeason(season: ISeason, event: KeyboardEvent) {
     // TODO: see season details
+  }
+
+  public openNewTab(image: string) {
+    window.open(`https://image.tmdb.org/t/p/original${image}`, '_blank');
   }
 
   public loadSerieDetails(id: number) {

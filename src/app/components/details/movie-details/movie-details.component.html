@@ -65,15 +65,14 @@
       <div *ngIf="movieDetails.images.length">
         <div class="sub-title">Images</div>
         <div class="list">
-          <div class="image"
-               *ngFor="let image of movieDetails.images">
-            <a [href]="'https://image.tmdb.org/t/p/original' + image"
-               target="_blank">
-              <img [src]="'https://image.tmdb.org/t/p/w300' + image">
-            </a>
-          </div>
-        </div>
 
+          <portrait-component *ngFor="let image of movieDetails.images"
+                              [image]="'https://image.tmdb.org/t/p/w300' + image"
+                              (click)="openNewTab(image)">
+            <i class="material-icons">launch</i>
+          </portrait-component>
+
+        </div>
       </div>
 
       <div class="collection-movies"

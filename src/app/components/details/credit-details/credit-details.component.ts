@@ -17,9 +17,7 @@ import { UtilityService } from '../../../services/utility.service';
 })
 export class CreditDetailsComponent implements OnInit, OnDestroy {
   public credit!: CreditDetails;
-
   public loading = true;
-
   public subRouter!: Subscription;
 
   constructor(
@@ -42,6 +40,10 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     this.subRouter.unsubscribe();
+  }
+
+  public openNewTab(image: string) {
+    window.open(`https://image.tmdb.org/t/p/original${image}`, '_blank');
   }
 
   public loadCreditDetails(id: number): void {

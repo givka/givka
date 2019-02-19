@@ -41,6 +41,10 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     this.subRouter.unsubscribe();
   }
 
+  public openNewTab(image: string) {
+    window.open(`https://image.tmdb.org/t/p/original${image}`, '_blank');
+  }
+
   public loadMovieDetails(id: number) {
     this.loading = true;
     this.tmdb.getMovieDetails(id)
