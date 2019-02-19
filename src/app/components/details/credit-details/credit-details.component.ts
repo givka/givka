@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { random } from 'lodash';
 import { Subscription } from 'rxjs';
 import { CreditDetails } from '../../../classes/credit-details';
 import { RoutingStateService } from '../../../services/routing-state.service';
@@ -19,6 +20,7 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
   public credit!: CreditDetails;
   public loading = true;
   public subRouter!: Subscription;
+  public background = `${random(0, 16)}.jpg`;
 
   constructor(
     private tmdb: TmdbService,

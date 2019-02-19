@@ -3,7 +3,8 @@
 </div>
 
 <div *ngIf="!loading"
-     class="details">
+     class="details"
+     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}">
   <div class="details-content">
     <mat-icon class="close link"
               (click)="close()">close

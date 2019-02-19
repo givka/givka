@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { random } from 'lodash';
 import { Subscription } from 'rxjs';
 import { ComicSerieDetails } from '../../../classes/comic-serie-details';
 import { ComicsService } from '../../../services/comics.service';
@@ -15,6 +16,7 @@ export class ComicDetailsComponent implements OnInit {
   public subRouter!: Subscription;
   public serie!: ComicSerieDetails;
   public loading = true;
+  public background = `${random(0, 16)}.jpg`;
 
   constructor(private routeActive: ActivatedRoute,
               private router: Router,

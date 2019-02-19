@@ -1,14 +1,26 @@
 comic-album-component {
   display: flex;
-  padding-top: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  width: fit-content;
+  box-shadow: 0 0 10px black;
+  border-radius: 3px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  height: 200px;
 
   portrait-component {
-    height: 300px;
-    padding: 0;
+    height: 100%;
+    margin: 0;
+
+    .portrait {
+      box-shadow: none;
+      border-radius: 3px 0px 0px 3px;
+    }
+
   }
 
   .info {
-    padding-left: 20px;
+    padding: 10px;
 
     .line {
       padding: 5px;

@@ -30,21 +30,6 @@ body {
     display: inline-block;
   }
 
-  .tab {
-    color: inherit;
-    text-decoration: inherit;
-    padding: 10px;
-    font-size: 14px;
-    user-select: none;
-    outline: none;
-
-    &:hover {
-      cursor: pointer;
-      background-color: $color-secondary;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 1);
-    }
-  }
-
   .link {
     user-select: none;
     color: inherit;

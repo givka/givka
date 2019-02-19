@@ -4,6 +4,7 @@ import {
 
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { random } from 'lodash';
 import { Subscription } from 'rxjs';
 import { ArtistDetails } from '../../../classes/artist-details';
 import { Painting } from '../../../classes/painting';
@@ -19,16 +20,12 @@ import { WikiartService } from '../../../services/wikiart.service';
 })
 export class ArtistDetailsComponent implements OnInit {
   public artist!: ArtistDetails;
-
   public subRouter!: Subscription;
-
   public loading = true;
-
   public intervalId!: number;
-
   public paintings!: Painting[];
-
   public popupPainting!: Painting;
+  public background = `${random(0, 16)}.jpg`;
 
   constructor(
     private routeActive: ActivatedRoute,
