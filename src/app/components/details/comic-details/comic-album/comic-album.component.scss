@@ -6,7 +6,7 @@ comic-album-component {
   border-radius: 3px;
   margin-right: 20px;
   margin-bottom: 20px;
-  height: 200px;
+  height: 300px;
 
   portrait-component {
     height: 100%;
@@ -21,6 +21,9 @@ comic-album-component {
 
   .info {
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 
     .line {
       padding: 5px;
