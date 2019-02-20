@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 import { ComicAlbum } from '../classes/comic-album';
 import { ComicAuthor } from '../classes/comic-author';
 import { ComicSerie } from '../classes/comic-serie';
@@ -11,6 +12,7 @@ import { ComicSerieDetails } from '../classes/comic-serie-details';
 export class ComicsService {
 
   private readonly baseUrl = 'https://givka-api.netlify.com/.netlify/functions/';
+  private cache = new Map();
 
   constructor(private http : HttpClient) {}
 
@@ -20,17 +22,26 @@ export class ComicsService {
     .then((response: any) => response.map((a: any) => new ComicAlbum(a)) as ComicAlbum[]);
   }
 
-  public getSeries(after: number|null) {
-    let url = `${this.baseUrl}read-all?class=series&order=voteCount`;
-    if (after) {
-      url += `&after=${after}`;
+  public getSeries(after: number|null) : Promise<{after: number, series: ComicSerie[]}> {
+    const url = `${this.baseUrl}read-all?class=series&order=voteCount${
+      after ?  `&after=${after}` : ''}`;
+
+    const seriesCache = this.cache.get(url);
+    if (seriesCache) {
+      return of(seriesCache).toPromise();
     }
+
     return this.http.get(url)
-    .toPromise()
-    .then((response: any) => ({
-      after: response.after,
-      series: response.series.map((s: any) => new ComicSerie(s)) as ComicSerie[],
-    }));
+      .toPromise()
+      .then((response: any) => {
+        const result = {
+          after: response.after,
+          series: response.series.map((s: any) => new ComicSerie(s)) as ComicSerie[],
+        };
+        this.cache.set(url, result);
+        return result;
+      });
+
   }
 
   public getSerieDetails(id: number) {
