@@ -10,7 +10,7 @@ import { ComicSerieDetails } from '../classes/comic-serie-details';
 })
 export class ComicsService {
 
-  private baseUrl = 'https://givka-api.netlify.com/.netlify/functions/';
+  private readonly baseUrl = 'https://givka-api.netlify.com/.netlify/functions/';
 
   constructor(private http : HttpClient) {}
 
@@ -20,10 +20,17 @@ export class ComicsService {
     .then((response: any) => response.map((a: any) => new ComicAlbum(a)) as ComicAlbum[]);
   }
 
-  public getSeries() {
-    return this.http.get(`${this.baseUrl}read-all?class=series&order=voteCount`)
+  public getSeries(after: number|null) {
+    let url = `${this.baseUrl}read-all?class=series&order=voteCount`;
+    if (after) {
+      url += `&after=${after}`;
+    }
+    return this.http.get(url)
     .toPromise()
-    .then((response: any) => response.map((s: any) => new ComicSerie(s)) as ComicSerie[]);
+    .then((response: any) => ({
+      after: response.after,
+      series: response.series.map((s: any) => new ComicSerie(s)) as ComicSerie[],
+    }));
   }
 
   public getSerieDetails(id: number) {
