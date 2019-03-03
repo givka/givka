@@ -17,6 +17,27 @@
           <div>
             <span class="title">{{serieDetails.serieTitle}}</span>
           </div>
+
+          <div *ngIf="serieDetails.albums.length === 1"
+               class="line fs-12">
+            <span>{{serieDetails.albums[0].date}}</span>
+          </div>
+
+          <div *ngIf="serieDetails.albums.length === 1"
+               class="line">
+            <i class="fas fa-file-alt"
+               style="width: 30px"></i>
+            <span class="link underline"
+                  (click)="onClickAuthor(serieDetails.albums[0].scenario)">{{serieDetails.albums[0].scenario}}</span>
+          </div>
+          <div *ngIf="serieDetails.albums.length === 1"
+               class="line">
+            <i class="fas fa-pencil-alt"
+               style="width: 30px"></i>
+            <span class="link underline"
+                  (click)="onClickAuthor(serieDetails.albums[0].drawing)">{{serieDetails.albums[0].drawing}}</span>
+          </div>
+
           <rating-component [voteAverage]="serieDetails.voteAverage"
                             [voteCount]="serieDetails.voteCount"
                             [voteMax]="100">
@@ -24,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="serieDetails.albums.length">
+    <div *ngIf="serieDetails.albums.length > 1">
       <div class="sub-title">Albums</div>
       <div class="list">
         <portrait-component *ngFor="let album of serieDetails.albums"
