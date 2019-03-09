@@ -64,7 +64,7 @@
 
       <div *ngIf="movieDetails.images.length">
         <div class="sub-title">Images</div>
-        <div class="list">
+        <div class="list images">
 
           <portrait-component *ngFor="let image of movieDetails.images"
                               [image]="'https://image.tmdb.org/t/p/w780' + image"

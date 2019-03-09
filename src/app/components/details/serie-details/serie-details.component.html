@@ -53,7 +53,7 @@
       </div>
       <div *ngIf="serieDetails.images.length">
         <div class="sub-title">Images</div>
-        <div class="list">
+        <div class="list images">
           <portrait-component *ngFor="let image of serieDetails.images"
                               [image]="'https://image.tmdb.org/t/p/w780' + image"
                               (click)="openNewTab(image)">

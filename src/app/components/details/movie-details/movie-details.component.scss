@@ -1,2 +1,27 @@
 movie-details-component {
+  .details-bar {
+    portrait-component {
+      width: calc(370px * 2/3);
+    }
+
+    .description {
+      width: calc(100% - (370px + 20px) * 2/3);
+    }
+  }
+
+  .list {
+    portrait-component {
+      width: calc(175px * 2/3);
+    }
+
+    &.images {
+      portrait-component {
+        width: calc(175px * 16/9);
+      }
+    }
+  }
+
+  img {
+    width: 100%;
+  }
 }

@@ -81,7 +81,7 @@ export class CreditDetails extends Credit {
   }
 
   private formatImages(options: any) {
-    const images = options.images.profiles.concat(options.tagged_images.results);
+    const images = options.images.profiles;
     return Utils.orderBy(images, 'voteCount').map((i:any) => i.file_path);
   }
 }
