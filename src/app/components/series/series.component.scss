@@ -1,6 +1,8 @@
+@import "../../../styles.scss";
+
 series-component {
   portrait-component {
-    height: 250px;
-    width: calc(250px * 2/3);
+    height: $height-poster;
+    width: calc(#{$height-poster} * 2/3);
   }
 }

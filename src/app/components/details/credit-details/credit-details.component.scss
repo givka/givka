@@ -1,3 +1,5 @@
+@import "../../../../styles.scss";
+
 credit-details-component {
   .details-bar {
     portrait-component {
@@ -9,13 +11,17 @@ credit-details-component {
     }
   }
 
-  .list {
-    portrait-component {
-      width: calc(175px * 2/3);
-    }
-  }
+  .details {
+    .list {
+      height: $height-poster;
 
-  img {
-    width: 100%;
+      portrait-component {
+        width: calc(#{$height-poster} * 2/3);
+      }
+    }
+
+    img {
+      width: 100%;
+    }
   }
 }
