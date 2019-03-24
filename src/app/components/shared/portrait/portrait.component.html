@@ -1,7 +1,10 @@
 <div class="portrait">
   <div class="image-container">
-    <img *ngIf="image"
+    <img *ngIf="image && !width"
          [src]="image ==='no_credit' ? 'assets/no-profile.png' : image ">
+    <img *ngIf="image && width"
+         [src]="image ==='no_credit' ? 'assets/no-profile.png' : image "
+         [width]="width">
   </div>
   <div class="image-title"
        [ngClass]="{'empty': !ref.innerHTML.trim()}">

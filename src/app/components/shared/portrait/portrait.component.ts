@@ -12,4 +12,5 @@ export class PortraitComponent {
   @Input() public image!: string;
   @Input() public title!: string;
   @Input() public topTitle!: string;
+  @Input() public width!: number;
 }
