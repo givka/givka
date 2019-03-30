@@ -23,6 +23,7 @@ export class ArtComponent implements OnInit, OnDestroy {
   public subRouter!: Subscription;
   public list!: string;
   public isSearching = false;
+  public currentPage = 0;
   public linkButtons = [
   { title: 'Popular Artists', url:'/art/artists' },
   { title: 'Popular Paintings', url:'/art/paintings' },
@@ -77,12 +78,23 @@ export class ArtComponent implements OnInit, OnDestroy {
   }
 
   public loadDiscover(list: string) {
-    const promise: Promise<Painting[] | Artist[]> = list === 'paintings'
-    ? this.wikiart.getMostViewedPaintings()
-    : this.wikiart.getPopularArtists();
+    const promise = list === 'paintings' ? this.loadDiscoverPaintings()
+                                         : this.wikiart.getPopularArtists();
+
     promise.then((items) => {
       this.arrayDelay(items);
     }).finally(() => { this.loading = false; });
+  }
+
+  public loadDiscoverPaintings() {
+    if (this.currentPage === 0) {
+      this.currentPage += 2;
+      return Promise
+        .all([this.wikiart.getMostViewedPaintings(1), this.wikiart.getMostViewedPaintings(2)])
+        .then(([paintings1, paintings2]) => Array.prototype.concat(paintings1, paintings2));
+    }
+    this.currentPage += 1;
+    return this.wikiart.getMostViewedPaintings(this.currentPage);
   }
 
   public onClickArtist(artistUrl: string) {

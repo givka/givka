@@ -10,15 +10,15 @@ import { Storage } from '../classes/storage';
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
   private readonly proxyUrl = 'https://givka-api.netlify.com/.netlify/functions/proxy';
-  private readonly baseUrl = `${this.proxyUrl}?url=https://www.wikiart.org/en/`;
+  private readonly baseUrl = 'https://www.wikiart.org/';
   private cache = new Map();
 
   constructor(private http: HttpClient) { }
 
-  public getMostViewedPaintings(): Promise<Painting[]> {
+  public getMostViewedPaintings(page: number = 1): Promise<Painting[]> {
     const database = Storage.readDB('art');
-    return this.getRequestCached('App/Painting/MostViewedPaintings')
-      .then(result => shuffle(result
+    return this.getRequestCached(`?json=2&layout=new&param=featured&layout=new&page=${page}`)
+      .then(result => shuffle(result.Paintings
         .map((p: any) => new Painting(p).fromServer(p, database))));
   }
 
@@ -43,22 +43,17 @@ export class WikiartService {
   }
 
   private getRequest(url: string): Promise<any> {
-    const reqUrl = `${this.baseUrl}${url}${url.includes('?') ? '&' : '?'}json=2`;
-    return this.http.get(reqUrl).toPromise();
-  }
-
-  private getRequestCached(url: string): Promise<any> {
-    const reqUrl = `${this.baseUrl}${url}${url.includes('?') ? '&' : '?'}json=2`;
-    const cachedRequest = this.cache.get(reqUrl);
-    return cachedRequest
-      ? of(cachedRequest).toPromise()
-      : this.http.get(reqUrl).toPromise().then((result) => {
-        this.cache.set(reqUrl, result);
+    return this.http.post(this.proxyUrl, `${this.baseUrl}${url}`).toPromise()
+      .then((result) => {
+        this.cache.set(`${this.baseUrl}${url}`, result);
         return result;
       });
   }
 
-  private getWikiRequest(wikiUrl: string) {
-    return this.http.get(wikiUrl).toPromise();
+  private getRequestCached(url: string): Promise<any> {
+    const cachedRequest = this.cache.get(`${this.baseUrl}${url}`);
+    return cachedRequest
+      ? of(cachedRequest).toPromise()
+      : this.getRequest(url);
   }
 }
