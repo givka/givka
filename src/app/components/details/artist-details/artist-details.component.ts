@@ -100,7 +100,6 @@ export class ArtistDetailsComponent implements OnInit {
   }
 
   private arrayDelay(paintings: Painting[], isAdding: boolean) {
-    console.log(paintings);
     if (!isAdding) {
       this.paintings = [];
     } else {
