@@ -1,22 +1,28 @@
 import { Utils } from './utils';
 
 export class Artist {
+  public id: string;
+  public nation: string;
   public artistName: string;
   public artistUrl: string;
   public image: string | null;
   public imageLQ: string | null;
-  public birthDate: string;
-  public deathDate: string;
+  public year: string;
   public extension: string;
+  public totalWorksTitle: string;
 
   constructor(options: any) {
-    this.artistName = options.artistName;
-    this.artistUrl = options.url || Utils.formatArtistUrl(options.artistName);
+    this.id = options.id;
+    this.artistName = options.title;
+    this.artistUrl = options.artistUrl;
+    this.year = options.year;
+    this.nation = options.nation;
     this.extension = options.image.split('.').pop();
     this.image = this.formatImage(options.image);
-    this.birthDate = options.birthDayAsString;
-    this.deathDate = options.deathDayAsString;
     this.imageLQ = this.image ? `${this.image}!Blog.${this.extension}` : null;
+    this.totalWorksTitle = options.totalWorksTitle;
+
+    this.imageLQ = this.image;
 
     if (this.image) {
       const img = new Image();

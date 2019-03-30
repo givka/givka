@@ -10,7 +10,7 @@ import { Storage } from '../classes/storage';
 @Injectable({ providedIn: 'root' })
 export class WikiartService {
   private readonly proxyUrl = 'https://givka-api.netlify.com/.netlify/functions/proxy';
-  private readonly baseUrl = 'https://www.wikiart.org/';
+  private readonly baseUrl = 'https://www.wikiart.org/en/';
   private cache = new Map();
 
   constructor(private http: HttpClient) { }
@@ -29,17 +29,31 @@ export class WikiartService {
         .map((p: any) => new Painting(p).fromServer(p, database)));
   }
 
-  public getPopularArtists(): Promise<Artist[]> {
-    return this.getRequestCached('app/api/popularartists')
-      .then(data => shuffle(data.map((a: any) => new Artist(a))));
+  public getPopularArtists(page: number): Promise<Artist[]> {
+    // tslint:disable-next-line: max-line-length
+    return this.getRequestCached(`app/Search/ArtistAdvancedSearch/?isAjax=true&layout=new&layout=new&page=${page}`)
+      .then(data => shuffle(data.Artists.map((a: any) => new Artist(a))));
+  }
+
+  public getArtistPaintings(artistUrl: string, page: number): Promise<any> {
+    if (page === 0) {
+      // tslint:disable-next-line: max-line-length
+      return Promise.all([this.getArtistPaintings(artistUrl, 1), this.getArtistPaintings(artistUrl, 2)])
+        .then(([result1, result2]) => Array.prototype.concat(result1, result2));
+    }
+    // tslint:disable-next-line: max-line-length
+    return this.getRequest(`${artistUrl.replace('en/', '')}/mode/all-paintings?json=2&layout=new&page=${page}&resultType=masonry`)
+      .then(result => result.Paintings || []);
   }
 
   public getArtistDetails(artistUrl: string): Promise<ArtistDetails> {
     const database = Storage.readDB('art');
     return Promise.all([
-      this.getRequest(artistUrl),
-      this.getRequest(`App/Painting/PaintingsByArtist?artistUrl=${artistUrl}`),
-    ]).then(([details, paintings]) => new ArtistDetails(details, paintings, database));
+      this.getRequest(`${artistUrl.replace('en/', '')}?json=2&layout=new&resultType=masonry`),
+      // tslint:disable-next-line: max-line-length
+      this.getArtistPaintings(artistUrl, 0),
+    ])
+      .then(([details, paintings]) => new ArtistDetails(details, paintings, database));
   }
 
   private getRequest(url: string): Promise<any> {

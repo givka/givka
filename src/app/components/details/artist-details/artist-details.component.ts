@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnInit, ViewEncapsulation,
+  Component, HostListener, Input, OnInit, ViewEncapsulation,
 } from '@angular/core';
 
 import { Title } from '@angular/platform-browser';
@@ -25,7 +25,9 @@ export class ArtistDetailsComponent implements OnInit {
   public intervalId!: number;
   public paintings!: Painting[];
   public popupPainting!: Painting;
+  public loadingAdd = false;
   public background = `${random(0, 16)}.jpg`;
+  public page = 0;
 
   constructor(
     private routeActive: ActivatedRoute,
@@ -48,13 +50,32 @@ export class ArtistDetailsComponent implements OnInit {
     this.cancelArrayDelay();
   }
 
+  @HostListener('window:scroll', ['$event'])
+  public onWindowScroll() {
+    const max = document.documentElement!.scrollHeight - document.documentElement!.clientHeight;
+    const pos = document.documentElement!.scrollTop;
+
+    if (!this.loadingAdd && pos === max) {
+      this.addPaintings();
+    }
+  }
+
+  public addPaintings() {
+    this.page += 1;
+    const database = Storage.readDB('art');
+    return this.wikiart.getArtistPaintings(this.artist.artistUrl, this.page)
+      .then(painting => painting.map((p:any) => new Painting(p).fromServer(p, database)))
+      .then(paintings => this.arrayDelay(paintings, true));
+  }
+
   public loadArtistDetails(artistUrl: string) {
     this.loading = true;
     this.cancelArrayDelay();
     this.wikiart.getArtistDetails(artistUrl)
       .then((artist) => {
+        this.page = 2;
         this.title.setTitle(`${artist.artistName} - Givka`);
-        this.arrayDelay(artist.paintings);
+        this.arrayDelay(artist.paintings, false);
         this.artist = artist;
       })
       .finally(() => { this.loading = false; });
@@ -70,6 +91,7 @@ export class ArtistDetailsComponent implements OnInit {
   }
 
   public cancelArrayDelay() {
+    this.loadingAdd = false;
     window.clearInterval(this.intervalId);
   }
 
@@ -77,8 +99,13 @@ export class ArtistDetailsComponent implements OnInit {
     this.router.navigate([this.routingState.getArtLastUrl()]);
   }
 
-  private arrayDelay(paintings: Painting[]) {
-    this.paintings = [];
+  private arrayDelay(paintings: Painting[], isAdding: boolean) {
+    console.log(paintings);
+    if (!isAdding) {
+      this.paintings = [];
+    } else {
+      this.loadingAdd = true;
+    }
     let i = 0;
     this.intervalId = window.setInterval(() => {
       if (i === paintings.length) {

@@ -16,19 +16,21 @@ import { WikiartService } from '../../services/wikiart.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class ArtComponent implements OnInit, OnDestroy {
-  public items!: any[];
+  public items: any[] = [];
   public loading: boolean = true;
   public popupPainting!: Painting;
   public intervalId!: number;
   public subRouter!: Subscription;
   public list!: string;
   public isSearching = false;
-  public currentPage = 0;
   public linkButtons = [
   { title: 'Popular Artists', url:'/art/artists' },
   { title: 'Popular Paintings', url:'/art/paintings' },
   { title: 'Collection', url:'/art/collection' },
   ];
+  public pagePaintings = 0;
+  public pageArtists = 0;
+  public loadingAdd = false;
 
   constructor(
     private wikiart: WikiartService,
@@ -50,6 +52,16 @@ export class ArtComponent implements OnInit, OnDestroy {
     this.subRouter.unsubscribe();
   }
 
+  @HostListener('window:scroll', ['$event'])
+  public onWindowScroll() {
+    const max = document.documentElement!.scrollHeight - document.documentElement!.clientHeight;
+    const pos = document.documentElement!.scrollTop;
+
+    if (this.list !== 'collection' && !this.loadingAdd && pos === max) {
+      this.loadDiscover(this.list, true);
+    }
+  }
+
   public checkActivity(status: boolean) {
     this.isSearching = status;
   }
@@ -66,7 +78,7 @@ export class ArtComponent implements OnInit, OnDestroy {
     if (list === 'collection') {
       this.loadCollection();
     } else {
-      this.loadDiscover(list);
+      this.loadDiscover(list, false);
     }
   }
 
@@ -77,28 +89,34 @@ export class ArtComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  public loadDiscover(list: string) {
+  public loadDiscover(list: string, isAdding: boolean) {
     const promise = list === 'paintings' ? this.loadDiscoverPaintings()
-                                         : this.wikiart.getPopularArtists();
-
+                                         : this.loadDiscoverArtists();
     promise.then((items) => {
-      this.arrayDelay(items);
+      this.arrayDelay(items, isAdding);
     }).finally(() => { this.loading = false; });
   }
 
+  public loadDiscoverArtists() {
+    this.pagePaintings = 0;
+    this.pageArtists += 1;
+    return this.wikiart.getPopularArtists(this.pageArtists);
+  }
+
   public loadDiscoverPaintings() {
-    if (this.currentPage === 0) {
-      this.currentPage += 2;
+    this.pageArtists = 0;
+    if (this.pagePaintings === 0) {
+      this.pagePaintings += 2;
       return Promise
         .all([this.wikiart.getMostViewedPaintings(1), this.wikiart.getMostViewedPaintings(2)])
         .then(([paintings1, paintings2]) => Array.prototype.concat(paintings1, paintings2));
     }
-    this.currentPage += 1;
-    return this.wikiart.getMostViewedPaintings(this.currentPage);
+    this.pagePaintings += 1;
+    return this.wikiart.getMostViewedPaintings(this.pagePaintings);
   }
 
   public onClickArtist(artistUrl: string) {
-    this.router.navigate([`/artist/${artistUrl}`]);
+    this.router.navigate([`/artist/${artistUrl.replace('en/', '')}`]);
   }
 
   public onClickPortrait(portrait: Painting, event: KeyboardEvent) {
@@ -111,11 +129,16 @@ export class ArtComponent implements OnInit, OnDestroy {
   }
 
   public cancelArrayDelay() {
+    this.loadingAdd = false;
     window.clearInterval(this.intervalId);
   }
 
-  private arrayDelay(items: any[]) {
-    this.items = [];
+  private arrayDelay(items: any[], isAdding: boolean) {
+    if (!isAdding) {
+      this.items = [];
+    } else {
+      this.loadingAdd = true;
+    }
     let i = 0;
     this.intervalId = window.setInterval(() => {
       if (i === items.length) {
