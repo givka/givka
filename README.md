@@ -10,8 +10,7 @@
   Discover movies, tv series, art, franco-belgium comics and manage them.
 </p>
 
-
-
+## Notes
 
 Made with Angular.
 Optimised for Google Chrome.
