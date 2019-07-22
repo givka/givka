@@ -1,10 +1,15 @@
 # Givka 
 
-Discover movies, TV series and paintings and manage them.
+<p align="center">
+  <a href="https://givka.netlify.com/">
+    <img src="https://thumbs.gfycat.com/DigitalDevotedDogfish-size_restricted.gif" />
+  </a>
+</p>
 
-[<img src="./src/favicon.ico" width="64" height="64" />](https://givka.netlify.com/)
+<p align="center">
+  Discover movies, tv series, art, franco-belgium comics and manage them.
+</p>
 
-[<img src="https://thumbs.gfycat.com/DigitalDevotedDogfish-size_restricted.gif" />](https://givka.netlify.com/)
 
 Made with Angular.
 
