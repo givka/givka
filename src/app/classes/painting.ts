@@ -1,5 +1,5 @@
-import { IDataBasePainting } from '../interfaces/all';
-import { Utils } from './utils';
+import {IDataBasePainting} from '../interfaces/all';
+import {Utils} from './utils';
 
 export class Painting {
   public artistName: string;
@@ -22,9 +22,9 @@ export class Painting {
   }
 
   public fromServer(options: any, database: IDataBasePainting) {
-    this.id = options.contentId;
+    this.id = options.id;
     this.artistUrl = Utils.formatArtistUrl(options.artistName);
-    this.extension = this.getExtension(options.image);
+    this.extension = options.image.split('.').pop() || '';
     this.image = options.image.replace(`!Large.${this.extension}`, '');
     this.imageLQ = `${this.image}!Blog.${this.extension}`;
     this.year = options.year || options.completitionYear;
@@ -53,9 +53,4 @@ export class Painting {
 
     return this;
   }
-
-  private getExtension(image: string) {
-    return image.split('.').pop() || '';
-  }
-
 }
