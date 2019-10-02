@@ -1,6 +1,6 @@
-import { Movie } from '../classes/movie';
-import { Painting } from '../classes/painting';
-import { Serie } from '../classes/serie';
+import {Movie} from '../classes/movie';
+import {Painting} from '../classes/painting';
+import {Serie} from '../classes/serie';
 
 export interface IDataBaseSerie {
   [key: number]: Serie;
@@ -30,9 +30,10 @@ export interface ISeason {
 }
 
 export interface IOrder {
-  [key: string]: boolean;
   title: boolean;
   releaseDate: boolean;
   voteCount: boolean;
   voteAverage: boolean;
+
+  [key: string]: boolean;
 }

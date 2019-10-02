@@ -1,5 +1,5 @@
-import { IDataBaseSerie } from '../interfaces/all';
-import { Tmdb } from './tmdb';
+import {IDataBaseSerie} from '../interfaces/all';
+import {Tmdb} from './tmdb';
 
 export class Serie extends Tmdb {
   constructor() {

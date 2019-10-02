@@ -1,16 +1,14 @@
-import {
-  Component, HostListener, OnInit, ViewEncapsulation,
-} from '@angular/core';
-import { Sort } from '@angular/material';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Serie } from '../../classes/serie';
-import { Storage } from '../../classes/storage';
-import { Utils } from '../../classes/utils';
-import { IOrder } from '../../interfaces/all';
-import { TmdbService } from '../../services/tmdb.service';
-import { UtilityService } from '../../services/utility.service';
+import {Component, HostListener, OnInit, ViewEncapsulation,} from '@angular/core';
+import {Sort} from '@angular/material';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Serie} from '../../classes/serie';
+import {Storage} from '../../classes/storage';
+import {Utils} from '../../classes/utils';
+import {IOrder} from '../../interfaces/all';
+import {TmdbService} from '../../services/tmdb.service';
+import {UtilityService} from '../../services/utility.service';
 
 @Component({
   selector: 'series-component',
@@ -32,16 +30,16 @@ export class TvComponent implements OnInit {
   public offsetPages = 5;
   public nbrPages = 5;
   public linkButtons = [
-  { title: 'On the Air', url:'/series/on_the_air' },
-  { title: 'Popular', url:'/series/popular' },
-  { title: 'Top Rated', url:'/series/top_rated' },
-  { title: 'Collection', url:'/series/collection' },
+    {title: 'On the Air', url: '/series/on_the_air'},
+    {title: 'Popular', url: '/series/popular'},
+    {title: 'Top Rated', url: '/series/top_rated'},
+    {title: 'Collection', url: '/series/collection'},
   ];
   public sortButtons = [
-  { title: 'Title', key:'title' },
-  { title: 'Release Date', key:'releaseDate' },
-  { title: 'Vote Count', key:'voteCount' },
-  { title: 'Vote Average', key:'voteAverage' },
+    {title: 'Title', key: 'title'},
+    {title: 'Release Date', key: 'releaseDate'},
+    {title: 'Vote Count', key: 'voteCount'},
+    {title: 'Vote Average', key: 'voteAverage'},
   ];
   public sortActive = '';
 
@@ -51,7 +49,8 @@ export class TvComponent implements OnInit {
     private router: Router,
     private title: Title,
     public utility: UtilityService,
-  ) { }
+  ) {
+  }
 
   public ngOnInit() {
     this.title.setTitle('TV Series - Givka');
@@ -88,7 +87,9 @@ export class TvComponent implements OnInit {
         this.sortedSeries = this.series.slice();
       })
       .finally(() => {
-        setTimeout(() => { this.loadingAdd = false; }, 500);
+        setTimeout(() => {
+          this.loadingAdd = false;
+        }, 500);
       });
   }
 
@@ -111,7 +112,9 @@ export class TvComponent implements OnInit {
           this.series = series;
           this.sortedSeries = this.series.slice();
         })
-        .finally(() => { this.loading = false; });
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 

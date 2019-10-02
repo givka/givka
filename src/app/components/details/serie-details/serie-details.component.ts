@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { SerieDetails } from '../../../classes/serie-details';
-import { ISeason } from '../../../interfaces/all';
-import { RoutingStateService } from '../../../services/routing-state.service';
-import { TmdbService } from '../../../services/tmdb.service';
-import { UtilityService } from '../../../services/utility.service';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {SerieDetails} from '../../../classes/serie-details';
+import {ISeason} from '../../../interfaces/all';
+import {RoutingStateService} from '../../../services/routing-state.service';
+import {TmdbService} from '../../../services/tmdb.service';
+import {UtilityService} from '../../../services/utility.service';
 
 @Component({
   selector: 'serie-details-component',
@@ -25,12 +25,13 @@ export class SerieDetailsComponent implements OnInit {
     private router: Router,
     private routingState: RoutingStateService,
     private title: Title,
-    public utility : UtilityService,
-  ) { }
+    public utility: UtilityService,
+  ) {
+  }
 
   public ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
-      const { id } = routeParams;
+      const {id} = routeParams;
       this.loadSerieDetails(+id);
     });
   }

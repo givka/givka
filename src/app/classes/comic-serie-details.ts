@@ -1,5 +1,5 @@
-import { ComicAlbum } from './comic-album';
-import { ComicSerie } from './comic-serie';
+import {ComicAlbum} from './comic-album';
+import {ComicSerie} from './comic-serie';
 
 export class ComicSerieDetails extends ComicSerie {
   public albums: ComicAlbum[];

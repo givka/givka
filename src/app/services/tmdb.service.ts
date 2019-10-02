@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
-import { Injectable } from '@angular/core';
-import { Credit } from '../classes/credit';
-import { CreditDetails } from '../classes/credit-details';
-import { Movie } from '../classes/movie';
-import { MovieDetails } from '../classes/movie-details';
-import { Serie } from '../classes/serie';
-import { SerieDetails } from '../classes/serie-details';
-import { Storage } from '../classes/storage';
+import {Injectable} from '@angular/core';
+import {Credit} from '../classes/credit';
+import {CreditDetails} from '../classes/credit-details';
+import {Movie} from '../classes/movie';
+import {MovieDetails} from '../classes/movie-details';
+import {Serie} from '../classes/serie';
+import {SerieDetails} from '../classes/serie-details';
+import {Storage} from '../classes/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -20,11 +20,12 @@ export class TmdbService {
 
   private readonly language: string = 'en-US';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   public getMultiplePages(url: string, offsetPages = 0, nbrOfPages = 5) {
     const promises = Array.from(Array(nbrOfPages))
-    .map((value, index) => this.getRequest(url, '', index + 1 + offsetPages));
+      .map((value, index) => this.getRequest(url, '', index + 1 + offsetPages));
 
     return Promise.all(promises)
       .then((allResponses) => {
@@ -55,11 +56,11 @@ export class TmdbService {
 
     const [directorMovies, collectionMovies] = await Promise.all([
       movieDetails.director ?
-      this.getPeople(movieDetails.director.id)
-      : null,
+        this.getPeople(movieDetails.director.id)
+        : null,
       movieDetails.collection
-      ? this.getCollection(movieDetails.collection.id)
-      : null,
+        ? this.getCollection(movieDetails.collection.id)
+        : null,
     ]);
 
     movieDetails.addDetails(directorMovies, collectionMovies, database);
@@ -75,13 +76,13 @@ export class TmdbService {
         const results = data
           .filter(r => r.media_type !== toExclude)
           .map(r => (r.media_type === 'movie'
-          ? new Movie().fromServer(r, databaseMovies)
-          : (r.media_type === 'tv'
-            ? new Serie().fromServer(r, databaseSeries)
-            : new Credit().fromCrew(r))))
+            ? new Movie().fromServer(r, databaseMovies)
+            : (r.media_type === 'tv'
+              ? new Serie().fromServer(r, databaseSeries)
+              : new Credit().fromCrew(r))))
           .filter(r => (r instanceof Credit && r.profile)
-           || (r instanceof Movie && r.poster)
-           || (r instanceof Serie && r.poster));
+            || (r instanceof Movie && r.poster)
+            || (r instanceof Serie && r.poster));
 
         return {
           credits: results.filter(r => r instanceof Credit),

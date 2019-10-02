@@ -1,8 +1,8 @@
-import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { ComicSerie } from '../../classes/comic-serie';
-import { ComicsService } from '../../services/comics.service';
+import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {Router} from '@angular/router';
+import {ComicSerie} from '../../classes/comic-serie';
+import {ComicsService} from '../../services/comics.service';
 
 @Component({
   selector: 'app-comics',
@@ -15,17 +15,18 @@ export class ComicsComponent implements OnInit {
   public series !: ComicSerie[];
   public list !: 'popular' | 'collection';
   public loadingAdd = false;
-  public after: number | null  = null;
+  public after: number | null = null;
 
   public linkButtons = [
-  { title: 'Popular', url:'/comics/popular' },
-  { title: 'Collection', url:'/comics/collection' },
+    {title: 'Popular', url: '/comics/popular'},
+    {title: 'Collection', url: '/comics/collection'},
   ];
 
   constructor(private comicsAPI: ComicsService,
               private router: Router,
               private title: Title,
-  ) { }
+  ) {
+  }
 
   @HostListener('window:scroll', ['$event'])
   public onWindowScroll() {
@@ -41,11 +42,11 @@ export class ComicsComponent implements OnInit {
     this.list = 'popular';
     this.title.setTitle('Franco-Belgian Comics - Givka');
     this.comicsAPI.getSeries(this.after)
-    .then((result) => {
-      this.after = result.after;
-      this.series = result.series;
-    })
-    .finally(() => this.loading = false);
+      .then((result) => {
+        this.after = result.after;
+        this.series = result.series;
+      })
+      .finally(() => this.loading = false);
   }
 
   public addComics() {
@@ -56,7 +57,9 @@ export class ComicsComponent implements OnInit {
         this.after = result.after;
         this.series = this.series.concat(result.series);
       })
-      .finally(() => { this.loadingAdd = false; });
+      .finally(() => {
+        this.loadingAdd = false;
+      });
   }
 
   public onClickComic(comic: any) {

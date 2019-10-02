@@ -3,6 +3,6 @@
 series-component {
   portrait-component {
     height: $height-poster;
-    width: calc(#{$height-poster} * 2/3);
+    width: calc(#{$height-poster} * 2 / 3);
   }
 }

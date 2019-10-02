@@ -1,7 +1,7 @@
 import * as moment from 'moment';
-import { IDataBaseMovie, IDataBaseSerie } from '../interfaces/all';
-import { Movie } from './movie';
-import { Serie } from './serie';
+import {IDataBaseMovie, IDataBaseSerie} from '../interfaces/all';
+import {Movie} from './movie';
+import {Serie} from './serie';
 
 export class Tmdb {
   public backdrop!: string;

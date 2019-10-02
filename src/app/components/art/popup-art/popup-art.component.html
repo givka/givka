@@ -1,41 +1,44 @@
-<mat-icon class="close link"
-          (click)="onClose.emit()">close</mat-icon>
+<mat-icon (click)="onClose.emit()"
+          class="close link">close
+</mat-icon>
 
-<mat-icon class="previous link"
-          (click)="changePainting(-1)">arrow_back</mat-icon>
+<mat-icon (click)="changePainting(-1)"
+          class="previous link">arrow_back
+</mat-icon>
 
-<mat-icon class="next link"
-          (click)="changePainting(1)">arrow_forward</mat-icon>
+<mat-icon (click)="changePainting(1)"
+          class="next link">arrow_forward
+</mat-icon>
 
-<div class="loading-wrapper"
-     *ngIf="loading">
+<div *ngIf="loading"
+     class="loading-wrapper">
   <div class="loading-img">
-    <img class="modal-content"
-         [src]="painting.image + '!Blog.' + painting.extension"
-         style="filter: blur(10px);"
-         height="{{painting.height}}">
+    <img [src]="painting.image + '!Blog.' + painting.extension"
+         class="modal-content"
+         height="{{painting.height}}"
+         style="filter: blur(10px);">
 
   </div>
 </div>
 
-<div class="loading-wrapper"
-     [hidden]="loading">
+<div [hidden]="loading"
+     class="loading-wrapper">
   <div class="loading-img">
 
-    <img class="modal-content"
+    <img (load)="onImageLoad()"
          [src]="painting.image "
-         (load)="onImageLoad()">
+         class="modal-content">
 
-    <div class="message fs-20 police-title"
-         *ngIf="message">{{message}}</div>
+    <div *ngIf="message"
+         class="message fs-20 police-title">{{message}}</div>
 
   </div>
 </div>
 
 <div class="info">
   <div [innerHtml]="painting.title"></div>
-  <div class="link"
+  <div (click)="onClickArtist(painting.artistUrl)"
        [innerHtml]="painting.artistName"
-       (click)="onClickArtist(painting.artistUrl)"></div>
+       class="link"></div>
   <div [innerHtml]="painting.year"></div>
 </div>

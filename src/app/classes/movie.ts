@@ -1,5 +1,5 @@
-import { IDataBaseMovie } from '../interfaces/all';
-import { Tmdb } from './tmdb';
+import {IDataBaseMovie} from '../interfaces/all';
+import {Tmdb} from './tmdb';
 
 export class Movie extends Tmdb {
   constructor() {

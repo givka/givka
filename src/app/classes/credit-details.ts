@@ -1,10 +1,10 @@
-import { uniqBy } from 'lodash';
+import {uniqBy} from 'lodash';
 import * as moment from 'moment';
-import { IDataBaseMovie, IDataBaseSerie } from '../interfaces/all';
-import { Credit } from './credit';
-import { Movie } from './movie';
-import { Serie } from './serie';
-import { Utils } from './utils';
+import {IDataBaseMovie, IDataBaseSerie} from '../interfaces/all';
+import {Credit} from './credit';
+import {Movie} from './movie';
+import {Serie} from './serie';
+import {Utils} from './utils';
 
 export class CreditDetails extends Credit {
   public biography: string;
@@ -42,9 +42,11 @@ export class CreditDetails extends Credit {
     const deathday = options.deathday;
     if (deathday && birthday) {
       return moment(deathday, 'YYYY-MM-DD').diff(moment(birthday, 'YYYY-MM-DD'), 'year');
-    } if (birthday) {
+    }
+    if (birthday) {
       return moment().diff(moment(birthday, 'YYYY-MM-DD'), 'year');
-    } return null;
+    }
+    return null;
   }
 
   private formatDirectorMovies(options: any, database: IDataBaseMovie) {
@@ -65,7 +67,7 @@ export class CreditDetails extends Credit {
 
   private formatCreatorSeries(options: any, database: IDataBaseSerie) {
     const creatorSeries = options.tv_credits.crew
-    .filter((m: any) => m.job === 'Creator' || m.job === 'Director' || m.job === 'Writer');
+      .filter((m: any) => m.job === 'Creator' || m.job === 'Director' || m.job === 'Writer');
     return this.formatSeries(creatorSeries, database);
   }
 
@@ -82,6 +84,6 @@ export class CreditDetails extends Credit {
 
   private formatImages(options: any) {
     const images = options.images.profiles;
-    return Utils.orderBy(images, 'voteCount').map((i:any) => i.file_path);
+    return Utils.orderBy(images, 'voteCount').map((i: any) => i.file_path);
   }
 }

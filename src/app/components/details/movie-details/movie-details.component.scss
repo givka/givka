@@ -3,11 +3,11 @@
 movie-details-component {
   .details-bar {
     portrait-component {
-      width: calc(370px * 2/3);
+      width: calc(370px * 2 / 3);
     }
 
     .description {
-      width: calc(100% - (370px + 20px) * 2/3);
+      width: calc(100% - (370px + 20px) * 2 / 3);
     }
   }
 
@@ -16,12 +16,12 @@ movie-details-component {
       height: $height-poster;
 
       portrait-component {
-        width: calc(#{$height-poster} * 2/3);
+        width: calc(#{$height-poster} * 2 / 3);
       }
 
       &.images {
         portrait-component {
-          width: calc(#{$height-poster} * 16/9);
+          width: calc(#{$height-poster} * 16 / 9);
         }
       }
     }

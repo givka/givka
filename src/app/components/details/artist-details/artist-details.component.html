@@ -3,11 +3,12 @@
 </div>
 
 <div *ngIf="!loading"
-     class="details"
-     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}">
+     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}"
+     class="details">
   <div class="details-content">
-    <mat-icon class="close link"
-              (click)="onCloseArtist()">close</mat-icon>
+    <mat-icon (click)="onCloseArtist()"
+              class="close link">close
+    </mat-icon>
 
     <div class="details-bar">
       <portrait-component [image]="artist.image"></portrait-component>
@@ -15,24 +16,24 @@
         <div class="title-bar">
           <span class="title">{{artist.artistName}}</span>
           <span class="release-date"> {{artist.birthDate}}</span>
-          <span class="release-date"
-                *ngIf="artist.deathDate"> - {{artist.deathDate}} </span>
+          <span *ngIf="artist.deathDate"
+                class="release-date"> - {{artist.deathDate}} </span>
         </div>
 
         <div>
-          <a class="link"
-             [href]="artist.wikipediaUrl"
+          <a [href]="artist.wikipediaUrl"
+             class="link"
              target="_blank"><i class="fab fa-wikipedia-w"
-               style="margin-right:5px;"></i>Go to Wikipedia</a>
+                                style="margin-right:5px;"></i>Go to Wikipedia</a>
         </div>
 
       </div>
     </div>
     <div class="grid portrait-grid">
-      <portrait-component *ngFor="let painting of paintings"
-                          [ngClass]="{'seen': painting.seen}"
+      <portrait-component (click)="onClickPortrait(painting,$event)"
+                          *ngFor="let painting of paintings"
                           [image]="painting.imageLQ"
-                          (click)="onClickPortrait(painting,$event)">
+                          [ngClass]="{'seen': painting.seen}">
         <div>{{painting.year}}</div>
         <div class="title-portrait">{{painting.title}}</div>
       </portrait-component>
@@ -40,7 +41,7 @@
   </div>
 </div>
 
-<popup-art-component *ngIf="popupPainting"
+<popup-art-component (onClose)="popupPainting=null"
+                     *ngIf="popupPainting"
                      [painting]="popupPainting"
-                     [paintings]="artist.paintings"
-                     (onClose)="popupPainting=null"></popup-art-component>
+                     [paintings]="artist.paintings"></popup-art-component>

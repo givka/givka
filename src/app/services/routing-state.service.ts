@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { findLast } from 'lodash';
-import { filter } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {findLast} from 'lodash';
+import {filter} from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,7 +11,8 @@ export class RoutingStateService {
 
   constructor(
     private router: Router,
-  ) { }
+  ) {
+  }
 
   public loadRouting(): void {
     this.router.events

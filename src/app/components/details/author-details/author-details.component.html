@@ -3,16 +3,18 @@
 </div>
 
 <div *ngIf="!loading"
-     class="details"
-     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}">
+     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}"
+     class="details">
 
   <div class="details-content">
 
-    <mat-icon class="close link"
-              (click)="onCloseAuthor()">close</mat-icon>
+    <mat-icon (click)="onCloseAuthor()"
+              class="close link">close
+    </mat-icon>
 
     <div class="details-bar">
-      <portrait-component [image]="author.image ? 'https://www.bedetheque.com/media/Photos/' + author.image : null"></portrait-component>
+      <portrait-component
+        [image]="author.image ? 'https://www.bedetheque.com/media/Photos/' + author.image : null"></portrait-component>
       <div class="description">
         <div class="title-bar">
           <span class="title">{{author.name}}</span>
@@ -29,8 +31,8 @@
     <div *ngIf="author.seriesBoth.length">
       <div class="sub-title">Scenario and Drawing series</div>
       <div class="list">
-        <portrait-component *ngFor="let serie of author.seriesBoth"
-                            (click)="onClickComic(serie.serieId)"
+        <portrait-component (click)="onClickComic(serie.serieId)"
+                            *ngFor="let serie of author.seriesBoth"
                             [image]="serie.serieCover? 'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover: ''">
           <div class="title-portrait">{{serie.serieTitle}}</div>
           <div>{{serie.numberOfAlbums}} album(s)</div>
@@ -44,8 +46,8 @@
     <div *ngIf="author.seriesScenario.length">
       <div class="sub-title">Scenario only series</div>
       <div class="list">
-        <portrait-component *ngFor="let serie of author.seriesScenario"
-                            (click)="onClickComic(serie.serieId)"
+        <portrait-component (click)="onClickComic(serie.serieId)"
+                            *ngFor="let serie of author.seriesScenario"
                             [image]="serie.serieCover? 'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover: ''">
           <div class="title-portrait">{{serie.serieTitle}}</div>
           <div>{{serie.numberOfAlbums}} album(s)</div>
@@ -59,8 +61,8 @@
     <div *ngIf="author.seriesDrawing.length">
       <div class="sub-title">Drawing only series</div>
       <div class="list">
-        <portrait-component *ngFor="let serie of author.seriesDrawing"
-                            (click)="onClickComic(serie.serieId)"
+        <portrait-component (click)="onClickComic(serie.serieId)"
+                            *ngFor="let serie of author.seriesDrawing"
                             [image]="serie.serieCover? 'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover: ''">
           <div class="title-portrait">{{serie.serieTitle}}</div>
           <div>{{serie.numberOfAlbums}} album(s)</div>

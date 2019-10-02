@@ -1,14 +1,12 @@
-import {
-  Component, OnDestroy, OnInit, ViewEncapsulation,
-} from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { random } from 'lodash';
-import { Subscription } from 'rxjs';
-import { CreditDetails } from '../../../classes/credit-details';
-import { RoutingStateService } from '../../../services/routing-state.service';
-import { TmdbService } from '../../../services/tmdb.service';
-import { UtilityService } from '../../../services/utility.service';
+import {Component, OnDestroy, OnInit, ViewEncapsulation,} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {random} from 'lodash';
+import {Subscription} from 'rxjs';
+import {CreditDetails} from '../../../classes/credit-details';
+import {RoutingStateService} from '../../../services/routing-state.service';
+import {TmdbService} from '../../../services/tmdb.service';
+import {UtilityService} from '../../../services/utility.service';
 
 @Component({
   selector: 'credit-details-component',
@@ -28,14 +26,14 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private routingState: RoutingStateService,
     private title: Title,
-    public utility : UtilityService,
+    public utility: UtilityService,
   ) {
 
   }
 
   public ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
-      const { id } = routeParams;
+      const {id} = routeParams;
       this.loadCreditDetails(+id);
     });
   }
@@ -55,7 +53,9 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
         this.credit = credit;
         this.title.setTitle(`${credit.name} - Givka`);
       })
-      .finally(() => { this.loading = false; });
+      .finally(() => {
+        this.loading = false;
+      });
   }
 
   public close() {

@@ -1,10 +1,8 @@
-import {
-  Component, EventEmitter, HostListener, Input, OnInit, Output, ViewEncapsulation,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { findIndex } from 'lodash';
-import { Painting } from '../../../classes/painting';
-import { Storage } from '../../../classes/storage';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewEncapsulation,} from '@angular/core';
+import {Router} from '@angular/router';
+import {findIndex} from 'lodash';
+import {Painting} from '../../../classes/painting';
+import {Storage} from '../../../classes/storage';
 
 @Component({
   selector: 'popup-art-component',
@@ -26,7 +24,8 @@ export class PopupArtComponent implements OnInit {
 
   public message!: string | null;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
   public ngOnInit() {
     this.index = findIndex(this.paintings, this.painting);
@@ -50,7 +49,9 @@ export class PopupArtComponent implements OnInit {
 
   public showMessage(message: string) {
     this.message = message;
-    setTimeout(() => { this.message = null; }, 500);
+    setTimeout(() => {
+      this.message = null;
+    }, 500);
   }
 
   @HostListener('document:keydown', ['$event'])

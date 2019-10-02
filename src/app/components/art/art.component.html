@@ -1,6 +1,6 @@
 <search-component (onActivity)="checkActivity($event)"
-                  [type]="'paintings'"
-                  [placeholder]="'Search Paintings...'"></search-component>
+                  [placeholder]="'Search Paintings...'"
+                  [type]="'paintings'"></search-component>
 
 <div *ngIf="!isSearching">
   <div *ngIf="loading">
@@ -12,9 +12,9 @@
   <h1 *ngIf="list === 'collection'">Collection Art</h1>
 
   <div class="button-group">
-    <button mat-button
-            *ngFor="let linkButton of linkButtons"
+    <button *ngFor="let linkButton of linkButtons"
             [routerLink]="[linkButton.url]"
+            mat-button
             routerLinkActive="active">
       <div>{{linkButton.title}}</div>
     </button>
@@ -22,11 +22,11 @@
 
   <div *ngIf="!loading">
 
-    <div class="grid portrait-grid"
-         *ngIf="list==='artists'">
-      <portrait-component *ngFor="let artist of items"
-                          [image]="artist.imageLQ ? artist.imageLQ : null"
-                          (click)="onClickArtist(artist.artistUrl, $event)">
+    <div *ngIf="list==='artists'"
+         class="grid portrait-grid">
+      <portrait-component (click)="onClickArtist(artist.artistUrl, $event)"
+                          *ngFor="let artist of items"
+                          [image]="artist.imageLQ ? artist.imageLQ : null">
         <div class="title-portrait">{{artist.artistName}}</div>
       </portrait-component>
     </div>
@@ -38,13 +38,13 @@
       Discover or Search paintings and Cmd+Click or Ctrl+Click on a painting to add it to the collection.
     </div>
 
-    <div class="grid portrait-grid"
-         *ngIf="list!=='artists'">
+    <div *ngIf="list!=='artists'"
+         class="grid portrait-grid">
 
-      <portrait-component *ngFor="let painting of items"
-                          [ngClass]="{'seen' : (list !== 'collection' && painting.seen) || (list === 'collection' && !painting.seen)}"
+      <portrait-component (click)="onClickPortrait(painting, $event)"
+                          *ngFor="let painting of items"
                           [image]="painting.imageLQ ? painting.imageLQ : null"
-                          (click)="onClickPortrait(painting, $event)"
+                          [ngClass]="{'seen' : (list !== 'collection' && painting.seen) || (list === 'collection' && !painting.seen)}"
                           [width]="painting.width/painting.height * 250">
 
         <div class="title-portrait">{{painting.artistName}}</div>
@@ -54,10 +54,10 @@
 
     </div>
 
-    <popup-art-component *ngIf="popupPainting"
-                         [paintings]="items"
+    <popup-art-component (onClose)="popupPainting = null"
+                         *ngIf="popupPainting"
                          [painting]="popupPainting"
-                         (onClose)="popupPainting = null"></popup-art-component>
+                         [paintings]="items"></popup-art-component>
 
   </div>
 

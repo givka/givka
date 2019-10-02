@@ -1,6 +1,6 @@
 <search-component (onActivity)="checkActivity($event)"
-                  [type]="'series'"
-                  [placeholder]="'Search TV Series...'"></search-component>
+                  [placeholder]="'Search TV Series...'"
+                  [type]="'series'"></search-component>
 
 <div *ngIf="!isSearching">
 
@@ -14,23 +14,23 @@
   <h1 *ngIf="list==='collection'">Collection Series</h1>
 
   <div class="button-group">
-    <button mat-button
-            *ngFor="let linkButton of linkButtons"
+    <button *ngFor="let linkButton of linkButtons"
             [routerLink]="[linkButton.url]"
+            mat-button
             routerLinkActive="active">
       <div>{{linkButton.title}}</div>
     </button>
   </div>
 
-  <div class="button-group"
-       style="float: right"
+  <div (matSortChange)="sort($event)"
+       class="button-group"
        matSort
-       (matSortChange)="sort($event)">
+       style="float: right">
 
-    <button mat-button
+    <button *ngFor="let sortButton of sortButtons"
+            [ngClass]="{'active': sortActive === sortButton.key}"
             class="sort-button"
-            *ngFor="let sortButton of sortButtons"
-            [ngClass]="{'active': sortActive === sortButton.key}">
+            mat-button>
       <span mat-sort-header="{{sortButton.key}}">{{sortButton.title}}</span>
     </button>
 
@@ -47,8 +47,8 @@
 
     <div *ngIf="series"
          class="grid">
-      <portrait-component *ngFor="let serie of sortedSeries"
-                          (click)="utility.onClickSerie(serie, $event)"
+      <portrait-component (click)="utility.onClickSerie(serie, $event)"
+                          *ngFor="let serie of sortedSeries"
                           [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
         <div class="title-portrait">{{serie.title}}</div>

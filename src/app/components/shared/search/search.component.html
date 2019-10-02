@@ -1,8 +1,10 @@
 <mat-form-field>
-  <input matInput
-         placeholder="{{placeholder}}"
-         [(ngModel)]="search"
-         (ngModelChange)='onChange()'>
+  <label>
+    <input (ngModelChange)='onChange()'
+           [(ngModel)]="search"
+           matInput
+           placeholder="{{placeholder}}">
+  </label>
 </mat-form-field>
 
 <div *ngIf="search !== ''">
@@ -19,8 +21,8 @@
     <div *ngIf="movies.length">
       <h3>Movies</h3>
       <div class="grid">
-        <portrait-component *ngFor="let movie of movies"
-                            (click)="onClickItem(movie, $event)"
+        <portrait-component (click)="onClickItem(movie, $event)"
+                            *ngFor="let movie of movies"
                             [image]="'https://image.tmdb.org/t/p/w342'+ movie.poster"
                             [ngClass]="{'seen':movie.seen}">
           <div class="title-portrait">{{movie.title}}</div>
@@ -36,8 +38,8 @@
     <div *ngIf="series.length">
       <h3>TV Series</h3>
       <div class="grid">
-        <portrait-component *ngFor="let serie of series"
-                            (click)="onClickItem(serie, $event)"
+        <portrait-component (click)="onClickItem(serie, $event)"
+                            *ngFor="let serie of series"
                             [image]="'https://image.tmdb.org/t/p/w342'+ serie.poster"
                             [ngClass]="{'seen':serie.seen}">
           <div class="title-portrait">{{serie.title}}</div>
@@ -53,8 +55,8 @@
     <div *ngIf="credits.length">
       <h3>Credits</h3>
       <div class="grid">
-        <portrait-component *ngFor="let credit of credits"
-                            (click)="onClickItem(credit, $event)"
+        <portrait-component (click)="onClickItem(credit, $event)"
+                            *ngFor="let credit of credits"
                             [image]=" credit.profile ? 'https://image.tmdb.org/t/p/w342'+ credit.profile : 'no_credit'">
           <div class="title-portrait">{{credit.name}}</div>
         </portrait-component>
@@ -65,10 +67,10 @@
     <div *ngIf="paintings.length">
       <h3>Paintings</h3>
       <div class="grid portrait-grid">
-        <portrait-component *ngFor="let painting of paintings"
-                            [ngClass]="{'seen' :painting.seen}"
+        <portrait-component (click)="onClickItem(painting, $event)"
+                            *ngFor="let painting of paintings"
                             [image]="painting.imageLQ ? painting.imageLQ : null"
-                            (click)="onClickItem(painting, $event)">
+                            [ngClass]="{'seen' :painting.seen}">
           <div class="title-portrait">{{painting.artistName}}</div>
           <div>{{painting.year}}</div>
           <div class="title-portrait">{{painting.title}}</div>
@@ -77,10 +79,10 @@
       </div>
     </div>
 
-    <popup-art-component *ngIf="popupPainting"
-                         [paintings]="paintings"
+    <popup-art-component (onClose)="popupPainting = null"
+                         *ngIf="popupPainting"
                          [painting]="popupPainting"
-                         (onClose)="popupPainting = null"></popup-art-component>
+                         [paintings]="paintings"></popup-art-component>
 
   </div>
 

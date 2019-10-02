@@ -1,16 +1,14 @@
-import {
-  Component, HostListener, Input, OnInit, ViewEncapsulation,
-} from '@angular/core';
+import {Component, HostListener, OnInit, ViewEncapsulation,} from '@angular/core';
 
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { random } from 'lodash';
-import { Subscription } from 'rxjs';
-import { ArtistDetails } from '../../../classes/artist-details';
-import { Painting } from '../../../classes/painting';
-import { Storage } from '../../../classes/storage';
-import { RoutingStateService } from '../../../services/routing-state.service';
-import { WikiartService } from '../../../services/wikiart.service';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {random} from 'lodash';
+import {Subscription} from 'rxjs';
+import {ArtistDetails} from '../../../classes/artist-details';
+import {Painting} from '../../../classes/painting';
+import {Storage} from '../../../classes/storage';
+import {RoutingStateService} from '../../../services/routing-state.service';
+import {WikiartService} from '../../../services/wikiart.service';
 
 @Component({
   selector: 'artist-details-component',
@@ -40,7 +38,7 @@ export class ArtistDetailsComponent implements OnInit {
 
   public ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
-      const { artistUrl } = routeParams;
+      const {artistUrl} = routeParams;
       this.loadArtistDetails(artistUrl);
     });
   }
@@ -64,7 +62,7 @@ export class ArtistDetailsComponent implements OnInit {
     this.page += 1;
     const database = Storage.readDB('art');
     return this.wikiart.getArtistPaintings(this.artist.artistUrl, this.page)
-      .then(painting => painting.map((p:any) => new Painting(p).fromServer(p, database)))
+      .then(painting => painting.map((p: any) => new Painting(p).fromServer(p, database)))
       .then(paintings => this.arrayDelay(paintings, true));
   }
 
@@ -78,7 +76,9 @@ export class ArtistDetailsComponent implements OnInit {
         this.arrayDelay(artist.paintings, false);
         this.artist = artist;
       })
-      .finally(() => { this.loading = false; });
+      .finally(() => {
+        this.loading = false;
+      });
   }
 
   public onClickPortrait(portrait: Painting, event: KeyboardEvent) {
@@ -113,6 +113,6 @@ export class ArtistDetailsComponent implements OnInit {
         this.paintings.push(paintings[i]);
         i = i + 1;
       }
-    },                                   50);
+    }, 50);
   }
 }

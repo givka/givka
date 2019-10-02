@@ -1,19 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { shuffle } from 'lodash';
-import { of } from 'rxjs';
-import { Artist } from '../classes/artist';
-import { ArtistDetails } from '../classes/artist-details';
-import { Painting } from '../classes/painting';
-import { Storage } from '../classes/storage';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {shuffle} from 'lodash';
+import {of} from 'rxjs';
+import {Artist} from '../classes/artist';
+import {ArtistDetails} from '../classes/artist-details';
+import {Painting} from '../classes/painting';
+import {Storage} from '../classes/storage';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class WikiartService {
   private readonly proxyUrl = 'https://givka-api.netlify.com/.netlify/functions/proxy';
   private readonly baseUrl = 'https://www.wikiart.org/en/';
   private cache = new Map();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   public getMostViewedPaintings(page: number = 1): Promise<Painting[]> {
     const database = Storage.readDB('art');

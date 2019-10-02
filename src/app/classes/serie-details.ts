@@ -1,7 +1,7 @@
-import { IDataBaseSerie, ISeason } from '../interfaces/all';
-import { Credit } from './credit';
-import { Serie } from './serie';
-import { TmdbDetails } from './tmdb-details';
+import {IDataBaseSerie, ISeason} from '../interfaces/all';
+import {Credit} from './credit';
+import {Serie} from './serie';
+import {TmdbDetails} from './tmdb-details';
 
 export class SerieDetails extends TmdbDetails {
   public numberOfSeasons: number;
@@ -23,7 +23,9 @@ export class SerieDetails extends TmdbDetails {
   public toggleListSeen(serie: Serie) {
     Array.prototype.concat(this, this.recoSeries)
       .filter(s => s && s.id === serie.id)
-      .forEach((s) => { s.seen = !s.seen; });
+      .forEach((s) => {
+        s.seen = !s.seen;
+      });
   }
 
   private formatCreator(options: any) {
@@ -37,13 +39,13 @@ export class SerieDetails extends TmdbDetails {
 
   private formatSeasons(options: any): ISeason[] {
     return options.seasons.filter((s: any) => s.season_number !== 0 && s.poster_path)
-    .map((s: any) => ({
-      id: s.id,
-      name: s.name,
-      poster: s.poster_path,
-      releaseDate: s.air_date,
-      episodeCount: s.episode_count,
-    }));
+      .map((s: any) => ({
+        id: s.id,
+        name: s.name,
+        poster: s.poster_path,
+        releaseDate: s.air_date,
+        episodeCount: s.episode_count,
+      }));
   }
 
   private formatRecoSeries(options: any, database: IDataBaseSerie) {

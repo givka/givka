@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { RoutingStateService } from './services/routing-state.service';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {RoutingStateService} from './services/routing-state.service';
 
 @Component({
   selector: 'app-component',

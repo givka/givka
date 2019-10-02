@@ -1,6 +1,4 @@
-import {
-  Component, Input, OnInit, ViewEncapsulation,
-} from '@angular/core';
+import {Component, Input, ViewEncapsulation,} from '@angular/core';
 
 @Component({
   selector: 'portrait-component',

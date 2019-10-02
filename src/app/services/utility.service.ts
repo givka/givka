@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Event, Router } from '@angular/router';
-import { Credit } from '../classes/credit';
-import { Movie } from '../classes/movie';
-import { MovieDetails } from '../classes/movie-details';
-import { Serie } from '../classes/serie';
-import { SerieDetails } from '../classes/serie-details';
-import { Storage } from '../classes/storage';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {Credit} from '../classes/credit';
+import {Movie} from '../classes/movie';
+import {MovieDetails} from '../classes/movie-details';
+import {Serie} from '../classes/serie';
+import {SerieDetails} from '../classes/serie-details';
+import {Storage} from '../classes/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +13,9 @@ import { Storage } from '../classes/storage';
 
 export class UtilityService {
   constructor(
-   private router: Router,
-  ) { }
+    private router: Router,
+  ) {
+  }
 
   public onClickMovie(movie: Movie, event: KeyboardEvent): void {
     this.onClickTmdb(movie, event, 'movies', 'movie', () => movie.toggleSeen());

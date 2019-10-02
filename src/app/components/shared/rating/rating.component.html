@@ -1,5 +1,5 @@
 <div>
-  <i class="material-icons"
-     *ngFor="let star of stars">{{star}}</i>
+  <i *ngFor="let star of stars"
+     class="material-icons">{{star}}</i>
   <span> {{voteAverage / voteMax * 10 | number : '1.1-1' }} - {{voteCount}} reviews</span>
 </div>

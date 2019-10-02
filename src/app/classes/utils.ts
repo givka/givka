@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash';
+import {orderBy} from 'lodash';
 
 export class Utils {
   public static orderBy<T extends object>(array: T, key: string, order = 'desc') {

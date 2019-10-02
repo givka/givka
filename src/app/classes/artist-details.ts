@@ -1,6 +1,6 @@
-import { IDataBasePainting } from '../interfaces/all';
-import { Artist } from './artist';
-import { Painting } from './painting';
+import {IDataBasePainting} from '../interfaces/all';
+import {Artist} from './artist';
+import {Painting} from './painting';
 
 export class ArtistDetails extends Artist {
   public paintings: Painting[];
@@ -12,7 +12,7 @@ export class ArtistDetails extends Artist {
   public birthDate: string;
   public deathDate: string;
 
-  constructor(details:any, paintings: any, database: IDataBasePainting) {
+  constructor(details: any, paintings: any, database: IDataBasePainting) {
     super(details);
     this.artistName = details.artistName;
     this.artistUrl = details.url;

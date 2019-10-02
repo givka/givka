@@ -4,9 +4,11 @@ button-component {
   font-size: 14px;
   user-select: none;
   outline: none;
+
   &.br {
     border-right: 1px solid rgba(0, 0, 0, 0.5);
   }
+
   &:hover {
     cursor: pointer;
     background-color: #ec3655;

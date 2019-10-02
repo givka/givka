@@ -6,10 +6,10 @@
          [src]="image ==='no_credit' ? 'assets/no-profile.png' : image "
          [width]="width">
   </div>
-  <div class="image-title"
-       [ngClass]="{'empty': !ref.innerHTML.trim()}">
-    <div class="content"
-         #ref>
+  <div [ngClass]="{'empty': !ref.innerHTML.trim()}"
+       class="image-title">
+    <div #ref
+         class="content">
       <ng-content></ng-content>
     </div>
   </div>

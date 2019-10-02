@@ -3,15 +3,16 @@
 </div>
 
 <div *ngIf="!loading"
-     class="details"
-     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}">
+     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}"
+     class="details">
   <div class="details-content">
-    <mat-icon class="close link"
-              (click)="close()">close
+    <mat-icon (click)="close()"
+              class="close link">close
     </mat-icon>
 
     <div class="details-bar">
-      <portrait-component [image]="credit.profile? 'https://image.tmdb.org/t/p/w500' + credit.profile : 'no_credit'"></portrait-component>
+      <portrait-component
+        [image]="credit.profile? 'https://image.tmdb.org/t/p/w500' + credit.profile : 'no_credit'"></portrait-component>
 
       <div class="description">
         <div class="title-bar">
@@ -28,31 +29,31 @@
 
         <div>{{credit.biography}}</div>
 
-        <div class="link ib"
-             *ngIf="credit.imdbId">
+        <div *ngIf="credit.imdbId"
+             class="link ib">
           <i class="fab fa-imdb"
              style="margin-right: 5px;"></i>
-          <a class="link"
-             [href]="'https://www.imdb.com/name/'+ credit.imdbId"
+          <a [href]="'https://www.imdb.com/name/'+ credit.imdbId"
+             class="link"
              target="_blank">Go to IMDb</a></div>
       </div>
     </div>
     <div *ngIf="credit.images.length">
       <div class="sub-title">Images</div>
       <div class="list images">
-        <portrait-component *ngFor="let image of credit.images"
-                            [image]="'https://image.tmdb.org/t/p/w780' + image"
-                            (click)="openNewTab(image)">
+        <portrait-component (click)="openNewTab(image)"
+                            *ngFor="let image of credit.images"
+                            [image]="'https://image.tmdb.org/t/p/w780' + image">
           <i class="material-icons">launch</i>
         </portrait-component>
       </div>
 
-      <div class="actor-movies"
-           *ngIf="credit.actorMovies.length">
+      <div *ngIf="credit.actorMovies.length"
+           class="actor-movies">
         <div class="sub-title">Actor movies</div>
         <div class="list">
-          <portrait-component *ngFor="let movie of credit.actorMovies"
-                              (click)="utility.onClickMovie(movie, $event)"
+          <portrait-component (click)="utility.onClickMovie(movie, $event)"
+                              *ngFor="let movie of credit.actorMovies"
                               [image]="'https://image.tmdb.org/t/p/w342'+movie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
             <div class="title-portrait">{{movie.title}}</div>
@@ -67,8 +68,8 @@
       <div *ngIf="credit.actorSeries.length">
         <div class="sub-title">Actor series</div>
         <div class="list">
-          <portrait-component *ngFor="let serie of credit.actorSeries"
-                              (click)="utility.onClickSerie(serie, $event)"
+          <portrait-component (click)="utility.onClickSerie(serie, $event)"
+                              *ngFor="let serie of credit.actorSeries"
                               [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
             <div class="title-portrait">{{serie.title}}</div>
@@ -80,12 +81,12 @@
         </div>
       </div>
 
-      <div class="director-movies"
-           *ngIf="credit.directorMovies.length">
+      <div *ngIf="credit.directorMovies.length"
+           class="director-movies">
         <div class="sub-title">Director movies</div>
         <div class="list">
-          <portrait-component *ngFor="let movie of credit.directorMovies"
-                              (click)="utility.onClickMovie(movie, $event)"
+          <portrait-component (click)="utility.onClickMovie(movie, $event)"
+                              *ngFor="let movie of credit.directorMovies"
                               [image]="'https://image.tmdb.org/t/p/w342'+movie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
             <div class="title-portrait">{{movie.title}}</div>
@@ -100,8 +101,8 @@
       <div *ngIf="credit.creatorSeries.length">
         <div class="sub-title">Creator series</div>
         <div class="list">
-          <portrait-component *ngFor="let serie of credit.creatorSeries"
-                              (click)="utility.onClickSerie(serie, $event)"
+          <portrait-component (click)="utility.onClickSerie(serie, $event)"
+                              *ngFor="let serie of credit.creatorSeries"
                               [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
                               [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
             <div class="title-portrait">{{serie.title}}</div>

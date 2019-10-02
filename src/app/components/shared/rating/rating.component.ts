@@ -1,6 +1,4 @@
-import {
-  Component, Input, OnInit, ViewEncapsulation,
-} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation,} from '@angular/core';
 
 @Component({
   selector: 'rating-component',
@@ -21,7 +19,9 @@ export class RatingComponent implements OnInit {
       .map((star, index) => {
         const starRating = index + 1 - (voteAverage * 10) / 2;
         if (starRating <= 0) return 'star';
-        if (starRating <= 0.5) { return 'star_half'; }
+        if (starRating <= 0.5) {
+          return 'star_half';
+        }
         return 'star_border';
       });
   }

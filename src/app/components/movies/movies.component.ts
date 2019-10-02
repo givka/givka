@@ -1,17 +1,15 @@
-import {
-  Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,
-} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,} from '@angular/core';
 
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Movie } from '../../classes/movie';
-import { Storage } from '../../classes/storage';
-import { UtilityService } from '../../services/utility.service';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Movie} from '../../classes/movie';
+import {Storage} from '../../classes/storage';
+import {UtilityService} from '../../services/utility.service';
 
-import { Sort } from '@angular/material';
-import { Utils } from '../../classes/utils';
-import { TmdbService } from '../../services/tmdb.service';
+import {Sort} from '@angular/material';
+import {Utils} from '../../classes/utils';
+import {TmdbService} from '../../services/tmdb.service';
 
 @Component({
   selector: 'movies-component',
@@ -32,17 +30,17 @@ export class MoviesComponent implements OnInit, OnDestroy {
   public nbrPages = 5;
   public sortActive = '';
   public linkButtons = [
-  { title: 'Upcoming', url:'/movies/upcoming' },
-  { title: 'Popular', url:'/movies/popular' },
-  { title: 'Top Rated', url:'/movies/top_rated' },
-  { title: 'Collection', url:'/movies/collection' },
+    {title: 'Upcoming', url: '/movies/upcoming'},
+    {title: 'Popular', url: '/movies/popular'},
+    {title: 'Top Rated', url: '/movies/top_rated'},
+    {title: 'Collection', url: '/movies/collection'},
   ];
 
   public sortButtons = [
-  { title: 'Title', key:'title' },
-  { title: 'Release Date', key:'releaseDate' },
-  { title: 'Vote Count', key:'voteCount' },
-  { title: 'Vote Average', key:'voteAverage' },
+    {title: 'Title', key: 'title'},
+    {title: 'Release Date', key: 'releaseDate'},
+    {title: 'Vote Count', key: 'voteCount'},
+    {title: 'Vote Average', key: 'voteAverage'},
   ];
 
   constructor(
@@ -50,8 +48,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
     private routeActive: ActivatedRoute,
     private router: Router,
     private title: Title,
-    public utility : UtilityService,
-  ) { }
+    public utility: UtilityService,
+  ) {
+  }
 
   @HostListener('window:scroll', ['$event'])
   public onWindowScroll() {
@@ -83,7 +82,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
         this.movies = this.movies.concat(result);
         this.sortedMovies = this.movies.slice();
       })
-      .finally(() => { this.loadingAdd = false; });
+      .finally(() => {
+        this.loadingAdd = false;
+      });
   }
 
   public checkActivity(status: boolean) {
@@ -110,7 +111,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
           this.movies = movies;
           this.sortedMovies = this.movies.slice();
         })
-        .finally(() => { this.loading = false; });
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 

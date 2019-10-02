@@ -1,7 +1,6 @@
-import { ComicAlbum } from './comic-album';
-import { ComicSerie } from './comic-serie';
+import {ComicSerie} from './comic-serie';
 
-export class ComicAuthor{
+export class ComicAuthor {
   public authorId: number;
   public name: string;
   public birthDate: string | null;
@@ -17,8 +16,8 @@ export class ComicAuthor{
     this.birthDate = options.birthDate;
     this.deathDate = options.deathDate;
     this.image = options.image;
-    this.seriesBoth = options.seriesBoth.map((s:any) => new ComicSerie(s));
-    this.seriesScenario = options.seriesScenario.map((s:any) => new ComicSerie(s));
-    this.seriesDrawing = options.seriesDrawing.map((s:any) => new ComicSerie(s));
+    this.seriesBoth = options.seriesBoth.map((s: any) => new ComicSerie(s));
+    this.seriesScenario = options.seriesScenario.map((s: any) => new ComicSerie(s));
+    this.seriesDrawing = options.seriesDrawing.map((s: any) => new ComicSerie(s));
   }
 }

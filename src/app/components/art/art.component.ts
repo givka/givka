@@ -1,13 +1,10 @@
-import {
-  Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,
-} from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Artist } from '../../classes/artist';
-import { Painting } from '../../classes/painting';
-import { Storage } from '../../classes/storage';
-import { WikiartService } from '../../services/wikiart.service';
+import {Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Painting} from '../../classes/painting';
+import {Storage} from '../../classes/storage';
+import {WikiartService} from '../../services/wikiart.service';
 
 @Component({
   selector: 'art-component',
@@ -24,9 +21,9 @@ export class ArtComponent implements OnInit, OnDestroy {
   public list!: string;
   public isSearching = false;
   public linkButtons = [
-  { title: 'Popular Artists', url:'/art/artists' },
-  { title: 'Popular Paintings', url:'/art/paintings' },
-  { title: 'Collection', url:'/art/collection' },
+    {title: 'Popular Artists', url: '/art/artists'},
+    {title: 'Popular Paintings', url: '/art/paintings'},
+    {title: 'Collection', url: '/art/collection'},
   ];
   public pagePaintings = 0;
   public pageArtists = 0;
@@ -37,12 +34,13 @@ export class ArtComponent implements OnInit, OnDestroy {
     private router: Router,
     private title: Title,
     private activeRoute: ActivatedRoute,
-  ) { }
+  ) {
+  }
 
   public ngOnInit() {
     this.title.setTitle('Art - Givka');
     this.subRouter = this.activeRoute.params.subscribe((routeParams) => {
-      const { list } = routeParams;
+      const {list} = routeParams;
       this.loadList(list);
     });
   }
@@ -85,16 +83,18 @@ export class ArtComponent implements OnInit, OnDestroy {
   public loadCollection() {
     const paintingsSeen = Storage.readDB('art');
     this.items = Object.keys(paintingsSeen)
-    .map(key => new Painting(paintingsSeen[key]).fromStorage(paintingsSeen[key]));
+      .map(key => new Painting(paintingsSeen[key]).fromStorage(paintingsSeen[key]));
     this.loading = false;
   }
 
   public loadDiscover(list: string, isAdding: boolean) {
     const promise = list === 'paintings' ? this.loadDiscoverPaintings()
-                                         : this.loadDiscoverArtists();
+      : this.loadDiscoverArtists();
     promise.then((items) => {
       this.arrayDelay(items, isAdding);
-    }).finally(() => { this.loading = false; });
+    }).finally(() => {
+      this.loading = false;
+    });
   }
 
   public loadDiscoverArtists() {
@@ -147,6 +147,6 @@ export class ArtComponent implements OnInit, OnDestroy {
         this.items.push(items[i]);
         i = i + 1;
       }
-    },                                   50);
+    }, 50);
   }
 }

@@ -3,15 +3,17 @@
 </div>
 
 <div *ngIf="!loading"
-     class="details"
-     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}">
+     [ngStyle]="{'background-image':'radial-gradient(transparent, #14181b), linear-gradient(transparent, #14181b), url(assets/'+background+')'}"
+     class="details">
 
   <div class="details-content">
-    <mat-icon class="close link"
-              (click)="onCloseComic()">close</mat-icon>
+    <mat-icon (click)="onCloseComic()"
+              class="close link">close
+    </mat-icon>
 
     <div class="details-bar">
-      <portrait-component [image]="'https://www.bedetheque.com/media/Couvertures/' + serieDetails.serieCover"></portrait-component>
+      <portrait-component
+        [image]="'https://www.bedetheque.com/media/Couvertures/' + serieDetails.serieCover"></portrait-component>
       <div class="description">
         <div class="title-bar">
           <div>
@@ -27,15 +29,15 @@
                class="line">
             <i class="fas fa-file-alt"
                style="width: 30px"></i>
-            <span class="link underline"
-                  (click)="onClickAuthor(serieDetails.albums[0].scenario)">{{serieDetails.albums[0].scenario}}</span>
+            <span (click)="onClickAuthor(serieDetails.albums[0].scenario)"
+                  class="link underline">{{serieDetails.albums[0].scenario}}</span>
           </div>
           <div *ngIf="serieDetails.albums.length === 1"
                class="line">
             <i class="fas fa-pencil-alt"
                style="width: 30px"></i>
-            <span class="link underline"
-                  (click)="onClickAuthor(serieDetails.albums[0].drawing)">{{serieDetails.albums[0].drawing}}</span>
+            <span (click)="onClickAuthor(serieDetails.albums[0].drawing)"
+                  class="link underline">{{serieDetails.albums[0].drawing}}</span>
           </div>
 
           <rating-component [voteAverage]="serieDetails.voteAverage"
@@ -61,14 +63,14 @@
           <div class="line">
             <i class="fas fa-file-alt"
                style="margin-right: 5px"></i>
-            <span class="link bold"
-                  (click)="onClickAuthor(album.scenario)">{{album.scenario}}</span>
+            <span (click)="onClickAuthor(album.scenario)"
+                  class="link bold">{{album.scenario}}</span>
           </div>
           <div class="line">
             <i class="fas fa-pencil-alt"
                style="margin-right: 5px"></i>
-            <span class="link bold"
-                  (click)="onClickAuthor(album.drawing)">{{album.drawing}}</span>
+            <span (click)="onClickAuthor(album.drawing)"
+                  class="link bold">{{album.drawing}}</span>
           </div>
 
           <div>
@@ -89,9 +91,9 @@
     <div *ngIf="serieDetails.recommendations.length">
       <div class="sub-title">Similar Comic Series</div>
       <div class="list">
-        <portrait-component *ngFor="let serie of serieDetails.recommendations"
-                            [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover"
-                            (click)="onClickSerie(serie.serieId)">
+        <portrait-component (click)="onClickSerie(serie.serieId)"
+                            *ngFor="let serie of serieDetails.recommendations"
+                            [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover">
           <div class="title-portrait">{{serie.serieTitle}}</div>
           <div>{{serie.numberOfAlbums}} album(s)</div>
           <rating-component [voteAverage]="serie.voteAverage"

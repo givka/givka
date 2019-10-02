@@ -1,5 +1,3 @@
-import { Utils } from './utils';
-
 export class Artist {
   public id: string;
   public nation: string;
@@ -26,7 +24,7 @@ export class Artist {
 
     if (this.image) {
       const img = new Image();
-      img.onload =  () => {
+      img.onload = () => {
         if (img.width < 500 && img.height < 500) {
           this.imageLQ = this.image;
         }
@@ -36,7 +34,9 @@ export class Artist {
   }
 
   private formatImage(image: string) {
-    if (image.includes('Content')) { return null; }
+    if (image.includes('Content')) {
+      return null;
+    }
     return image.replace(`!Portrait.${this.extension}`, '');
   }
 }

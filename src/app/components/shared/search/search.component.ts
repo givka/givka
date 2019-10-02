@@ -1,18 +1,14 @@
-import {
-  Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Credit } from '../../../classes/credit';
-import { CreditDetails } from '../../../classes/credit-details';
-import { Movie } from '../../../classes/movie';
-import { Painting } from '../../../classes/painting';
-import { Serie } from '../../../classes/serie';
-import { Storage } from '../../../classes/storage';
-import { TmdbService } from '../../../services/tmdb.service';
-import { UtilityService } from '../../../services/utility.service';
-import { WikiartService } from '../../../services/wikiart.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation,} from '@angular/core';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Credit} from '../../../classes/credit';
+import {Movie} from '../../../classes/movie';
+import {Painting} from '../../../classes/painting';
+import {Serie} from '../../../classes/serie';
+import {Storage} from '../../../classes/storage';
+import {TmdbService} from '../../../services/tmdb.service';
+import {UtilityService} from '../../../services/utility.service';
+import {WikiartService} from '../../../services/wikiart.service';
 
 @Component({
   selector: 'search-component',
@@ -49,7 +45,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private tmdb: TmdbService,
     private wikiart: WikiartService,
     private utility: UtilityService,
-  ) { }
+  ) {
+  }
 
   public ngOnInit() {
     this.debounceQuery.pipe(debounceTime(500), distinctUntilChanged())
@@ -90,8 +87,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   public searchWikiArt(query: string) {
     this.cancelArrayDelay();
     this.wikiart.getSearch(query.trim())
-      .then((result) => { this.arrayDelay(result); })
-      .finally(() => { this.loading = false; });
+      .then((result) => {
+        this.arrayDelay(result);
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   }
 
   public searchTmdb(query: string, toExclude: string) {
@@ -101,7 +102,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.movies = result.movies;
         this.series = result.series;
       })
-      .finally(() => { this.loading = false; });
+      .finally(() => {
+        this.loading = false;
+      });
   }
 
   public onClickItem(item: Movie | Serie | Credit | Painting, event: KeyboardEvent) {
@@ -139,6 +142,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.paintings.push(paintings[i]);
         i = i + 1;
       }
-    },                                   50);
+    }, 50);
   }
 }

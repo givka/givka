@@ -1,6 +1,6 @@
 <search-component (onActivity)="checkActivity($event)"
-                  [type]="'movies'"
-                  [placeholder]="'Search Movies...'"></search-component>
+                  [placeholder]="'Search Movies...'"
+                  [type]="'movies'"></search-component>
 
 <div *ngIf="!isSearching">
   <h1 *ngIf="list==='upcoming'">Upcoming Movies</h1>
@@ -13,23 +13,23 @@
   </div>
 
   <div class="button-group">
-    <button mat-button
-            *ngFor="let linkButton of linkButtons"
+    <button *ngFor="let linkButton of linkButtons"
             [routerLink]="[linkButton.url]"
+            mat-button
             routerLinkActive="active">
       <div>{{linkButton.title}}</div>
     </button>
   </div>
 
-  <div class="button-group"
-       style="float: right"
+  <div (matSortChange)="sort($event)"
+       class="button-group"
        matSort
-       (matSortChange)="sort($event)">
+       style="float: right">
 
-    <button mat-button
+    <button *ngFor="let sortButton of sortButtons"
+            [ngClass]="{'active': sortActive === sortButton.key}"
             class="sort-button"
-            *ngFor="let sortButton of sortButtons"
-            [ngClass]="{'active': sortActive === sortButton.key}">
+            mat-button>
       <span mat-sort-header="{{sortButton.key}}">{{sortButton.title}}</span>
     </button>
 
@@ -46,8 +46,8 @@
 
     <div *ngIf="sortedMovies"
          class="grid">
-      <portrait-component *ngFor="let movie of sortedMovies"
-                          (click)="utility.onClickMovie(movie, $event)"
+      <portrait-component (click)="utility.onClickMovie(movie, $event)"
+                          *ngFor="let movie of sortedMovies"
                           [image]="'https://image.tmdb.org/t/p/w342'+movie.poster"
                           [ngClass]="{'seen' : (list !== 'collection' && movie.seen) || (list === 'collection' && !movie.seen)}">
         <div class="title-portrait">{{movie.title}}</div>

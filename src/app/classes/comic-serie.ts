@@ -1,4 +1,4 @@
-export class ComicSerie{
+export class ComicSerie {
   public serieTitle: string;
   public serieId: number;
   public voteAverage: number;

@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { random } from 'lodash';
-import { Subscription } from 'rxjs';
-import { ComicAuthor } from '../../../classes/comic-author';
-import { ComicsService } from '../../../services/comics.service';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+import {random} from 'lodash';
+import {Subscription} from 'rxjs';
+import {ComicAuthor} from '../../../classes/comic-author';
+import {ComicsService} from '../../../services/comics.service';
 
 @Component({
   selector: 'author-details-component',
@@ -23,22 +23,23 @@ export class AuthorDetailsComponent implements OnInit {
               private router: Router,
               private comicsAPI: ComicsService,
               private title: Title,
-              ) { }
+  ) {
+  }
 
   public ngOnInit() {
     this.subRouter = this.routeActive.params.subscribe((routeParams) => {
-      const { name } = routeParams;
+      const {name} = routeParams;
       this.loadComicAuthor(name);
     });
   }
 
   public loadComicAuthor(name: string) {
     this.comicsAPI.getAuthor(name)
-    .then((result) => {
-      this.author = result;
-      this.title.setTitle(`${this.author.name} - Givka`);
-    })
-    .finally(() => this.loading = false);
+      .then((result) => {
+        this.author = result;
+        this.title.setTitle(`${this.author.name} - Givka`);
+      })
+      .finally(() => this.loading = false);
   }
 
   public onCloseAuthor() {
