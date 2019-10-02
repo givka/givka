@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -14,7 +14,7 @@ import {UtilityService} from '../../../services/utility.service';
   styleUrls: ['./serie-details.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SerieDetailsComponent implements OnInit {
+export class SerieDetailsComponent implements OnInit, OnDestroy {
   public serieDetails!: SerieDetails;
   public loading = true;
   public subRouter!: Subscription;

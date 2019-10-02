@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewEncapsulation,} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,} from '@angular/core';
 
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -16,7 +16,7 @@ import {WikiartService} from '../../../services/wikiart.service';
   styleUrls: ['./artist-details.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ArtistDetailsComponent implements OnInit {
+export class ArtistDetailsComponent implements OnInit, OnDestroy {
   public artist!: ArtistDetails;
   public subRouter!: Subscription;
   public loading = true;

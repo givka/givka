@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit, ViewEncapsulation,} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewEncapsulation,} from '@angular/core';
 import {Sort} from '@angular/material';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -16,7 +16,7 @@ import {UtilityService} from '../../services/utility.service';
   styleUrls: ['./series.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TvComponent implements OnInit {
+export class TvComponent implements OnInit, OnDestroy {
   public series!: Serie[];
   public sortedSeries!: Serie[];
   public loading = true;
