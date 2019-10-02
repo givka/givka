@@ -2,7 +2,7 @@
   "name": "givka",
   "version": "0.0.0",
   "engines": {
-    "node": ">=10.9.0"
+    "node": ">=10.15.0"
   },
   "scripts": {
     "ng": "ng",
@@ -10,22 +10,23 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "upload": "ng build --prod --base-href 'https://givka.github.io/givka/' && ngh"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^8.1.3",
-    "@angular/cdk": "^8.1.2",
-    "@angular/common": "~8.1.3",
-    "@angular/compiler": "~8.1.3",
-    "@angular/core": "~8.1.3",
-    "@angular/forms": "~8.1.3",
-    "@angular/http": "~7.2.15",
-    "@angular/material": "^8.1.2",
-    "@angular/platform-browser": "~8.1.3",
-    "@angular/platform-browser-dynamic": "~8.1.3",
-    "@angular/router": "~8.1.3",
+    "@angular/animations": "~8.2.0",
+    "@angular/common": "~8.2.0",
+    "@angular/compiler": "~8.2.0",
+    "@angular/core": "~8.2.0",
+    "@angular/material": "~8.2.0",
+    "@angular/forms": "~8.2.0",
+    "@angular/platform-browser": "~8.2.0",
+    "@angular/platform-browser-dynamic": "~8.2.0",
+    "@angular/router": "~8.2.0",
+    "@angular/cdk": "~8.2.0",
+    "@angular/cli": "~8.2.0",
+    "@angular/language-service": "~8.2.0",
+    "@angular/upgrade": "~8.2.0",
     "core-js": "^3.1.4",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.15",
@@ -34,10 +35,8 @@
     "zone.js": "~0.10.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.801.3",
-    "@angular/cli": "~8.1.3",
-    "@angular/compiler-cli": "^8.1.3",
-    "@angular/language-service": "~8.1.3",
+    "@angular-devkit/build-angular": "^0.803.6",
+    "@angular/compiler-cli": "^8.2.0",
     "@types/jasmine": "~3.3.16",
     "@types/jasminewd2": "~2.0.6",
     "@types/lodash": "^4.14.136",
@@ -53,6 +52,6 @@
     "karma-jasmine-html-reporter": "^1.4.2",
     "protractor": "~5.4.2",
     "ts-node": "~8.3.0",
-    "typescript": "^3.4.5"
+    "typescript": ">=3.4.0 <3.6.0"
   }
 }
