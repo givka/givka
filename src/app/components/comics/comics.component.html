@@ -20,7 +20,8 @@
          class="grid">
       <portrait-component (click)="onClickComic(serie)"
                           *ngFor="let serie of series"
-                          [image]="'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover">
+                          [image]="'https://www.bedetheque.com/media/Couvertures/'+serie.serieCover"
+                          [ngStyle]="{'width': 'calc('+serie.serieCoverWidth/serie.serieCoverHeight+'*250px)'}">
         <div class="title-portrait">{{serie.serieTitle}}</div>
         <div>{{serie.numberOfAlbums}} album(s)</div>
         <rating-component [voteAverage]="serie.voteAverage"

@@ -5,6 +5,8 @@ export class ComicSerie {
   public voteCount: number;
   public numberOfAlbums: number;
   public serieCover: string;
+  public serieCoverWidth: string;
+  public serieCoverHeight: string;
 
   constructor(options: any) {
     this.serieTitle = options.serieTitle;
@@ -13,6 +15,7 @@ export class ComicSerie {
     this.voteCount = options.voteCount;
     this.numberOfAlbums = options.numberOfAlbums;
     this.serieCover = options.serieCover;
-
+    this.serieCoverWidth = options.serieCoverWidth;
+    this.serieCoverHeight = options.serieCoverHeight;
   }
 }

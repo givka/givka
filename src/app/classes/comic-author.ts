@@ -6,6 +6,8 @@ export class ComicAuthor {
   public birthDate: string | null;
   public deathDate: string | null;
   public image: string;
+  public imageWidth: string;
+  public imageHeight: string;
   public seriesBoth: ComicSerie[];
   public seriesScenario: ComicSerie[];
   public seriesDrawing: ComicSerie[];
@@ -16,6 +18,8 @@ export class ComicAuthor {
     this.birthDate = options.birthDate;
     this.deathDate = options.deathDate;
     this.image = options.image;
+    this.imageWidth = options.imageWidth;
+    this.imageHeight = options.imageHeight;
     this.seriesBoth = options.seriesBoth.map((s: any) => new ComicSerie(s));
     this.seriesScenario = options.seriesScenario.map((s: any) => new ComicSerie(s));
     this.seriesDrawing = options.seriesDrawing.map((s: any) => new ComicSerie(s));

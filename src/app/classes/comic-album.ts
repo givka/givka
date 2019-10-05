@@ -4,6 +4,8 @@ export class ComicAlbum {
   public albumId: number;
   public albumTitle: string;
   public imageCover: string;
+  public imageCoverWidth: string;
+  public imageCoverHeight: string;
   public imageExtract: string;
   public imageReverse: string;
   public voteAverage: number;
@@ -22,6 +24,8 @@ export class ComicAlbum {
     this.albumId = options.albumId;
     this.albumTitle = options.albumTitle;
     this.imageCover = options.imageCover;
+    this.imageCoverWidth = options.imageCoverWidth;
+    this.imageCoverHeight = options.imageCoverHeight;
     this.imageExtract = options.imageExtract;
     this.imageReverse = options.imageReverse;
     this.voteAverage = options.voteAverage;

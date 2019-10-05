@@ -51,7 +51,8 @@
       <div class="sub-title">Albums</div>
       <div class="list">
         <portrait-component *ngFor="let album of serieDetails.albums"
-                            [image]="'https://www.bedetheque.com/media/Couvertures/' + album.imageCover">
+                            [image]="'https://www.bedetheque.com/media/Couvertures/' + album.imageCover"
+                            [ngStyle]="{'width': 'calc('+album.imageCoverWidth/album.imageCoverHeight+'*250px)'}">
 
           <div class="title-portrait">
             <span>{{album.albumNumber}} - {{album.albumTitle}}</span>
@@ -93,7 +94,8 @@
       <div class="list">
         <portrait-component (click)="onClickSerie(serie.serieId)"
                             *ngFor="let serie of serieDetails.recommendations"
-                            [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover">
+                            [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover"
+                            [ngStyle]="{'width': 'calc('+serie.serieCoverWidth/serie.serieCoverHeight+'*250px)'}">
           <div class="title-portrait">{{serie.serieTitle}}</div>
           <div>{{serie.numberOfAlbums}} album(s)</div>
           <rating-component [voteAverage]="serie.voteAverage"
