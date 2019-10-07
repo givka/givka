@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export class ComicSerie {
   public serieTitle: string;
   public serieId: number;
@@ -7,6 +9,8 @@ export class ComicSerie {
   public serieCover: string;
   public serieCoverWidth: string;
   public serieCoverHeight: string;
+  public dateBegin: number;
+  public dateEnd: number;
 
   constructor(options: any) {
     this.serieTitle = options.serieTitle;
@@ -17,5 +21,7 @@ export class ComicSerie {
     this.serieCover = options.serieCover;
     this.serieCoverWidth = options.serieCoverWidth;
     this.serieCoverHeight = options.serieCoverHeight;
+    this.dateBegin = parseInt(moment.unix(options.dateBegin).format("YYYY"));
+    this.dateEnd = parseInt(moment.unix(options.dateEnd).format("YYYY"));
   }
 }

@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export class ComicAlbum {
   public serieId: number;
   public serieTitle: string;
@@ -13,7 +15,7 @@ export class ComicAlbum {
   public scenario: string;
   public drawing: string;
   public colors: string;
-  public date: string;
+  public date: number;
   public editor: string;
   public nbrOfPages: number;
   public albumNumber: number;
@@ -33,7 +35,7 @@ export class ComicAlbum {
     this.scenario = options.scenario;
     this.drawing = options.drawing;
     this.colors = options.colors;
-    this.date = options.date;
+    this.date = parseInt(moment.unix(options.date).format("YYYY"));
     this.editor = options.editor;
     this.nbrOfPages = options.nbrOfPages;
     this.albumNumber = options.albumNumber;

@@ -44,6 +44,9 @@
                             [voteCount]="serieDetails.voteCount"
                             [voteMax]="100">
           </rating-component>
+
+          <div><span>{{serieDetails.dateBegin}}</span><span *ngIf="serieDetails.dateBegin != serieDetails.dateEnd"> - {{serieDetails.dateEnd}}</span></div>
+
         </div>
       </div>
     </div>
@@ -97,6 +100,7 @@
                             [image]="'https://www.bedetheque.com/media/Couvertures/' + serie.serieCover"
                             [ngStyle]="{'width': 'calc('+serie.serieCoverWidth/serie.serieCoverHeight+'*250px)'}">
           <div class="title-portrait">{{serie.serieTitle}}</div>
+          <div><span>{{serie.dateBegin}}</span><span *ngIf="serie.dateBegin != serie.dateEnd"> - {{serie.dateEnd}}</span></div>
           <div>{{serie.numberOfAlbums}} album(s)</div>
           <rating-component [voteAverage]="serie.voteAverage"
                             [voteCount]="serie.voteCount"
