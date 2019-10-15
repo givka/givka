@@ -1,7 +1,7 @@
 <mat-form-field>
   <label>
-    <input (ngModelChange)='onChange()'
-           [(ngModel)]="search"
+    <input [(ngModel)]="search"
+           (ngModelChange)='onChange()'
            matInput
            placeholder="{{placeholder}}">
   </label>
