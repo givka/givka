@@ -75,22 +75,13 @@
           </portrait-component>
         </div>
       </div>
-      <div *ngIf="serieDetails.recoSeries.length"
-           class="reco-movies">
-        <div class="sub-title">Similar series</div>
-        <div class="list">
-          <portrait-component (click)="utility.onClickSerieDetails(serie,serieDetails, $event)"
-                              *ngFor="let serie of serieDetails.recoSeries"
-                              [image]="'https://image.tmdb.org/t/p/w342'+serie.poster"
-                              [ngClass]="{'seen' : (list !== 'collection' && serie.seen) || (list === 'collection' && !serie.seen)}">
-            <div class="title-portrait">{{serie.title}}</div>
-            <div>{{serie.releaseYear}}</div>
-            <rating-component [voteAverage]="serie.voteAverage"
-                              [voteCount]="serie.voteCount"
-                              [voteMax]="10"></rating-component>
-          </portrait-component>
-        </div>
-      </div>
+
+      <list-component *ngIf="serieDetails.recoSeries.length"
+                      [title]="'Similar series'"
+                      [type]="'series'"
+                      [itemDetails]="serieDetails"
+                      [items]="serieDetails.recoSeries">
+      </list-component>
     </div>
   </div>
 </div>

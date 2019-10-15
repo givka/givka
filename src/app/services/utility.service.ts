@@ -6,6 +6,7 @@ import {MovieDetails} from '../classes/movie-details';
 import {Serie} from '../classes/serie';
 import {SerieDetails} from '../classes/serie-details';
 import {Storage} from '../classes/storage';
+import {CreditDetails} from '../classes/credit-details';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +45,23 @@ export class UtilityService {
       item.seen ? Storage.addKeyDB(dbKey, item) : Storage.deleteKeyDB(dbKey, item);
     } else {
       this.router.navigate([`${url}/${item.id}`]);
+    }
+  }
+
+  onClickItemDetails(item: Movie | Serie, itemDetails: MovieDetails | SerieDetails | CreditDetails, $event: KeyboardEvent) {
+    if (itemDetails instanceof MovieDetails) {
+      this.onClickMovieDetails(item, itemDetails, $event);
+    }
+    if (itemDetails instanceof SerieDetails) {
+      this.onClickSerieDetails(item, itemDetails, $event);
+    }
+    if (itemDetails instanceof CreditDetails) {
+      if (item instanceof Movie) {
+        this.onClickMovie(item, $event);
+      }
+      if (item instanceof Serie) {
+        this.onClickSerie(item, $event);
+      }
     }
   }
 }

@@ -2,7 +2,7 @@ import {orderBy} from 'lodash';
 
 export class Utils {
   public static orderBy<T extends object>(array: T, key: string, order = 'desc') {
-    return orderBy(array, (param: any) => param[key], order === 'desc' ? 'desc' : 'asc') as T;
+    return orderBy(array, (param: any) => param[key], order === 'desc' ? 'asc' : 'desc') as T;
   }
 
   public static formatArtistUrl(artistName: string) {

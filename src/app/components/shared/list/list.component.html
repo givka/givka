@@ -1,0 +1,31 @@
+<div style="display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px;">
+  <div class="sub-title">{{title}}</div>
+
+  <div (matSortChange)="sort($event)"
+       class="button-group"
+       matSort>
+    <button *ngFor="let sortButton of sortButtons"
+            [ngClass]="{'active': sortActive === sortButton.key}"
+            class="sort-button"
+            mat-button>
+      <span mat-sort-header="{{sortButton.key}}">{{sortButton.title}}</span>
+    </button>
+  </div>
+
+</div>
+
+<div class="list">
+  <portrait-component *ngFor="let item of sortedItems"
+                      (click)="utility.onClickItemDetails(item, itemDetails, $event)"
+                      [image]="'https://image.tmdb.org/t/p/w342'+item.poster"
+                      [ngClass]="{'seen' : item.seen}">
+    <div class="title-portrait">{{item.title}}</div>
+    <div>{{item.releaseYear}}</div>
+    <rating-component [voteAverage]="item.voteAverage"
+                      [voteCount]="item.voteCount"
+                      [voteMax]="10"></rating-component>
+  </portrait-component>
+</div>

@@ -15,7 +15,7 @@ import {UtilityService} from '../../../services/utility.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class CreditDetailsComponent implements OnInit, OnDestroy {
-  public credit!: CreditDetails;
+  public creditDetails!: CreditDetails;
   public loading = true;
   public subRouter!: Subscription;
   public background = `${random(0, 16)}.jpg`;
@@ -50,7 +50,7 @@ export class CreditDetailsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.tmdb.getPeople(id)
       .then((credit) => {
-        this.credit = credit;
+        this.creditDetails = credit;
         this.title.setTitle(`${credit.name} - Givka`);
       })
       .finally(() => {

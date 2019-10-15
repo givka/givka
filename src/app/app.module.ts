@@ -27,6 +27,7 @@ import {PortraitComponent} from './components/shared/portrait/portrait.component
 import {RatingComponent} from './components/shared/rating/rating.component';
 import {SearchComponent} from './components/shared/search/search.component';
 import {SpinnerComponent} from './components/shared/spinner/spinner.component';
+import { ListComponent } from './components/shared/list/list.component';
 
 const appRoutes: Routes = [
   {path: 'movies/:list', component: MoviesComponent},
@@ -66,6 +67,7 @@ const appRoutes: Routes = [
     ComicDetailsComponent,
     AuthorDetailsComponent,
     NavbarComponent,
+    ListComponent,
   ],
   imports: [
     BrowserModule,
