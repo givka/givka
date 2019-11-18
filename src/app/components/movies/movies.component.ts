@@ -30,7 +30,6 @@ export class MoviesComponent implements OnInit, OnDestroy {
   public nbrPages = 5;
   public sortActive = '';
   public linkButtons = [
-    {title: 'Upcoming', url: '/movies/upcoming'},
     {title: 'Popular', url: '/movies/popular'},
     {title: 'Top Rated', url: '/movies/top_rated'},
     {title: 'Collection', url: '/movies/collection'},
@@ -92,7 +91,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   public loadList(list: string) {
-    const possibleLists = ['upcoming', 'top_rated', 'popular', 'collection'];
+    const possibleLists = ['top_rated', 'popular', 'collection'];
     if (!possibleLists.includes(list)) {
       this.router.navigate(['movies']);
       return;

@@ -30,7 +30,6 @@ export class TvComponent implements OnInit, OnDestroy {
   public offsetPages = 5;
   public nbrPages = 5;
   public linkButtons = [
-    {title: 'On the Air', url: '/series/on_the_air'},
     {title: 'Popular', url: '/series/popular'},
     {title: 'Top Rated', url: '/series/top_rated'},
     {title: 'Collection', url: '/series/collection'},
@@ -94,7 +93,7 @@ export class TvComponent implements OnInit, OnDestroy {
   }
 
   public loadList(list: string) {
-    const possibleLists = ['top_rated', 'popular', 'collection', 'on_the_air'];
+    const possibleLists = ['top_rated', 'popular', 'collection'];
     if (!possibleLists.includes(list)) {
       this.router.navigate(['series']);
       return;

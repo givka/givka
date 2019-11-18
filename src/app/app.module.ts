@@ -27,7 +27,7 @@ import {PortraitComponent} from './components/shared/portrait/portrait.component
 import {RatingComponent} from './components/shared/rating/rating.component';
 import {SearchComponent} from './components/shared/search/search.component';
 import {SpinnerComponent} from './components/shared/spinner/spinner.component';
-import { ListComponent } from './components/shared/list/list.component';
+import {ListComponent} from './components/shared/list/list.component';
 
 const appRoutes: Routes = [
   {path: 'movies/:list', component: MoviesComponent},
@@ -40,9 +40,11 @@ const appRoutes: Routes = [
   {path: 'art/:list', component: ArtComponent},
   {path: 'art', redirectTo: 'art/paintings', pathMatch: 'full'},
   {path: 'artist/:artistUrl', component: ArtistDetailsComponent},
- /* {path: 'comics', component: ComicsComponent},
-  {path: 'comic/:id', component: ComicDetailsComponent},
-  {path: 'author/:name', component: AuthorDetailsComponent},*/
+  /*
+   {path: 'comics', component: ComicsComponent},
+   {path: 'comic/:id', component: ComicDetailsComponent},
+   {path: 'author/:name', component: AuthorDetailsComponent},
+  */
   {path: '', redirectTo: 'art/paintings', pathMatch: 'full'},
   {path: '**', redirectTo: 'art/paintings', pathMatch: 'full'},
 ];
