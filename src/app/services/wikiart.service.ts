@@ -1,7 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {shuffle} from 'lodash';
-import {of} from 'rxjs';
 import {Artist} from '../classes/artist';
 import {ArtistDetails} from '../classes/artist-details';
 import {Painting} from '../classes/painting';
@@ -11,14 +10,13 @@ import {Storage} from '../classes/storage';
 export class WikiartService {
   private readonly proxyUrl = 'https://givka-api.netlify.com/.netlify/functions/proxy';
   private readonly baseUrl = 'https://www.wikiart.org/en/';
-  private cache = new Map();
 
   constructor(private http: HttpClient) {
   }
 
   public getMostViewedPaintings(page: number = 1): Promise<Painting[]> {
     const database = Storage.readDB('art');
-    return this.getRequestCached(`?json=2&layout=new&param=featured&layout=new&page=${page}`)
+    return this.getRequest(`?json=2&layout=new&param=featured&layout=new&page=${page}`)
       .then(result => shuffle(result.Paintings
         .map((p: any) => new Painting(p).fromServer(p, database))));
   }
@@ -32,7 +30,7 @@ export class WikiartService {
 
   public getPopularArtists(page: number): Promise<Artist[]> {
     // tslint:disable-next-line: max-line-length
-    return this.getRequestCached(`app/Search/ArtistAdvancedSearch/?isAjax=true&layout=new&layout=new&page=${page}`)
+    return this.getRequest(`app/Search/ArtistAdvancedSearch/?isAjax=true&layout=new&layout=new&page=${page}`)
       .then(data => shuffle(data.Artists.map((a: any) => new Artist(a))));
   }
 
@@ -58,17 +56,6 @@ export class WikiartService {
   }
 
   private getRequest(url: string): Promise<any> {
-    return this.http.post(this.proxyUrl, `${this.baseUrl}${url}`).toPromise()
-      .then((result) => {
-        this.cache.set(`${this.baseUrl}${url}`, result);
-        return result;
-      });
-  }
-
-  private getRequestCached(url: string): Promise<any> {
-    const cachedRequest = this.cache.get(`${this.baseUrl}${url}`);
-    return cachedRequest
-      ? of(cachedRequest).toPromise()
-      : this.getRequest(url);
+    return this.http.post(this.proxyUrl, `${this.baseUrl}${url}`).toPromise();
   }
 }
