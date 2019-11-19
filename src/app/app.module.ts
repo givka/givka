@@ -38,7 +38,7 @@ const appRoutes: Routes = [
   {path: 'series', redirectTo: 'series/top_rated', pathMatch: 'full'},
   {path: 'serie/:id', component: SerieDetailsComponent},
   {path: 'art/:list', component: ArtComponent},
-  {path: 'art', redirectTo: 'art/paintings', pathMatch: 'full'},
+  {path: 'art', redirectTo: 'art/featured', pathMatch: 'full'},
   {path: 'artist/:artistUrl', component: ArtistDetailsComponent},
   /*
    {path: 'comics', component: ComicsComponent},

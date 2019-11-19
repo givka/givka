@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {Painting} from '../../classes/painting';
 import {Storage} from '../../classes/storage';
 import {WikiartService} from '../../services/wikiart.service';
+import {Artist} from '../../classes/artist';
 
 @Component({
   selector: 'art-component',
@@ -21,12 +22,13 @@ export class ArtComponent implements OnInit, OnDestroy {
   public list!: string;
   public isSearching = false;
   public linkButtons = [
-    {title: 'Popular Artists', url: '/art/artists'},
-    {title: 'Popular Paintings', url: '/art/paintings'},
-    {title: 'Collection', url: '/art/collection'},
+    {title: 'Popular Artists', url: 'artists'},
+    {title: 'Recently Added Paintings', url: 'recently-added-artworks'},
+    {title: 'High resolutions Paintings', url: 'high_resolution'},
+    {title: 'Featured Paintings', url: 'featured'},
+    {title: 'Collection', url: 'collection'},
   ];
-  public pagePaintings = 0;
-  public pageArtists = 0;
+  public page = 0;
   public loadingAdd = false;
 
   constructor(
@@ -65,7 +67,8 @@ export class ArtComponent implements OnInit, OnDestroy {
   }
 
   public loadList(list: string) {
-    const possibleLists = ['collection', 'artists', 'paintings'];
+    this.page = 0;
+    const possibleLists = this.linkButtons.map(l => l.url);
     if (!possibleLists.includes(list)) {
       this.router.navigate(['/art']);
       return;
@@ -88,31 +91,25 @@ export class ArtComponent implements OnInit, OnDestroy {
   }
 
   public loadDiscover(list: string, isAdding: boolean) {
-    const promise = list === 'paintings' ? this.loadDiscoverPaintings()
-      : this.loadDiscoverArtists();
-    promise.then((items) => {
-      this.arrayDelay(items, isAdding);
-    }).finally(() => {
-      this.loading = false;
-    });
-  }
-
-  public loadDiscoverArtists() {
-    this.pagePaintings = 0;
-    this.pageArtists += 1;
-    return this.wikiart.getPopularArtists(this.pageArtists);
-  }
-
-  public loadDiscoverPaintings() {
-    this.pageArtists = 0;
-    if (this.pagePaintings === 0) {
-      this.pagePaintings += 2;
-      return Promise
-        .all([this.wikiart.getMostViewedPaintings(1), this.wikiart.getMostViewedPaintings(2)])
-        .then(([paintings1, paintings2]) => Array.prototype.concat(paintings1, paintings2));
+    this.page++;
+    if (list == 'artists') {
+      this.wikiart.getPopularArtists(this.page)
+        .then((items: Painting[] | Artist[]) => {
+          this.arrayDelay(items, isAdding);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    } else {
+      this.wikiart.getMostViewedPaintings(list, this.page)
+        .then((items: Painting[] | Artist[]) => {
+          this.arrayDelay(items, isAdding);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
-    this.pagePaintings += 1;
-    return this.wikiart.getMostViewedPaintings(this.pagePaintings);
+
   }
 
   public onClickArtist(artistUrl: string) {
