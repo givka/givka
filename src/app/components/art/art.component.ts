@@ -24,7 +24,7 @@ export class ArtComponent implements OnInit, OnDestroy {
   public linkButtons = [
     {title: 'Popular Artists', url: 'artists'},
     {title: 'Recently Added Paintings', url: 'recently-added-artworks'},
-    {title: 'High resolutions Paintings', url: 'high_resolution'},
+    {title: 'High Resolution Paintings', url: 'high_resolution'},
     {title: 'Featured Paintings', url: 'featured'},
     {title: 'Collection', url: 'collection'},
   ];

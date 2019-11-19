@@ -1,6 +1,10 @@
 art-component {
   portrait-component {
     height: 250px;
-    max-width: 100%;
+    max-width: calc(16 / 9 * 250px);
+
+    .portrait img {
+      object-fit: contain;
+    }
   }
 }
