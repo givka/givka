@@ -93,6 +93,7 @@ export class ArtComponent implements OnInit, OnDestroy {
   public loadDiscover(list: string, isAdding: boolean) {
     this.page++;
     if (list == 'artists') {
+      if (this.page > 4) return;
       this.wikiart.getPopularArtists(this.page)
         .then((items: Painting[] | Artist[]) => {
           this.arrayDelay(items, isAdding);
@@ -101,6 +102,7 @@ export class ArtComponent implements OnInit, OnDestroy {
           this.loading = false;
         });
     } else {
+      if (this.page > 10) return;
       this.wikiart.getMostViewedPaintings(list, this.page)
         .then((items: Painting[] | Artist[]) => {
           this.arrayDelay(items, isAdding);
