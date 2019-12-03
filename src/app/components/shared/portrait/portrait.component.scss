@@ -20,6 +20,7 @@ portrait-component {
     box-shadow: 0 0 10px #000000;
     transition: 0.3s all ease;
     position: relative;
+    border: solid 1px transparent;
 
     .image-container {
       height: 100%;
