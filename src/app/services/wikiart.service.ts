@@ -8,7 +8,7 @@ import {Storage} from '../classes/storage';
 
 @Injectable({providedIn: 'root'})
 export class WikiartService {
-  private readonly proxyUrl = 'https://givka-api.netlify.com/.netlify/functions/proxy';
+  private readonly proxyUrl = 'https://givka-api.netlify.app/.netlify/functions/proxy';
   private readonly baseUrl = 'https://www.wikiart.org/en/';
 
   constructor(private http: HttpClient) {
