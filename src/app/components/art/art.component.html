@@ -7,13 +7,16 @@
     <spinner-component></spinner-component>
   </div>
 
-  <h1 *ngIf="list === 'paintings'">Discover Paintings</h1>
+  <h1 *ngIf="list === 'featured'">Featured Paintings</h1>
+  <h1 *ngIf="list === 'recently-added-artworks'">Recently Added Paintings</h1>
+  <h1 *ngIf="list === 'high_resolution'">High Resolution Paintings</h1>
   <h1 *ngIf="list === 'artists'">Discover Artists</h1>
   <h1 *ngIf="list === 'collection'">Collection Art</h1>
 
+
   <div class="button-group">
     <button *ngFor="let linkButton of linkButtons"
-            [routerLink]="[linkButton.url]"
+            [routerLink]="['/art/'+linkButton.url]"
             mat-button
             routerLinkActive="active">
       <div>{{linkButton.title}}</div>

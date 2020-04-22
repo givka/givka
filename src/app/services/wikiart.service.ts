@@ -1,6 +1,5 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {shuffle} from 'lodash';
 import {Artist} from '../classes/artist';
 import {ArtistDetails} from '../classes/artist-details';
 import {Painting} from '../classes/painting';
@@ -14,24 +13,25 @@ export class WikiartService {
   constructor(private http: HttpClient) {
   }
 
-  public getMostViewedPaintings(page: number = 1): Promise<Painting[]> {
+  public getMostViewedPaintings(param: string, page: number = 1): Promise<Painting[]> {
+    const url = param == 'recently-added-artworks'
+      ? `recently-added-artworks?json=2&layout=new&page=${page}`
+      : `?json=2&layout=new&param=${param}&layout=new&page=${page}`;
     const database = Storage.readDB('art');
-    return this.getRequest(`?json=2&layout=new&param=featured&layout=new&page=${page}`)
-      .then(result => shuffle(result.Paintings
-        .map((p: any) => new Painting(p).fromServer(p, database))));
+    return this.getRequest(url)
+      .then(result => result.Paintings.map((p: any) => new Painting(p).fromServer(p, database)));
   }
 
   public getSearch(query: string): Promise<Painting[]> {
     const database = Storage.readDB('art');
     return this.getRequest(`search/${query}/1`)
-      .then(result => result
-        .map((p: any) => new Painting(p).fromServer(p, database)));
+      .then(result => result.map((p: any) => new Painting(p).fromServer(p, database)));
   }
 
   public getPopularArtists(page: number): Promise<Artist[]> {
     // tslint:disable-next-line: max-line-length
-    return this.getRequest(`app/Search/ArtistAdvancedSearch/?isAjax=true&layout=new&layout=new&page=${page}`)
-      .then(data => shuffle(data.Artists.map((a: any) => new Artist(a))));
+    return this.getRequest(`App/Search/popular-artists?json=3&layout=new&page=${page}`)
+      .then(data => data.Artists.map((a: any) => new Artist(a)));
   }
 
   public getArtistPaintings(artistUrl: string, page: number): Promise<any> {
