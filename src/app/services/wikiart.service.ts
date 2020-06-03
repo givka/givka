@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Artist } from '../classes/artist';
-import { ArtistDetails } from '../classes/artist-details';
-import { Painting } from '../classes/painting';
-import { Storage } from '../classes/storage';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Artist} from '../classes/artist';
+import {ArtistDetails} from '../classes/artist-details';
+import {Painting} from '../classes/painting';
+import {Storage} from '../classes/storage';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class WikiartService {
   private readonly proxyUrl = 'https://givka-api.netlify.app/.netlify/functions/proxy';
   private readonly baseUrl = 'https://www.wikiart.org/en/';
@@ -56,11 +56,6 @@ export class WikiartService {
   }
 
   private getRequest(url: string): Promise<any> {
-    const options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-      })
-    }
-    return this.http.get(`${this.baseUrl}${url}`, options).toPromise();
+    return this.http.post(this.proxyUrl, `${this.baseUrl}${url}`).toPromise();
   }
 }
