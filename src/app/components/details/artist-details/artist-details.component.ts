@@ -53,7 +53,7 @@ export class ArtistDetailsComponent implements OnInit, OnDestroy {
     const max = document.documentElement!.scrollHeight - document.documentElement!.clientHeight;
     const pos = document.documentElement!.scrollTop;
 
-    if (!this.loadingAdd && pos === max) {
+    if (!this.loadingAdd && (Math.floor(max-pos)===0)) {
       this.addPaintings();
     }
   }

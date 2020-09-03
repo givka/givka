@@ -56,7 +56,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
     const max = document.documentElement!.scrollHeight - document.documentElement!.clientHeight;
     const pos = document.documentElement!.scrollTop;
 
-    if (this.list !== 'collection' && !this.loadingAdd && pos === max) {
+    console.log(pos,max)
+    if (this.list !== 'collection' && !this.loadingAdd && (Math.floor(max-pos)===0)) {
       this.addMovies();
     }
   }
