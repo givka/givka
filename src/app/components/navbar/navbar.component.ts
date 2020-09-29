@@ -9,7 +9,7 @@ export class NavbarComponent {
   public linkButtons = [
     {title: 'Movies', url: '/movies'},
     {title: 'TV Series', url: '/series'},
-    //{title: 'Art', url: '/art'},
+    {title: 'Art', url: '/art'},
     /*{title: 'Franco-Belgian Comics', url: '/comics'},*/
   ];
 
