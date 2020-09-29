@@ -50,7 +50,7 @@ export class MovieDetails extends TmdbDetails {
     const movies = collection.parts
       .map((m: any) => new Movie().fromServer(m, database))
       .filter((m: any) => m.poster);
-    return Utils.orderBy(movies, 'releaseDate', 'asc');
+    return Utils.orderBy(movies, 'releaseDate', 'desc');
   }
 
   private formatRecoMovies(options: any, database: IDataBaseMovie) {
