@@ -39,6 +39,7 @@
   <div [innerHtml]="painting.title"></div>
   <div (click)="onClickArtist(painting.artistUrl)"
        [innerHtml]="painting.artistName"
-       class="link"></div>
+       class="link"
+       style="text-decoration: underline;"></div>
   <div [innerHtml]="painting.year"></div>
 </div>
